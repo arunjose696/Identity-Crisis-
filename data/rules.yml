@@ -4,14 +4,7 @@ rules:
   steps:
   - intent: help
   - action: utter_help
-  - action: action_interact
 
-# - rule: start
-#   steps:
-#   - intent: start 
-#   - action: action_store_name
-#   - intent: name
-#   - action: action_intro
 - rule: room_one
   steps: 
   - intent: current_object
@@ -19,12 +12,6 @@ rules:
 
 
 - rule: intro
-
   steps: 
   - intent: intro
   - action: action_intro
-
-- rule: interact
-  steps:
-  - intent: interact
-  - action: action_interact

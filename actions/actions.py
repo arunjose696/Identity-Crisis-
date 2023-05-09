@@ -12,7 +12,7 @@ from tkinter.messagebox import NO
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet, FollowupAction
+from rasa_sdk.events import SlotSet, FollowupAction, ConversationPaused
 import json
 import time
 
@@ -103,62 +103,16 @@ class RoomOneAnswerInteract(Action):
                         finished_objects.append(current_object)
                         finished_objects_statment = ", ".join(finished_objects)
                         remaining_objects = list((set(all_objects.keys())) - set(finished_objects))
-                        remaining_objects_statment = ", ".join(remaining_objects)
-                        display_rem_item_text = "As you have already solved {0}, you are left with {1}. What are you gonna do now ?".format(finished_objects_statment,remaining_objects_statment)
-                        dispatcher.utter_message(text=display_rem_item_text)
-                        return [SlotSet("finished_objects", finished_objects)]
+                        if len(remaining_objects) > 0:
+                            remaining_objects_statment = ", ".join(remaining_objects)
+                            display_rem_item_text = "As you have already solved {0}, you are left with {1}. What are you gonna do now ?".format(finished_objects_statment,remaining_objects_statment)
+                            dispatcher.utter_message(text=display_rem_item_text)
+                            return [SlotSet("finished_objects", list(set(finished_objects)))]
+                        else:
+                            dispatcher.utter_message(text="Congratulations you have escaped the room")
+                        return [ConversationPaused()]
                     else:
                         dispatcher.utter_message(text="The Answer you entered is wrong")
                     break
         dispatcher.utter_message(text="ROOM ONE Answer")
         return 
-
-    
-class ActionInteract(Action):
-
-    def name(self) -> Text:
-        return "action_interact"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        if tracker.get_slot('data') is None or tracker.get_slot('data') == "null":
-            data = {}
-            with open('story.json') as f:
-                data["objects"] = json.load(f)
-        else: data = tracker.get_slot('data')
-
-        print(tracker.latest_message["entities"])
-        existing_object = False
-        for entity in tracker.latest_message["entities"]:
-            if entity["value"] in data["objects"].keys():
-                interacted_object = data["objects"][entity["value"]]
-                existing_object = True
-                if entity["group"] in interacted_object:
-                    action = entity["group"]
-                    required_objects = []
-                    if "need" in interacted_object[action]:
-                        for need in interacted_object[action]["need"]:
-                            if need not in data["objects"].keys():
-                                required_objects.append(need)
-                    if len(required_objects) > 0:
-                        dispatcher.utter_message(
-                            f"You can't {entity['group']} the {entity['value']}. You need: {', '.join(required_objects)}"
-                        )
-                        continue
-                    dispatcher.utter_message(interacted_object[action]["utter"])
-                    if not "objects" in interacted_object[action]: continue
-                    dispatcher.utter_message(f"You find: {', '.join(interacted_object[action]['objects'].keys())}")
-                    for object in interacted_object[action]["objects"].keys():
-                        data["objects"][object] = interacted_object[action]["objects"][object]
-                else:
-                    if entity['group'] == "search":
-                        dispatcher.utter_message(f"You can't find anything interesting when searching the {entity['value']}.")
-                    else:
-                        dispatcher.utter_message(f"You can't {entity['group']} the {entity['value']}.")
-            else:
-                dispatcher.utter_message(f"There is no {entity['value']}.")
-        if not existing_object:
-            dispatcher.utter_message(f"You can interact \U0001F4D4 with: {', '.join(data['objects'].keys())}")
-
-        return [SlotSet("data", data)]
