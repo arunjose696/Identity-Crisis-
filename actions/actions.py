@@ -29,10 +29,17 @@ class IntroAction(Action):
         name = tracker.get_slot('name')
         message = "Hello {0}, You entered the escape room and the door slammed behind you.You find yourself in a dark dusty room, you notice big flashing screen on the wall and before you have time to look around you hear a voice coming from the screen, saying:".format(name) + \
             "\n\nWelcome to my mansion, my dear guests. I'm sorry to inform you that you have been invited for a very special party. I have been lonely for a long time, ever since I died in this mansion many years ago. I have been looking for some company, but no one ever comes to visit me. That's why I had to resort to more...creative methods. That's where you come in. You have one hour to find the exit of my mansion, or else you will join me as my permanent guests. Don't worry, it will be fun...for me. Good luck!" +\
-            "\nYou look at your watch and it shows 8:00. As your eyes get adjusted to the darkness you go around the room exploring and looking for any clues to breakout. You notice An old diary, a watch with names fo 12 countries instead of numbers, A antique vase, a goggles with yellow shades and a Ancient roman rock." +\
-    "\nIn front of you there is a hugeTreasure box with a lock that takes 3 digits in ascending order as its code."+\
-    "\nyou look around the room and you spot a green door at the end of the room, you assume this is the exit and try to open the door. The door is locked firmly, and needs a key to open it." + \
-        "\n Try to find key for the door."
+            "\nYou look at your watch and it shows 8:00. As your eyes get adjusted to the darkness you go around the room exploring and looking for any clues to breakout. You notice An old diary, and a watch with names fo 12 countries instead of numbers." +\
+    "\nIn front of you there is a door with a lock that takes 2 digits in ascending order as its code to open it."#+\
+    # "\nyou look around the room and you spot a green door at the end of the room, you assume this is the exit and try to open the door. The door is locked firmly, and needs a key to open it." + \
+        "\n Try to find the code for the door."
+        
+    #     message = "Hello {0}, You entered the escape room and the door slammed behind you.You find yourself in a dark dusty room, you notice big flashing screen on the wall and before you have time to look around you hear a voice coming from the screen, saying:".format(name) + \
+    #         "\n\nWelcome to my mansion, my dear guests. I'm sorry to inform you that you have been invited for a very special party. I have been lonely for a long time, ever since I died in this mansion many years ago. I have been looking for some company, but no one ever comes to visit me. That's why I had to resort to more...creative methods. That's where you come in. You have one hour to find the exit of my mansion, or else you will join me as my permanent guests. Don't worry, it will be fun...for me. Good luck!" +\
+    #         "\nYou look at your watch and it shows 8:00. As your eyes get adjusted to the darkness you go around the room exploring and looking for any clues to breakout. You notice An old diary, a watch with names fo 12 countries instead of numbers, A antique vase, a goggles with yellow shades and a Ancient roman rock." +\
+    # "\nIn front of you there is a hugeTreasure box with a lock that takes 3 digits in ascending order as its code."+\
+    # "\nyou look around the room and you spot a green door at the end of the room, you assume this is the exit and try to open the door. The door is locked firmly, and needs a key to open it." + \
+    #     "\n Try to find key for the door."
 
         # for char in message:
         #     dispatcher.utter_message(text=char, typing=True)
