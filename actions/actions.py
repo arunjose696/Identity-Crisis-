@@ -16,8 +16,24 @@ from rasa_sdk.events import SlotSet, FollowupAction, ConversationPaused
 import json
 import time
 
-all_objects = {'diary':{'item':'diary','question':"You open the diary and find this written on the first page  -Until I am measured I am not known, Yet how you miss me when I have flown. The Number you seek is the letters I contain",'answer':"4",'completed':False},
-               'watch':{'item':'watch','question':"You look at the watch and it has 12 cities on it instead of numbers, there’s only one hand and it points at London. You flip the clock and find some wordings. The time is the number you seek",'answer':"7",'completed':False}}
+
+all_objects = {'diary':{'item':'diary','question':"You open the diary and find this written on the first page  -Until I am measured I am not known, Yet how you miss me when I have flown. The Number you seek is the letters I contain",'answer':"4",'clue':"I wait for none",'completed':False},
+               'watch':{'item':'watch','question':"You look at the watch and it has 12 cities on it instead of numbers, there’s only one hand and it points at London. You flip the clock and find some wordings. The time is the number you seek",'answer':"7",'completed':False, 'clue':"In germany you are just one hour ahead of london, FIgure me out checking time in your wrist watch" }}
+helps_remianing = 5
+
+def create_box(text):
+    lines = text.split('\n')
+    max_line_length = max(len(line) for line in lines)
+    box_width = max_line_length + 4
+    box_height = len(lines) + 2
+    horizontal_line = '─' * box_width
+    box = '┌' + horizontal_line + '┐\n'
+    for line in lines:
+        padding = ' ' * (max_line_length - len(line))
+        box += '│  ' + line + padding + '  │\n'
+    box += '└' + horizontal_line + '┘\n'
+    return box
+
 class IntroAction(Action):
     def name(self) -> Text:
         return "action_intro"
@@ -64,8 +80,14 @@ class StoreNameAction(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]: 
+        if tracker.get_slot('name') is not None:
+            dispatcher.utter_message("The name {} is engraved in my mind. I like to still call you {}".format(
+                tracker.get_slot('name'), tracker.get_slot('name')
+            ))
+            return 
 
         name = tracker.get_slot('name')
+        
         if name is None:
             for entity in tracker.latest_message["entities"]:
                 if entity["entity"] == "name":
@@ -75,6 +97,31 @@ class StoreNameAction(Action):
             dispatcher.utter_message("The Answer you entered is wrong")
             return [FollowupAction('action_room_one_interact')]
 
+class RoomOneGiveClue(Action):
+    def name(self) -> Text:
+        return "action_give_clue"
+    
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]: 
+        current_object = tracker.get_slot('current_object')
+        finished_objects = tracker.get_slot('finished_objects')
+        if current_object is None:
+            dispatcher.utter_message(text="Pick up something first")
+            return
+        
+        global helps_remianing
+        if helps_remianing>0:
+            current_object = tracker.get_slot('current_object')
+            current_object_details = all_objects[current_object]
+            clue = current_object_details['clue']
+            dispatcher.utter_message(text = "The screen gets tuned on and you see")
+            dispatcher.utter_message(text=create_box(clue))     
+            helps_remianing -= 1
+            dispatcher.utter_message(text="Be cautius you have just {} more clues!!!".format(helps_remianing))        
+        else:
+            dispatcher.utter_message(text="You have exhausted your helps")
+            
 
 class RoomOneInteract(Action):
     def name(self) -> Text:
@@ -99,6 +146,10 @@ class RoomOneAnswerInteract(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]: 
         current_object = tracker.get_slot('current_object')
         finished_objects = tracker.get_slot('finished_objects')
+        if current_object is None:
+            dispatcher.utter_message(text="Pick up something first")
+            return
+            
         if current_object in all_objects:
             current_object_details = all_objects[current_object]
             answer = current_object_details['answer']
@@ -119,7 +170,7 @@ class RoomOneAnswerInteract(Action):
                             dispatcher.utter_message(text="Congratulations you have escaped the room")
                         return [ConversationPaused()]
                     else:
-                        dispatcher.utter_message(text="The Answer you entered is wrong")
+                        dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(helps_remianing))
                     break
         dispatcher.utter_message(text="ROOM ONE Answer")
         return 

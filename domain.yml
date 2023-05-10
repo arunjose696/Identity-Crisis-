@@ -8,6 +8,8 @@ intents:
   - preface
   - current_object
   - number_answer
+  - ask_for_clue
+
 responses:
   utter_help:
   - text: "You can search, move, use, break, shake and rotate objects. Write what you want to do."
@@ -26,6 +28,7 @@ actions:
 - action_intro
 - action_room_one_interact
 - action_room_one_answer_interact
+- action_give_clue
 slots:
   data:
     type: rasa.shared.core.slots.AnySlot

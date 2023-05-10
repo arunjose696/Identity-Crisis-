@@ -44,3 +44,12 @@ nlu:
     - how does this work?
     - help
     - what should I type?
+
+- intent: ask_for_clue
+  examples: |
+    - Can you give me a clue?
+    - I need a hint.
+    - Any hints to solve this?
+    - Help me out with a clue.
+    - I'm stuck. Can you assist me with a clue?
+    - Any suggestions on how to proceed?

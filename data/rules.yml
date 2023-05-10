@@ -3,7 +3,7 @@ rules:
 - rule: help
   steps:
   - intent: help
-  - action: utter_help
+  - action: action_give_clue
 
 - rule: room_one
   steps: 
@@ -15,3 +15,13 @@ rules:
   steps: 
   - intent: intro
   - action: action_intro
+
+- rule: checkAnswer
+  steps: 
+  - intent: number_answer
+  - action: action_room_one_answer_interact
+
+- rule: give_clue
+  steps: 
+  - intent: ask_for_clue
+  - action: action_give_clue
