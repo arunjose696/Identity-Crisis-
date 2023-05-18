@@ -13,8 +13,14 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, ConversationPaused
+from rasa_sdk import Tracker, FormValidationAction
 import json
 import time
+from typing import Text, List, Any, Dict
+from rasa_sdk import Tracker, FormValidationAction
+from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.types import DomainDict
+
 
 
 all_objects = {'diary':{'item':'diary','question':"You open the diary and find this written on the first page  -Until I am measured I am not known, Yet how you miss me when I have flown. The Number you seek is the letters I contain",'answer':"4",'clue':"I wait for none",'completed':False},
@@ -73,29 +79,30 @@ class AskName(Action):
         dispatcher.utter_message(text="Welcome to Escape Room Challenge!. To Start the challenge please enter your name.")
     
         return
-class StoreNameAction(Action):
-    def name(self) -> Text:
-        return "action_store_name"
+# class StoreNameAction(Action):
+#     def name(self) -> Text:
+#         return "action_store_name"
     
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]: 
-        if tracker.get_slot('name') is not None:
-            dispatcher.utter_message("The name {} is engraved in my mind. I like to still call you {}".format(
-                tracker.get_slot('name'), tracker.get_slot('name')
-            ))
-            return 
+#     def run(self, dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#         print(tracker.latest_message["entities"]) 
+#         if tracker.get_slot('name') is not None:
+#             dispatcher.utter_message("The name {} is engraved in my mind. I like to still call you {}".format(
+#                 tracker.get_slot('name'), tracker.get_slot('name')
+#             ))
+#             return 
 
-        name = tracker.get_slot('name')
+#         name = tracker.get_slot('name')
         
-        if name is None:
-            for entity in tracker.latest_message["entities"]:
-                if entity["entity"] == "name":
-                    name = entity["value"]
-            return [SlotSet("name", name)]
-        else:
-            dispatcher.utter_message("The Answer you entered is wrong")
-            return [FollowupAction('action_room_one_interact')]
+#         if name is None:
+#             for entity in tracker.latest_message["entities"]:
+#                 if entity["entity"] == "name":
+#                     name = entity["value"]
+#             return [SlotSet("name", name)]
+#         else:
+#             dispatcher.utter_message("The Answer you entered is wrong")
+#             return [FollowupAction('action_room_one_interact')]
 
 class RoomOneGiveClue(Action):
     def name(self) -> Text:
@@ -106,6 +113,7 @@ class RoomOneGiveClue(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]: 
         current_object = tracker.get_slot('current_object')
         finished_objects = tracker.get_slot('finished_objects')
+        print(tracker.latest_message["entities"]) 
         if current_object is None:
             dispatcher.utter_message(text="Pick up something first")
             return
@@ -174,3 +182,25 @@ class RoomOneAnswerInteract(Action):
                     break
         dispatcher.utter_message(text="ROOM ONE Answer")
         return 
+
+####################Forms###########################
+
+class ValidateNameForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_name_form"
+
+    def validate_name(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate `first_name` value."""
+        print(tracker.latest_message["entities"]) 
+        for entity in tracker.latest_message["entities"]:
+            if entity["entity"] == "PERSON" or entity["entity"]=="name":
+                name = entity["value"] 
+                return {"name":name}       
+        
+        return {"name":None}

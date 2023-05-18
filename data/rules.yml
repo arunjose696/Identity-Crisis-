@@ -25,3 +25,21 @@ rules:
   steps: 
   - intent: ask_for_clue
   - action: action_give_clue
+
+- rule: Submit form
+  condition:
+  - active_loop: name_form
+  steps:
+  - action: name_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_intro
+
+- rule: start form
+  steps:
+  - intent: start
+  - slot_was_set:
+    - name: null 
+  - action: name_form
+  - active_loop: name_form

@@ -14,6 +14,9 @@ responses:
   utter_help:
   - text: "You can search, move, use, break, shake and rotate objects. Write what you want to do."
 
+  utter_ask_name:
+  - text: What is your name?
+
   utter_start:
   - text: "Welcome to Escape Room Challenge!. To Start the challenge please enter your name."
 
@@ -22,13 +25,16 @@ responses:
 
 entities:
 - object
+- PERSON
+- name
+- current_object
 actions:
 - action_ask_name
-- action_store_name
 - action_intro
 - action_room_one_interact
 - action_room_one_answer_interact
 - action_give_clue
+- validate_name_form
 slots:
   data:
     type: rasa.shared.core.slots.AnySlot
@@ -36,11 +42,15 @@ slots:
     mappings:
     - type: custom
 
+  
   name:
-    type: rasa.shared.core.slots.AnySlot
-    initial_value: null
+    type: text
+    influence_conversation: true
     mappings:
-    - type: custom
+      - type: from_text
+        conditions:
+         - active_loop: name_form
+           requested_slot: name
 
   current_object:
     type: rasa.shared.core.slots.AnySlot
@@ -59,3 +69,10 @@ slots:
     initial_value: []
     mappings:
     - type: custom
+
+forms:
+  name_form:
+    required_slots:
+      - name
+
+

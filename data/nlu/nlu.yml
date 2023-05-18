@@ -17,7 +17,10 @@ nlu:
 - intent: name
   examples: |
     -[Arun](name)
-    - [Viky](name)
+    -[Viky](name)
+    -[Jim](PERSON)
+    -My name is [PERSON](PERSON)
+    -[PERSON](name)
 
 - intent: number_answer
   examples: |

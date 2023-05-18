@@ -4,11 +4,6 @@ stories:
 
 - story: happy_path
   steps:
-  - intent: start
-  - action: action_ask_name
-  - intent: name
-  - action: action_store_name
-  - action: action_intro
   # - intent: preface
   - intent: current_object
   - action: action_room_one_interact
@@ -17,12 +12,6 @@ stories:
 
 - story: with_clue
   steps:
-  - intent: start
-  - action: action_ask_name
-  - intent: name
-  - action: action_store_name
-  - action: action_intro
-  # - intent: preface
   - intent: current_object
   - action: action_room_one_interact
   - intent: number_answer
