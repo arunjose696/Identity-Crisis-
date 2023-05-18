@@ -25,7 +25,7 @@ from rasa_sdk.types import DomainDict
 
 all_objects = {'diary':{'item':'diary','question':"You open the diary and find this written on the first page  -Until I am measured I am not known, Yet how you miss me when I have flown. The Number you seek is the letters I contain",'answer':"4",'clue':"I wait for none",'completed':False},
                'watch':{'item':'watch','question':"You look at the watch and it has 12 cities on it instead of numbers, there’s only one hand and it points at London. You flip the clock and find some wordings. The time is the number you seek",'answer':"7",'completed':False, 'clue':"In germany you are just one hour ahead of london, FIgure me out checking time in your wrist watch" }}
-helps_remianing = 5
+helps_remaining = 5
 
 def create_box(text):
     lines = text.split('\n')
@@ -118,15 +118,18 @@ class RoomOneGiveClue(Action):
             dispatcher.utter_message(text="Pick up something first")
             return
         
-        global helps_remianing
-        if helps_remianing>0:
+        global helps_remaining
+        if helps_remaining>0:
             current_object = tracker.get_slot('current_object')
             current_object_details = all_objects[current_object]
             clue = current_object_details['clue']
             dispatcher.utter_message(text = "The screen gets tuned on and you see")
             dispatcher.utter_message(text=create_box(clue))     
-            helps_remianing -= 1
-            dispatcher.utter_message(text="Be cautius you have just {} more clues!!!".format(helps_remianing))        
+            helps_remaining -= 1
+            if helps_remaining == 0:
+                 dispatcher.utter_message(text="You have no more clues left")  
+            else:
+                dispatcher.utter_message(text="Be cautius you have just {} more clues!!!".format(helps_remaining))        
         else:
             dispatcher.utter_message(text="You have exhausted your helps")
             
@@ -178,7 +181,7 @@ class RoomOneAnswerInteract(Action):
                             dispatcher.utter_message(text="Congratulations you have escaped the room")
                         return [ConversationPaused()]
                     else:
-                        dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(helps_remianing))
+                        dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(helps_remaining))
                     break
         dispatcher.utter_message(text="ROOM ONE Answer")
         return 
