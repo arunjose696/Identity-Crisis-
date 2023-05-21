@@ -41,6 +41,8 @@ nlu:
     -See [watch](current_object)
     -Grab [goggles](current_object)
     -Take the [vase](current_object)
+    -Pick up [vase](current_object)
+    -Pick up [paper](current_object)
 
 - intent: help
   examples: |

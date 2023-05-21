@@ -23,8 +23,13 @@ from rasa_sdk.types import DomainDict
 
 
 
-all_objects = {'diary':{'item':'diary','question':"You open the diary and find this written on the first page  -Until I am measured I am not known, Yet how you miss me when I have flown. The Number you seek is the letters I contain",'answer':"4",'clue':"I wait for none",'completed':False},
-               'watch':{'item':'watch','question':"You look at the watch and it has 12 cities on it instead of numbers, there’s only one hand and it points at London. You flip the clock and find some wordings. The time is the number you seek",'answer':"7",'completed':False, 'clue':"In germany you are just one hour ahead of london, FIgure me out checking time in your wrist watch" }}
+all_objects = {'diary':{'item':'diary','type':'final','question':"You open the diary and find this written on the first page  -Until I am measured I am not known, Yet how you miss me when I have flown. The Number you seek is the letters I contain",'answer':"4",'clue':"I wait for none",'completed':False},
+               'watch':{'item':'watch','type':'final','question':"You look at the watch and it has 12 cities on it instead of numbers, there’s only one hand and it points at London. You flip the clock and find some wordings. The time is the number you seek",'answer':"7",'completed':False, 'clue':"In germany you are just one hour ahead of london, FIgure me out checking time in your wrist watch" },
+               'vase': {'type':'collection',"action" : "When you try to pick the vase it turns to dust and now you find a crumbled paper fall from it", 'collection':[{'item':'paper','type':'mechanical','requiredSlot':"lens",'answer':"4",'clue':"The letters seem to be very small not possible to read them with naked eye, try looking ",'completed':"It reads"}]
+                   }}
+props ={'lens':{'description':'something about the glass', 'pick':"now things look enlarged", "slot":"lens"}}
+bag = {}
+diary = []
 helps_remaining = 5
 
 def create_box(text):
@@ -79,30 +84,7 @@ class AskName(Action):
         dispatcher.utter_message(text="Welcome to Escape Room Challenge!. To Start the challenge please enter your name.")
     
         return
-# class StoreNameAction(Action):
-#     def name(self) -> Text:
-#         return "action_store_name"
-    
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#         print(tracker.latest_message["entities"]) 
-#         if tracker.get_slot('name') is not None:
-#             dispatcher.utter_message("The name {} is engraved in my mind. I like to still call you {}".format(
-#                 tracker.get_slot('name'), tracker.get_slot('name')
-#             ))
-#             return 
 
-#         name = tracker.get_slot('name')
-        
-#         if name is None:
-#             for entity in tracker.latest_message["entities"]:
-#                 if entity["entity"] == "name":
-#                     name = entity["value"]
-#             return [SlotSet("name", name)]
-#         else:
-#             dispatcher.utter_message("The Answer you entered is wrong")
-#             return [FollowupAction('action_room_one_interact')]
 
 class RoomOneGiveClue(Action):
     def name(self) -> Text:
@@ -146,8 +128,35 @@ class RoomOneInteract(Action):
             if entity["entity"] == "current_object":
                 current_object = entity["value"]
                 object_data = all_objects[current_object]
-                dispatcher.utter_message(text=object_data['question'])        
-                return [SlotSet("current_object", current_object)]
+                if object_data['type'] == "final":
+                    dispatcher.utter_message(text=object_data['question'])        
+                elif object_data['type'] == "mechanical":
+                    dispatcher.utter_message(text=object_data['clue'])
+                elif object_data['type'] == "collection":
+                    for item in object_data["collection"]:
+                        all_objects[item["item"]] = item
+                    finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
+                    dispatcher.utter_message(text=object_data['action'])
+                    dispatcher.utter_message(text=look_around(all_objects, finished_objects=finished_objects))
+                    
+                return [SlotSet("current_object", current_object)]  
+
+def look_around(all_objects=all_objects, finished_objects=[]):
+    remaining_objects = list((set(all_objects.keys())) - set(finished_objects))
+    if len(remaining_objects) > 0:
+        remaining_objects_statment = ", a ".join(remaining_objects)
+        finished_objects_statment = ", ".join(finished_objects)
+        solved_item=""
+        display_rem_item_text=""
+        look_around_setting = "\n\nWhen you glance around the room, "
+        if finished_objects:
+            solved_item = "\nYou have already solved {0}!!".format(finished_objects_statment)
+        if remaining_objects_statment:
+            display_rem_item_text = "Now you  see a {0}. What are you gonna do now ?".format(remaining_objects_statment)
+        return look_around_setting+display_rem_item_text+solved_item
+    else:
+        return "You dont have anything more in the room to solve"
+                    
 class RoomOneAnswerInteract(Action):
     def name(self) -> Text:
         return "action_room_one_answer_interact"
