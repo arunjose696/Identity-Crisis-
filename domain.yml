@@ -9,6 +9,7 @@ intents:
   - current_object
   - number_answer
   - ask_for_clue
+  - interest_in_game
 
 responses:
   utter_help:
@@ -17,6 +18,9 @@ responses:
   utter_ask_name:
   - text: What is your name?
 
+  utter_greet:
+  - text: "Welcome to Escape Room Challenge!. To Start the challenge please enter your name."
+
   utter_start:
   - text: "Welcome to Escape Room Challenge!. To Start the challenge please enter your name."
 
@@ -24,10 +28,12 @@ responses:
   - text: "Welcome to my mansion, my dear guests. I'm sorry to inform you that you have been invited for a very special party. I have been lonely for a long time, ever since I died in this mansion many years ago. I have been looking for some company, but no one ever comes to visit me. That's why I had to resort to more...creative methods. That's where you come in. You have one hour to find the exit of my mansion, or else you will join me as my permanent guests. Don't worry, it will be fun...for me. Good luck!"
 
 entities:
+- interest_in_game
 - object
 - PERSON
 - name
 - current_object
+
 actions:
 - action_ask_name
 - action_intro
@@ -35,6 +41,8 @@ actions:
 - action_room_one_answer_interact
 - action_give_clue
 - validate_name_form
+- action_game_interest
+
 slots:
   data:
     type: rasa.shared.core.slots.AnySlot
@@ -52,6 +60,13 @@ slots:
          - active_loop: name_form
            requested_slot: name
 
+  interest_in_game:
+    type: rasa.shared.core.slots.AnySlot
+    initial_value: null
+    mappings:
+    - type: from_entity
+      entity: interest_in_game
+  
   current_object:
     type: rasa.shared.core.slots.AnySlot
     initial_value: null

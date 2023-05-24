@@ -58,12 +58,12 @@ class TruecaserPreprocessor(GraphComponent):
        return training_data
 
     def process(self, messages: List[Message]) -> List[Message]:
-        print(messages[0])
+        #print(messages[0])
         message =messages[0]
         text = truecase.get_true_case(message.get("text"))
         message.set("text", text)
         messages[0] = message
-        print(messages[0].get("text"))
+        #print(messages[0].get("text"))
         # Perform truecasing on the text
         
         

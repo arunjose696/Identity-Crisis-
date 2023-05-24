@@ -29,6 +29,10 @@ nlu:
     - bookshelves
     - bookcases
     - shelves
+- synonym: watch
+  examples: |
+    - clock
+    
 - synonym: cabinet
   examples: |
     - cupboard

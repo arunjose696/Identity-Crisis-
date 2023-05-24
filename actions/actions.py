@@ -24,10 +24,12 @@ from rasa_sdk.types import DomainDict
 
 
 all_objects = {'diary':{'item':'diary','type':'final','question':"You open the diary and find this written on the first page  -Until I am measured I am not known, Yet how you miss me when I have flown. The Number you seek is the letters I contain",'answer':"4",'clue':"I wait for none",'completed':False},
-               'watch':{'item':'watch','type':'final','question':"You look at the watch and it has 12 cities on it instead of numbers, there’s only one hand and it points at London. You flip the clock and find some wordings. The time is the number you seek",'answer':"7",'completed':False, 'clue':"In germany you are just one hour ahead of london, FIgure me out checking time in your wrist watch" },
+               'watch':{'item':'watch','type':'final','question':"If you turn it around you find a text saying, I love New York’s Times Square, that is the second digit of the door lock.",'answer':"9",'completed':False, 'clue':"Think mathematically" },
+               'rock':{'item':'rock','type':'final','question':"You can see letter V inscribed on it.",'answer':"5",'completed':False, 'clue':"Capital of Italy" },
                'vase': {'type':'collection',"action" : "When you try to pick the vase it turns to dust and now you find a crumbled paper fall from it", 'collection':[{'item':'paper','type':'mechanical','requiredSlot':"lens",'answer':"4",'clue':"The letters seem to be very small not possible to read them with naked eye, try looking ",'completed':"It reads"}]
                    }}
 props ={'lens':{'description':'something about the glass', 'pick':"now things look enlarged", "slot":"lens"}}
+collections_list = ['paper']
 bag = {}
 diary = []
 helps_remaining = 5
@@ -44,7 +46,24 @@ def create_box(text):
         box += '│  ' + line + padding + '  │\n'
     box += '└' + horizontal_line + '┘\n'
     return box
-
+class GameInterest(Action):
+    def name(self) -> Text:
+        return "action_game_interest"
+    
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        interest_in_game = tracker.get_slot('interest_in_game')
+        
+        
+        print("HELOO",interest_in_game)
+        
+        if interest_in_game.lower() in ['yes','ya','yeah','ja','okay']:
+            dispatcher.utter_message(text="Here is bag for you, which will come handy later. There is a clock on the wall with time 3:00 with USA flag as background , you can have a look at my old diary, an antique vase, goggles with yellow shades and an ancient roman rock. Which one do you want to pick up first?")
+        else:
+            dispatcher.utter_message(text="You don't have an option. You have to explore to exit. Here is bag for you, which will come handy later. There is a clock on the wall with time 3:00 with USA flag as background , you can have a look at my old diary, an antique vase, goggles with yellow shades and an ancient roman rock. Which one do you want to pick up first?")
+            
+        return []
 class IntroAction(Action):
     def name(self) -> Text:
         return "action_intro"
@@ -54,23 +73,11 @@ class IntroAction(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print("7")
         name = tracker.get_slot('name')
-        message = "Hello {0}, You entered the escape room and the door slammed behind you.You find yourself in a dark dusty room, you notice big flashing screen on the wall and before you have time to look around you hear a voice coming from the screen, saying:".format(name) + \
-            "\n\nWelcome to my mansion, my dear guests. I'm sorry to inform you that you have been invited for a very special party. I have been lonely for a long time, ever since I died in this mansion many years ago. I have been looking for some company, but no one ever comes to visit me. That's why I had to resort to more...creative methods. That's where you come in. You have one hour to find the exit of my mansion, or else you will join me as my permanent guests. Don't worry, it will be fun...for me. Good luck!" +\
-            "\nYou look at your watch and it shows 8:00. As your eyes get adjusted to the darkness you go around the room exploring and looking for any clues to breakout. You notice An old diary, and a watch with names fo 12 countries instead of numbers." +\
-    "\nIn front of you there is a door with a lock that takes 2 digits in ascending order as its code to open it."#+\
-    # "\nyou look around the room and you spot a green door at the end of the room, you assume this is the exit and try to open the door. The door is locked firmly, and needs a key to open it." + \
-        "\n Try to find the code for the door."
-        
-    #     message = "Hello {0}, You entered the escape room and the door slammed behind you.You find yourself in a dark dusty room, you notice big flashing screen on the wall and before you have time to look around you hear a voice coming from the screen, saying:".format(name) + \
-    #         "\n\nWelcome to my mansion, my dear guests. I'm sorry to inform you that you have been invited for a very special party. I have been lonely for a long time, ever since I died in this mansion many years ago. I have been looking for some company, but no one ever comes to visit me. That's why I had to resort to more...creative methods. That's where you come in. You have one hour to find the exit of my mansion, or else you will join me as my permanent guests. Don't worry, it will be fun...for me. Good luck!" +\
-    #         "\nYou look at your watch and it shows 8:00. As your eyes get adjusted to the darkness you go around the room exploring and looking for any clues to breakout. You notice An old diary, a watch with names fo 12 countries instead of numbers, A antique vase, a goggles with yellow shades and a Ancient roman rock." +\
-    # "\nIn front of you there is a hugeTreasure box with a lock that takes 3 digits in ascending order as its code."+\
-    # "\nyou look around the room and you spot a green door at the end of the room, you assume this is the exit and try to open the door. The door is locked firmly, and needs a key to open it." + \
-    #     "\n Try to find key for the door."
-
-        # for char in message:
-        #     dispatcher.utter_message(text=char, typing=True)
-        #     time.sleep(0.1)
+        message = "Hello {0}, you have entered my haunted mansion, now you have to find a way to leave or else you will become my ghost friend forever.".format(name) +\
+        "\nI am a smart spirit, you know, if you have to escape this mansion you have to crack the door’s secret code. "+\
+        "\nI was a kind human when I was alive, so I will show some kindness and guide you through my super dark mansion and help you get out of this place."+\
+        "\n Hehehehehe, rack your brains and have fun, Good luck!!!!"+\
+        "\n Are you ready to explore my deadly mansion??."
         dispatcher.utter_message(text=message)
         return []
 class AskName(Action):
@@ -124,22 +131,39 @@ class RoomOneInteract(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]: 
         print (tracker.latest_message)
+        print("RoomOneInteract")
+        print(tracker.latest_message)
         for entity in tracker.latest_message["entities"]:
             if entity["entity"] == "current_object":
                 current_object = entity["value"]
-                object_data = all_objects[current_object]
-                if object_data['type'] == "final":
-                    dispatcher.utter_message(text=object_data['question'])        
-                elif object_data['type'] == "mechanical":
-                    dispatcher.utter_message(text=object_data['clue'])
-                elif object_data['type'] == "collection":
-                    for item in object_data["collection"]:
-                        all_objects[item["item"]] = item
+                print("HERE")
+                print(current_object)
+                if current_object.lower() in collections_list:
                     finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
-                    dispatcher.utter_message(text=object_data['action'])
+                    finished_objects.append(current_object)
+                    dispatcher.utter_message(text="You have kept Paper in the bag")
                     dispatcher.utter_message(text=look_around(all_objects, finished_objects=finished_objects))
-                    
-                return [SlotSet("current_object", current_object)]  
+                    return [SlotSet("finished_objects", list(set(finished_objects)))]
+                else:
+                    object_data = all_objects[current_object]
+                    print(object_data)
+                    if object_data['type'] == "final":
+                        dispatcher.utter_message(text=object_data['question'])        
+                    elif object_data['type'] == "mechanical":
+                        dispatcher.utter_message(text=object_data['clue'])
+                    elif object_data['type'] == "collection":
+                        for item in object_data["collection"]:
+                            all_objects[item["item"]] = item
+                        finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
+                        finished_objects.append(current_object)
+                        print("LLLLLLL")
+                        print(finished_objects)
+                        dispatcher.utter_message(text=object_data['action'])
+                        dispatcher.utter_message(text=look_around(all_objects, finished_objects=finished_objects))
+                        
+                        return [SlotSet("finished_objects", list(set(finished_objects)))]
+                        
+                    return [SlotSet("current_object", current_object)]  
 
 def look_around(all_objects=all_objects, finished_objects=[]):
     remaining_objects = list((set(all_objects.keys())) - set(finished_objects))
@@ -153,7 +177,7 @@ def look_around(all_objects=all_objects, finished_objects=[]):
             solved_item = "\nYou have already solved {0}!!".format(finished_objects_statment)
         if remaining_objects_statment:
             display_rem_item_text = "Now you  see a {0}. What are you gonna do now ?".format(remaining_objects_statment)
-        return look_around_setting+display_rem_item_text+solved_item
+        return look_around_setting+display_rem_item_text#+solved_item
     else:
         return "You dont have anything more in the room to solve"
                     
@@ -163,7 +187,8 @@ class RoomOneAnswerInteract(Action):
     
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]: 
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print("RoomOneAnswerInteract") 
         current_object = tracker.get_slot('current_object')
         finished_objects = tracker.get_slot('finished_objects')
         if current_object is None:
@@ -187,8 +212,8 @@ class RoomOneAnswerInteract(Action):
                             dispatcher.utter_message(text=display_rem_item_text)
                             return [SlotSet("finished_objects", list(set(finished_objects)))]
                         else:
-                            dispatcher.utter_message(text="Congratulations you have escaped the room")
-                        return [ConversationPaused()]
+                            dispatcher.utter_message(text="Now you have found all the important number of my life. Arrange it an order of birth to death to escape this room")
+                        # return [ConversationPaused()]
                     else:
                         dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(helps_remaining))
                     break
