@@ -99,6 +99,12 @@ nlu:
     - Number is [nine](number_answer)
 
 
+- intent: riddle_answer
+  examples: |
+    - [0](number_answer)
+    - [1](number_answer)
+    - [2](number_answer)
+
 - intent: current_object
   examples: |
     -Read [diary](current_object)

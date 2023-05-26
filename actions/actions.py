@@ -22,18 +22,17 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 from word2number import w2n
 import re
+from .intro import intro_messages,room_setting,all_objects,no_option_message
+from rasa_sdk.events import UserUtteranceReverted
 
 FIRST_ROOM_KEY="459"
-all_objects = {'diary':{'item':'diary','type':'final','question':"You open the diary and find this written on the first page  -Until I am measured I am not known, Yet how you miss me when I have flown. The Number you seek is the letters I contain",'answer':"4",'clue':"I wait for none",'completed':False},
-               'watch':{'item':'watch','type':'final','question':"If you turn it around you find a text saying, I love New York’s Times Square, that is the second digit of the door lock.",'answer':"9",'completed':False, 'clue':"Think mathematically" },
-               'rock':{'item':'rock','type':'final','question':"You can see letter V inscribed on it.",'answer':"5",'completed':False, 'clue':"Capital of Italy" },
-              # 'vase': {'type':'collection',"action" : "When you try to pick the vase it turns to dust and now you find a crumbled paper fall from it", 'collection':[{'item':'paper','type':'mechanical','requiredSlot':"lens",'answer':"4",'clue':"The letters seem to be very small not possible to read them with naked eye, try looking ",'completed':"It reads"}] }
-              }
+
 props ={'lens':{'description':'something about the glass', 'pick':"now things look enlarged", "slot":"lens"}}
 collections_list = ['paper']
 bag = {}
 diary = []
 helps_remaining = 5
+level = 0
 
 def create_box(text):
     lines = text.split('\n')
@@ -70,12 +69,12 @@ class GameInterest(Action):
         interest_in_game = tracker.get_slot('interest_in_game')
         
         
-        print("HELOO",interest_in_game)
+        print("HELOO","interest_in_game")
         
         if interest_in_game.lower() in ['yes','ya','yeah','ja','okay']:
-            dispatcher.utter_message(text="Here is bag for you, which will come handy later. There is a clock on the wall with time 3:00 with USA flag as background , you can have a look at my old diary, an antique vase, goggles with yellow shades and an ancient roman rock. Which one do you want to pick up first?")
+            dispatcher.utter_message(text=room_setting[level])
         else:
-            dispatcher.utter_message(text="You don't have an option. You have to explore to exit. Here is bag for you, which will come handy later. There is a clock on the wall with time 3:00 with USA flag as background , you can have a look at my old diary, an antique vase, goggles with yellow shades and an ancient roman rock. Which one do you want to pick up first?")
+            dispatcher.utter_message(text=no_option_message[level]+room_setting[level])
             
         return []
 class IntroAction(Action):
@@ -85,12 +84,9 @@ class IntroAction(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print("action_intro")
         name = tracker.get_slot('name')
-        message = "Hello {0}, you have entered my haunted mansion, now you have to find a way to leave or else you will become my ghost friend forever.".format(name) +\
-        "\nI am a smart spirit, you know, if you have to escape this mansion you have to crack the door’s secret code. "+\
-        "\nI was a kind human when I was alive, so I will show some kindness and guide you through my super dark mansion and help you get out of this place."+\
-        "\n Hehehehehe, rack your brains and have fun, Good luck!!!!"+\
-        "\n Are you ready to explore my deadly mansion??."
+        message = "Hello {0}".format(name)+intro_messages[level]
         dispatcher.utter_message(text=message)
         return []
 class AskName(Action):
@@ -99,8 +95,7 @@ class AskName(Action):
     
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]: 
-    
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:     
         dispatcher.utter_message(text="Welcome to Escape Room Challenge!. To Start the challenge please enter your name.")
     
         return
@@ -115,7 +110,7 @@ class RoomOneGiveClue(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]: 
         current_object = tracker.get_slot('current_object')
         finished_objects = tracker.get_slot('finished_objects')
-        print(tracker.latest_message["entities"]) 
+        print("action_give_clue") 
         if current_object is None:
             dispatcher.utter_message(text="Pick up something first")
             return
@@ -123,7 +118,7 @@ class RoomOneGiveClue(Action):
         global helps_remaining
         if helps_remaining>0:
             current_object = tracker.get_slot('current_object')
-            current_object_details = all_objects[current_object]
+            current_object_details = all_objects[level][current_object]
             clue = current_object_details['clue']
             dispatcher.utter_message(text = "The screen gets tuned on and you see")
             dispatcher.utter_message(text=create_box(clue))     
@@ -156,16 +151,16 @@ class RoomOneInteract(Action):
                     finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
                     finished_objects.append(current_object)
                     dispatcher.utter_message(text="You have kept Paper in the bag")
-                    dispatcher.utter_message(text=look_around(all_objects, finished_objects=finished_objects))
+                    dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
                     return [SlotSet("finished_objects", list(set(finished_objects)))]
                 else:
-                    if current_object not in all_objects:
+                    if current_object not in all_objects[level]:
                         dispatcher.utter_message(text="You dont have a {} in the room".format(current_object))                       
-                        dispatcher.utter_message(text=look_around(all_objects))
+                        dispatcher.utter_message(text=look_around(all_objects[level]))
                         print("-------------")
                         return 
                         
-                    object_data = all_objects[current_object]
+                    object_data = all_objects[level][current_object]
                     print(object_data)
                     if object_data['type'] == "final":
                         dispatcher.utter_message(text=object_data['question'])        
@@ -173,18 +168,18 @@ class RoomOneInteract(Action):
                         dispatcher.utter_message(text=object_data['clue'])
                     elif object_data['type'] == "collection":
                         for item in object_data["collection"]:
-                            all_objects[item["item"]] = item
+                            all_objects[level][item["item"]] = item
                         finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
                         finished_objects.append(current_object)
                         dispatcher.utter_message(text=object_data['action'])
-                        dispatcher.utter_message(text=look_around(all_objects, finished_objects=finished_objects))
+                        dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
                         
                         return [SlotSet("finished_objects", list(set(finished_objects)))]
                         
                     return [SlotSet("current_object", current_object)]  
-        dispatcher.utter_message(text=look_around(all_objects))
+        dispatcher.utter_message(text=look_around(all_objects[level]))
 
-def look_around(all_objects=all_objects, finished_objects=[]):
+def look_around(all_objects=all_objects[level], finished_objects=[]):
     remaining_objects = list((set(all_objects.keys())) - set(finished_objects))
     if len(remaining_objects) > 0:
         remaining_objects_statment = ", a ".join(remaining_objects)
@@ -214,8 +209,8 @@ class RoomOneAnswerInteract(Action):
             dispatcher.utter_message(text="Pick up something first")
             return
             
-        if current_object in all_objects:
-            current_object_details = all_objects[current_object]
+        if current_object in all_objects[level]:
+            current_object_details = all_objects[level][current_object]
             answer = current_object_details['answer']
             
             
@@ -225,7 +220,7 @@ class RoomOneAnswerInteract(Action):
                     if user_answer == answer:
                         finished_objects.append(current_object)
                         finished_objects_statment = ", ".join(finished_objects)
-                        remaining_objects = list((set(all_objects.keys())) - set(finished_objects))
+                        remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
                         if len(remaining_objects) > 0:
                             remaining_objects_statment = ", ".join(remaining_objects)
                             display_rem_item_text = "As you have already solved {0}, you are left with {1}. What are you gonna do now ?".format(finished_objects_statment,remaining_objects_statment)
@@ -240,6 +235,31 @@ class RoomOneAnswerInteract(Action):
                     break
         dispatcher.utter_message(text="ROOM ONE Answer")
         return 
+
+
+class RoomTwoInteract(Action):
+    def name(self) -> Text:
+        return "action_room_two_interact"
+    
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print("action_room_two_interact")
+        dispatcher.utter_message(text="action_room_two_interact")
+
+class RoomTwoAnswerInteract(Action):
+    def name(self) -> Text:
+        return "action_room_two_answer_interact"
+    
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print("action_room_two_answer_interact")
+        dispatcher.utter_message(text="action_room_two_answer_interact")
+
+
+
+
 
 ####################Forms###########################
 
@@ -304,6 +324,26 @@ class ValidateKeyForm(FormValidationAction):
             dispatcher.utter_message(text=numberlock(status))
             dispatcher.utter_message(text="\n")
             dispatcher.utter_message(text="Good the door opens for you  \U00002705")
+            global level
+            level = level+1
             return {"key":FIRST_ROOM_KEY} 
             
         
+class ActionDefaultFallback(Action):
+    """Executes the fallback action and goes back to the previous state
+    of the dialogue"""
+
+    def name(self) -> Text:
+        return "action_default_fallback"
+
+    async def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        print("fallback")
+        dispatcher.utter_message(template="my_custom_fallback_template")
+
+        # Revert user message which led to fallback.
+        return [UserUtteranceReverted()]

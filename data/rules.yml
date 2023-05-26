@@ -18,11 +18,18 @@ rules:
 - rule: room_one
   condition:
   - slot_was_set:
-    - first_room_clues_done: None
+    - first_room_clues_done: false
   steps: 
   - intent: current_object
   - action: action_room_one_interact
 
+- rule: room_two
+  condition:
+  - slot_was_set:
+    - first_room_clues_done: true
+  steps: 
+  - intent: current_object
+  - action: action_room_two_interact
 
 - rule: intro
   steps: 
@@ -50,6 +57,16 @@ rules:
   - active_loop: name_form
   steps:
   - action: name_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_intro
+
+- rule: Submit form
+  condition:
+  - active_loop: key_form
+  steps:
+  - action: key_form
   - active_loop: null
   - slot_was_set:
     - requested_slot: null

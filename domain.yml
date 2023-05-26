@@ -1,52 +1,48 @@
-version: "3.1"
-
+version: '3.1'
 intents:
-  - help
-  - start
-  - intro
-  - name
-  - preface
-  - current_object
-  - number_answer
-  - ask_for_clue
-  - interest_in_game
-
+- ask_for_clue
+- current_object
+- help
+- interest_in_game
+- intro
+- name
+- number_answer
+- preface
+- riddle_answer
+- start
 responses:
   utter_help:
-  - text: "You can search, move, use, break, shake and rotate objects. Write what you want to do."
-
+  - text: You can search, move, use, break, shake and rotate objects. Write what you want to do.
   utter_ask_name:
   - text: What is your name?
-
   utter_greet:
-  - text: "Welcome to Escape Room Challenge!. To Start the challenge please enter your name."
-
+  - text: Welcome to Escape Room Challenge!. To Start the challenge please enter your name.
   utter_start:
-  - text: "Welcome to Escape Room Challenge!. To Start the challenge please enter your name."
-
+  - text: Welcome to Escape Room Challenge!. To Start the challenge please enter your name.
   utter_preface:
-  - text: "Welcome to my mansion, my dear guests. I'm sorry to inform you that you have been invited for a very special party. I have been lonely for a long time, ever since I died in this mansion many years ago. I have been looking for some company, but no one ever comes to visit me. That's why I had to resort to more...creative methods. That's where you come in. You have one hour to find the exit of my mansion, or else you will join me as my permanent guests. Don't worry, it will be fun...for me. Good luck!"
-
+  - text: Welcome to my mansion, my dear guests. I'm sorry to inform you that you have been invited for a very special party. I have been lonely for a long time, ever since I died in this mansion many years ago. I have been looking for some company, but no one ever comes to visit me. That's why I had to resort to more...creative methods. That's where you come in. You have one hour to find the exit of my mansion, or else you will join me as my permanent guests. Don't worry, it will be fun...for me. Good luck!
   utter_ask_key:
-  - text: "Enter your key to open the door"
+  - text: Enter your key to open the door
 entities:
+- current_object
+- number_answer
+- name
 - interest_in_game
+- answer
 - object
 - PERSON
-- name
-- current_object
-
 actions:
-- action_ask_name
 - action_intro
-- action_room_one_interact
 - action_room_one_answer_interact
+- action_room_two_interact
+- action_room_one_interact
+- action_game_interest
+- action_room_two_answer_interact
+- action_ask_name
 - action_give_clue
 - validate_name_form
 - validate_key_form
-- action_game_interest
 - action_get_door_key
-
 slots:
   data:
     type: rasa.shared.core.slots.AnySlot
@@ -56,7 +52,7 @@ slots:
   first_room_clues_done:
     influence_conversation: true
     type: bool
-    initial_value: null
+    initial_value: false
     mappings:
     - type: custom
   key:
@@ -64,50 +60,46 @@ slots:
     influence_conversation: true
     initial_value: null
     mappings:
-      - type: from_text
-        conditions:
-         - active_loop: key_form
-           requested_slot: key
+    - type: from_text
+      conditions:
+      - active_loop: key_form
+        requested_slot: key
   name:
     type: text
     influence_conversation: true
     mappings:
-      - type: from_text
-        conditions:
-         - active_loop: name_form
-           requested_slot: name
-
+    - type: from_text
+      conditions:
+      - active_loop: name_form
+        requested_slot: name
   interest_in_game:
     type: rasa.shared.core.slots.AnySlot
     initial_value: null
     mappings:
     - type: from_entity
       entity: interest_in_game
-  
   current_object:
     type: rasa.shared.core.slots.AnySlot
     initial_value: null
     mappings:
     - type: custom
-
   number_answer:
     type: rasa.shared.core.slots.AnySlot
     initial_value: null
     mappings:
     - type: custom
-
   finished_objects:
     type: rasa.shared.core.slots.AnySlot
     initial_value: []
     mappings:
     - type: custom
-
 forms:
   name_form:
     required_slots:
-      - name
+    - name
   key_form:
     required_slots:
-      - key
-
-
+    - key
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

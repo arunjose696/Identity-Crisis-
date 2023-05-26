@@ -18,13 +18,60 @@ stories:
   steps:
   - intent: current_object
   - slot_was_set:
-    - first_room_clues_done: None
+    - first_room_clues_done: false
   - action: action_room_one_interact
   - intent: number_answer
   - slot_was_set:
-    - first_room_clues_done: None
+    - first_room_clues_done: false
   - action: action_room_one_answer_interact
   - intent: ask_for_clue
   - slot_was_set:
-    - first_room_clues_done: None
+    - first_room_clues_done: false
   - action: action_give_clue
+
+- story: second_room
+  steps:
+  # - intent: preface
+  - intent: current_object
+  - slot_was_set:
+    - first_room_clues_done: true
+  - action: action_room_two_interact
+  - intent: riddle_answer
+  - slot_was_set:
+    - first_room_clues_done: True
+  - action: action_room_one_answer_interact
+
+
+- story: interactive_story_1
+  steps:
+  - slot_was_set:
+    - first_room_clues_done: true
+  - action: key_form
+  - active_loop: key_form
+  - slot_was_set:
+    - requested_slot: key
+  - intent: number_answer
+    entities:
+    - CARDINAL: '459'
+    - number_answer: '459'
+  - slot_was_set:
+    - key: '459'
+  - action: key_form
+  - slot_was_set:
+    - key: '459'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_intro
+  - intent: interest_in_game
+    entities:
+    - interest_in_game: yes
+  - slot_was_set:
+    - interest_in_game: yes
+  - action: action_game_interest
+  - intent: current_object
+  - action: action_room_two_interact
+  - intent: riddle_answer
+    entities:
+    - answer: Dead sea
+  - action: action_room_two_answer_interact
