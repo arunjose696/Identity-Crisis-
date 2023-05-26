@@ -41,17 +41,63 @@ nlu:
     -My name is [PERSON](PERSON)
     -[PERSON](name)
 
+- regex: number_answer
+  examples: |
+    - \d{1}
+
 - intent: number_answer
   examples: |
+    - [0](number_answer)
+    - [1](number_answer)
+    - [2](number_answer)
+    - [3](number_answer)
     - [4](number_answer)
-    - [7](number_answer)
     - [5](number_answer)
-    - The answer is [5](number_answer)
-    - The answer is [4](number_answer)
-    - The answer is [7](number_answer)
-    - Number is [5](number_answer)
-    - Number is [4](number_answer)
-    - Number is [7](number_answer)
+    - [6](number_answer)
+    - [7](number_answer)
+    - [8](number_answer)
+    - [9](number_answer)
+    - [Zero](number_answer)
+    - [zero](number_answer)
+    - [One](number_answer)
+    - [one](number_answer)
+    - [Two](number_answer)
+    - [two](number_answer)
+    - [Three](number_answer)
+    - [three](number_answer)
+    - [Four](number_answer)
+    - [four](number_answer)
+    - [Five](number_answer)
+    - [five](number_answer)
+    - [Six](number_answer)
+    - [six](number_answer)
+    - [Seven](number_answer)
+    - [seven](number_answer)
+    - [Eight](number_answer)
+    - [eight](number_answer)
+    - [Nine](number_answer)
+    - [nine](number_answer)
+    - The answer is [zero](number_answer)
+    - The answer is [one](number_answer)
+    - The answer is [two](number_answer)
+    - The answer is [three](number_answer)
+    - The answer is [four](number_answer)
+    - The answer is [five](number_answer)
+    - The answer is [six](number_answer)
+    - The answer is [seven](number_answer)
+    - The answer is [eight](number_answer)
+    - The answer is [nine](number_answer)
+    - Number is [zero](number_answer)
+    - Number is [one](number_answer)
+    - Number is [two](number_answer)
+    - Number is [three](number_answer)
+    - Number is [four](number_answer)
+    - Number is [five](number_answer)
+    - Number is [six](number_answer)
+    - Number is [seven](number_answer)
+    - Number is [eight](number_answer)
+    - Number is [nine](number_answer)
+
 
 - intent: current_object
   examples: |
@@ -74,6 +120,15 @@ nlu:
     - how does this work?
     - help
     - what should I type?
+
+- regex: key
+  examples: |
+    - \d{3}
+
+- intent: enter_room_answer
+  examples: |
+    - [459](key)
+    - The key is [456](key)
 
 - intent: ask_for_clue
   examples: |

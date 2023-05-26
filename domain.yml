@@ -27,6 +27,8 @@ responses:
   utter_preface:
   - text: "Welcome to my mansion, my dear guests. I'm sorry to inform you that you have been invited for a very special party. I have been lonely for a long time, ever since I died in this mansion many years ago. I have been looking for some company, but no one ever comes to visit me. That's why I had to resort to more...creative methods. That's where you come in. You have one hour to find the exit of my mansion, or else you will join me as my permanent guests. Don't worry, it will be fun...for me. Good luck!"
 
+  utter_ask_key:
+  - text: "Enter your key to open the door"
 entities:
 - interest_in_game
 - object
@@ -41,7 +43,9 @@ actions:
 - action_room_one_answer_interact
 - action_give_clue
 - validate_name_form
+- validate_key_form
 - action_game_interest
+- action_get_door_key
 
 slots:
   data:
@@ -49,8 +53,21 @@ slots:
     initial_value: null
     mappings:
     - type: custom
-
-  
+  first_room_clues_done:
+    influence_conversation: true
+    type: bool
+    initial_value: null
+    mappings:
+    - type: custom
+  key:
+    type: text
+    influence_conversation: true
+    initial_value: null
+    mappings:
+      - type: from_text
+        conditions:
+         - active_loop: key_form
+           requested_slot: key
   name:
     type: text
     influence_conversation: true
@@ -89,5 +106,8 @@ forms:
   name_form:
     required_slots:
       - name
+  key_form:
+    required_slots:
+      - key
 
 

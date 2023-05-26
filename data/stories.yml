@@ -6,15 +6,25 @@ stories:
   steps:
   # - intent: preface
   - intent: current_object
+  - slot_was_set:
+    - first_room_clues_done: None
   - action: action_room_one_interact
   - intent: number_answer
+  - slot_was_set:
+    - first_room_clues_done: None
   - action: action_room_one_answer_interact
 
 - story: with_clue
   steps:
   - intent: current_object
+  - slot_was_set:
+    - first_room_clues_done: None
   - action: action_room_one_interact
   - intent: number_answer
+  - slot_was_set:
+    - first_room_clues_done: None
   - action: action_room_one_answer_interact
   - intent: ask_for_clue
+  - slot_was_set:
+    - first_room_clues_done: None
   - action: action_give_clue

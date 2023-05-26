@@ -20,14 +20,15 @@ from typing import Text, List, Any, Dict
 from rasa_sdk import Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
+from word2number import w2n
+import re
 
-
-
+FIRST_ROOM_KEY="459"
 all_objects = {'diary':{'item':'diary','type':'final','question':"You open the diary and find this written on the first page  -Until I am measured I am not known, Yet how you miss me when I have flown. The Number you seek is the letters I contain",'answer':"4",'clue':"I wait for none",'completed':False},
                'watch':{'item':'watch','type':'final','question':"If you turn it around you find a text saying, I love New York’s Times Square, that is the second digit of the door lock.",'answer':"9",'completed':False, 'clue':"Think mathematically" },
                'rock':{'item':'rock','type':'final','question':"You can see letter V inscribed on it.",'answer':"5",'completed':False, 'clue':"Capital of Italy" },
-               'vase': {'type':'collection',"action" : "When you try to pick the vase it turns to dust and now you find a crumbled paper fall from it", 'collection':[{'item':'paper','type':'mechanical','requiredSlot':"lens",'answer':"4",'clue':"The letters seem to be very small not possible to read them with naked eye, try looking ",'completed':"It reads"}]
-                   }}
+              # 'vase': {'type':'collection',"action" : "When you try to pick the vase it turns to dust and now you find a crumbled paper fall from it", 'collection':[{'item':'paper','type':'mechanical','requiredSlot':"lens",'answer':"4",'clue':"The letters seem to be very small not possible to read them with naked eye, try looking ",'completed':"It reads"}] }
+              }
 props ={'lens':{'description':'something about the glass', 'pick':"now things look enlarged", "slot":"lens"}}
 collections_list = ['paper']
 bag = {}
@@ -44,6 +45,19 @@ def create_box(text):
     for line in lines:
         padding = ' ' * (max_line_length - len(line))
         box += '│  ' + line + padding + '  │\n'
+    box += '└' + horizontal_line + '┘\n'
+    return box
+
+def numberlock(text):
+    lines = text.split('\n')
+    max_line_length = max(len(line) for line in lines)
+    box_width = max_line_length + 11
+    box_height = len(lines) + 2
+    horizontal_line = '─' * box_width
+    box = '┌' + horizontal_line + '┐\n'
+    for line in lines:
+        padding = ' ' * (max_line_length - len(line))
+        box += '│    ' + line + padding + '    │\n'
     box += '└' + horizontal_line + '┘\n'
     return box
 class GameInterest(Action):
@@ -71,7 +85,6 @@ class IntroAction(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        print("7")
         name = tracker.get_slot('name')
         message = "Hello {0}, you have entered my haunted mansion, now you have to find a way to leave or else you will become my ghost friend forever.".format(name) +\
         "\nI am a smart spirit, you know, if you have to escape this mansion you have to crack the door’s secret code. "+\
@@ -131,13 +144,14 @@ class RoomOneInteract(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]: 
         print (tracker.latest_message)
+        print(tracker.get_slot("first_room_clues_done"))
         print("RoomOneInteract")
         print(tracker.latest_message)
         for entity in tracker.latest_message["entities"]:
             if entity["entity"] == "current_object":
                 current_object = entity["value"]
-                print("HERE")
-                print(current_object)
+                current_object.lower()
+                current_object = current_object.lower()
                 if current_object.lower() in collections_list:
                     finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
                     finished_objects.append(current_object)
@@ -145,6 +159,12 @@ class RoomOneInteract(Action):
                     dispatcher.utter_message(text=look_around(all_objects, finished_objects=finished_objects))
                     return [SlotSet("finished_objects", list(set(finished_objects)))]
                 else:
+                    if current_object not in all_objects:
+                        dispatcher.utter_message(text="You dont have a {} in the room".format(current_object))                       
+                        dispatcher.utter_message(text=look_around(all_objects))
+                        print("-------------")
+                        return 
+                        
                     object_data = all_objects[current_object]
                     print(object_data)
                     if object_data['type'] == "final":
@@ -156,14 +176,13 @@ class RoomOneInteract(Action):
                             all_objects[item["item"]] = item
                         finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
                         finished_objects.append(current_object)
-                        print("LLLLLLL")
-                        print(finished_objects)
                         dispatcher.utter_message(text=object_data['action'])
                         dispatcher.utter_message(text=look_around(all_objects, finished_objects=finished_objects))
                         
                         return [SlotSet("finished_objects", list(set(finished_objects)))]
                         
                     return [SlotSet("current_object", current_object)]  
+        dispatcher.utter_message(text=look_around(all_objects))
 
 def look_around(all_objects=all_objects, finished_objects=[]):
     remaining_objects = list((set(all_objects.keys())) - set(finished_objects))
@@ -199,9 +218,10 @@ class RoomOneAnswerInteract(Action):
             current_object_details = all_objects[current_object]
             answer = current_object_details['answer']
             
+            
             for entity in tracker.latest_message["entities"]:
                 if entity["entity"] == "number_answer":
-                    user_answer = entity["value"]
+                    user_answer = str(w2n.word_to_num(entity["value"]))
                     if user_answer == answer:
                         finished_objects.append(current_object)
                         finished_objects_statment = ", ".join(finished_objects)
@@ -213,6 +233,7 @@ class RoomOneAnswerInteract(Action):
                             return [SlotSet("finished_objects", list(set(finished_objects)))]
                         else:
                             dispatcher.utter_message(text="Now you have found all the important number of my life. Arrange it an order of birth to death to escape this room")
+                            return [SlotSet("first_room_clues_done", True),FollowupAction("key_form")]
                         # return [ConversationPaused()]
                     else:
                         dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(helps_remaining))
@@ -241,3 +262,48 @@ class ValidateNameForm(FormValidationAction):
                 return {"name":name}       
         
         return {"name":None}
+    
+class ValidateKeyForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_key_form"
+
+    def validate_key(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate `key` value."""
+        print("validate action")
+        numbers=re.findall(r"\d+", slot_value)
+        
+        if not numbers or len(numbers[0]) !=3:
+            dispatcher.utter_message(text="The door lock only accepts one number which should be 3 digits")
+            return {"key":None}
+        user_entry=numbers[0]
+        status=""
+        mistakes = 0
+        for i in range(3):
+            if user_entry[i] == FIRST_ROOM_KEY[i]:
+                status+="\U00002705 "
+            else:
+                status+= "\U0000274C "
+                mistakes += 1
+        print("validate action")
+        #todo add validations to handle different type of numbers
+        if mistakes>0:
+            print("inside if")
+            dispatcher.utter_message(text="Looks like the key is wrong, the number lock shows\n")
+            dispatcher.utter_message(text=numberlock(status))
+            dispatcher.utter_message(text="\n")
+            
+            return {"key":None}
+        else:
+            dispatcher.utter_message(text="The number lock clicks")
+            dispatcher.utter_message(text=numberlock(status))
+            dispatcher.utter_message(text="\n")
+            dispatcher.utter_message(text="Good the door opens for you  \U00002705")
+            return {"key":FIRST_ROOM_KEY} 
+            
+        

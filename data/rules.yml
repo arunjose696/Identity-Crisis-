@@ -16,6 +16,9 @@ rules:
   - action: action_give_clue
 
 - rule: room_one
+  condition:
+  - slot_was_set:
+    - first_room_clues_done: None
   steps: 
   - intent: current_object
   - action: action_room_one_interact
@@ -27,11 +30,17 @@ rules:
   - action: action_intro
 
 - rule: checkAnswer
+  condition:
+  - slot_was_set:
+    - first_room_clues_done: None
   steps: 
   - intent: number_answer
   - action: action_room_one_answer_interact
 
 - rule: give_clue
+  condition:
+  - slot_was_set:
+    - first_room_clues_done: None
   steps: 
   - intent: ask_for_clue
   - action: action_give_clue
@@ -53,3 +62,4 @@ rules:
     - name: null 
   - action: name_form
   - active_loop: name_form
+
