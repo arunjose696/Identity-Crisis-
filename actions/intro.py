@@ -17,7 +17,7 @@ Where I am actually living after my death. Do you want to explore the room??
 
 room_setting= [
     """
-Here is bag for you, which will come handy later. There is a clock on the wall with time 3:00 with USA flag as background , you can have a look at my old diary, an antique vase, goggles with yellow shades and an ancient roman rock. Which one do you want to pick up first
+Here is bag for you, which will come handy later. There is a clock on the wall with time 3:00 with USA flag as background , you can have a look at my old diary, an antique vase, and an ancient roman rock. Which one do you want to pick up first
     """,
     """
 There are many scary things in this dark room,
@@ -39,6 +39,10 @@ all_objects = [{'diary':{'item':'diary','type':'final','question':"You open the 
               # 
               },
                {
-                   'vase': {'type':'collection',"action" : "When you try to pick the vase it turns to dust and now you find a crumbled paper fall from it", 'collection':[{'item':'paper','type':'mechanical','requiredSlot':"lens",'answer':"4",'clue':"The letters seem to be very small not possible to read them with naked eye, try looking ",'completed':"It reads"}] }                  
+                   'vase': {'type':'collection','item':'vase', 'required_prop':None,"action" : "When you try to pick the vase it turns to dust and now you find a crumbled paper fall from it", 'collection':[{'item':'paper','type':'mechanical','required_prop':"lens",'answer':"4",'clue':"The letters seem to be very small not possible to read them with naked eye, \ntry looking for something to make text appear bigger ",'completed':"It reads"}] } ,
+                   'cabinet':{'type':'collection','item':'cabinet','required_prop':'torch', 'clue':"The doors of the cabinet open with squeky sound \n It is too dark inside, find something to light things up", "action": "With the light  you see a cloth,\n A cloth drenced in blood ",
+                               'collection':[{'item':'cloth','type':'mechanical', "clue":"Hehe i only wiped the blood spilled on the floor, you can use some other prop to make the cloth clean and read the text written on it",'required_prop':"water",'answer':"blood",'question':"From the head down to toes, through every living being I flow. Some people might faint when they see me though! What am I",'completed':"It reads"}]},
+                    'lens':{'type':'prop', 'item':'lens','required_prop':None,'description':'something about the glass', 'use':"now things look enlarged"},
+                    'torch':{"type":'prop', 'item':'torch','required_prop':None,'desciption':'sesc about torch','use':'Torch turns on with a yellow beam','inoperable':"The {} is not so dark, the beam does not have much effect"}
               }
                ]

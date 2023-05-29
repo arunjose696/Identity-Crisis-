@@ -120,12 +120,55 @@ nlu:
     -Keep [paper](current_object)
     -Put [paper](current_object)
     -Place [paper](current_object)
+    -Open the [cupboard](current_object)
+    -Use the [torch](current_object)
+    -Shine the [torch](current_object)
+    -Pick up the [torch](current_object)
+    -Take the [torch](current_object)
+    -Look in the [cupboard](current_object)
+    -[cupboard](current_object)
+    -Explore [cupboard](current_object)
+    -Show me the [lens](current_object)
+    -Look at the [lens](current_object)
+    -Use the [lens](current_object)
+    -Look through the [lens]
+    -Take out the [lens](current_object)
+    - Inspect the surface using the [lens](current_object)
+    - Examine [cloth](current_object)
+    - Look at the [cloth](current_object)
+    - pick up the [cloth](current_object)
+
+- intent: look_around_room
+  examples: |
+    - Look around the room
+    - Take a look around
+    - Can you see what's in the room?
+    - Explore the surroundings
+    - What's in the room?
+    - Survey the room
+    - Have a glance around
+    - Check out the surroundings
+    - Take a quick look around
+    - Look around and tell me what you see
+    - Examine the room
+    - Look at the surroundings
+    - Inspect the area
+    - Observe the room
+    - Have a quick peek around
+    - Look around and describe the room
+
 
 - intent: help
   examples: |
     - how does this work?
     - help
     - what should I type?
+
+- intent: test
+  examples: |
+    - asdfghjkl
+    - zxcvbnm
+    - qwertyuiop
 
 - regex: key
   examples: |

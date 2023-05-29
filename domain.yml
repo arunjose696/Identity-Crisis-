@@ -10,6 +10,8 @@ intents:
 - preface
 - riddle_answer
 - start
+- test
+- look_around_room
 responses:
   utter_help:
   - text: You can search, move, use, break, shake and rotate objects. Write what you want to do.
@@ -43,6 +45,8 @@ actions:
 - validate_name_form
 - validate_key_form
 - action_get_door_key
+- test_action
+- look_around
 slots:
   data:
     type: rasa.shared.core.slots.AnySlot
@@ -83,6 +87,12 @@ slots:
     initial_value: null
     mappings:
     - type: custom
+  current_prop:
+    type: rasa.shared.core.slots.AnySlot
+    initial_value: null
+    mappings:
+    - type: custom
+
   number_answer:
     type: rasa.shared.core.slots.AnySlot
     initial_value: null

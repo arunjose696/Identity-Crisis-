@@ -35,6 +35,16 @@ rules:
   steps: 
   - intent: intro
   - action: action_intro
+- rule: test stat
+  steps:
+  - intent: test
+  - action: test_action
+
+- rule: look around
+  steps:
+  - intent: look_around_room
+  - action: look_around
+
 
 - rule: checkAnswer
   condition:
