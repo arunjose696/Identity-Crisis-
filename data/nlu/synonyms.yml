@@ -44,6 +44,7 @@ nlu:
     - wardrobes
     - lockers
     - pantries
+    - cabinet
 - synonym: cell
   examples: |
     - cells

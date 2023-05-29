@@ -245,7 +245,6 @@ class RoomTwoInteract(Action):
                 if object not in all_objects[level] and object not in bag:
                     dispatcher.utter_message(text="You dont have a {} in the room".format(object))                       
                     dispatcher.utter_message(text=look_around(all_objects[level]))
-                    print("-------------")
                     return 
                 if object in  all_objects[level]:
                     object_data = all_objects[level][object]
@@ -270,7 +269,8 @@ class RoomTwoInteract(Action):
                             dispatcher.utter_message(text=object_data['use'])
                             object_data=all_objects[level][current_object]
                             events.append(SlotSet("current_prop", None))
-                            all_objects[level].pop(object)        
+                            if object in all_objects[level]:
+                                all_objects[level].pop(object)        
                         else:
                             dispatcher.utter_message(text=object_data["inoperable"].format(current_object))
                             
@@ -340,7 +340,11 @@ class RoomTwoAnswerInteract(Action):
         print("current_prop {}".format(tracker.get_slot('current_prop')))
         print("current_prop {}".format(bag))
         print("all_objects {}".format(all_objects))
+        global level
+        level=1
+        
         dispatcher.utter_message(text="test_action")
+        return  [SlotSet("first_room_clues_done", True)]
 
 
 
