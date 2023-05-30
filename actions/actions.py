@@ -158,7 +158,10 @@ class RoomOneInteract(Action):
                     return [SlotSet("finished_objects", list(set(finished_objects)))]
                 else:
                     if current_object not in all_objects[level]:
-                        dispatcher.utter_message(text="You dont have a {} in the room".format(current_object))                       
+                        if current_object in finished_objects:
+                            dispatcher.utter_message(text="You had already cracked the puzzle I had in  {}".format(current_object))                       
+                        else:  
+                            dispatcher.utter_message(text="You dont have a {} in the room".format(current_object))                       
                         dispatcher.utter_message(text=look_around(all_objects[level]))
                         print("-------------")
                         return 
@@ -236,6 +239,7 @@ class RoomTwoInteract(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print("action_room_two_interact")
         print(tracker.latest_message["entities"])
+        global all_objects
         events=[]
         finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
         for entity in tracker.latest_message["entities"]:
@@ -257,10 +261,10 @@ class RoomTwoInteract(Action):
                     if object_data['required_prop'] ==  tracker.get_slot("current_prop"):
                         pass
                     elif object_data['required_prop'] not in bag:
-                        dispatcher.utter_message(text=object_data['clue'])
+                        dispatcher.utter_message(text=object_data['pretext'])
                         return [SlotSet("current_object", object)]
                     else :
-                        dispatcher.utter_message(text=object_data['clue'])
+                        dispatcher.utter_message(text=object_data['pretext'])
                         dispatcher.utter_message(text="something in your bag would help")
                         return [SlotSet("current_object", object)]
             
@@ -271,6 +275,7 @@ class RoomTwoInteract(Action):
                             dispatcher.utter_message(text=object_data['use'])
                             object_data=all_objects[level][current_object]
                             events.append(SlotSet("current_prop", None))
+                            bag[object] = object_data
                             if object in all_objects[level]:
                                 all_objects[level].pop(object)        
                         else:
@@ -352,7 +357,7 @@ class RoomTwoAnswerInteract(Action):
         level=1
         
         dispatcher.utter_message(text="test_action")
-        return  [SlotSet("first_room_clues_done", True)]
+        return  [SlotSet("first_room_clues_done", True),SlotSet("current_object", None), SlotSet("current_prop", None) ]
 
 
 
@@ -374,7 +379,12 @@ class ValidateNameForm(FormValidationAction):
         for entity in tracker.latest_message["entities"]:
             if entity["entity"] == "PERSON" or entity["entity"]=="name":
                 name = entity["value"] 
-                return {"name":name}       
+                return {"name":name} 
+        if len(tracker.latest_message["text"])>2:
+            text = tracker.latest_message["text"]
+            name =''.join(e for e in text if e.isalnum())
+            return {"name":name}
+                      
         
         return {"name":None}
 
@@ -391,7 +401,7 @@ class ValidateAnswerForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         """Validate `key` value."""
         print("validate action")
-        print(tracker)
+        print(tracker.latest_message)
         form_exit_intents = ["current_object","look_around_room"]
         user_answer= nlp(tracker.latest_message["text"])
         
@@ -400,6 +410,7 @@ class ValidateAnswerForm(FormValidationAction):
         current_object_details = all_objects[level][current_object]
         correct_answer = nlp(current_object_details['answer'])
         similarity = correct_answer.similarity(user_answer)
+        
         if similarity>0.7:
             dispatcher.utter_message(text="You got it right")
             finished_objects.append(current_object)
@@ -409,16 +420,26 @@ class ValidateAnswerForm(FormValidationAction):
                 remaining_objects_statment = ", ".join(remaining_objects)
                 display_rem_item_text = "As you have already solved {0}, you are left with {1}. What are you gonna do now ?".format(finished_objects_statment,remaining_objects_statment)
                 dispatcher.utter_message(text=display_rem_item_text)
-                return {"answer":None}
+                return {"answer":current_object_details['answer']} 
             else:
                 dispatcher.utter_message(text="You have solved all clues")
-                return {"answer":None}
+                return {"answer":current_object_details['answer']} 
         else:
-            dispatcher.utter_message(text="Not exactly") 
-            dispatcher.utter_message(text=current_object_details['clue']) 
-        return {"answer":current_object_details['answer']} 
+            dispatcher.utter_message(text="Not exactly what I have in mind try again")
+        return {"answer":None} 
              
-            
+        
+class ActionAskCarVersion(Action):
+    def name(self):
+        return "action_ask_answer"
+
+    def run(self, dispatcher, tracker, domain):
+        print( "action_ask_answer")
+        
+        current_object = tracker.get_slot('current_object')
+        dispatcher.utter_message(text="The {} awaits an answer".format(current_object))
+
+        return []           
          
         
         

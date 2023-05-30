@@ -10,10 +10,6 @@ rules:
   - intent: interest_in_game
   - action: action_game_interest
 
-- rule: help
-  steps:
-  - intent: help
-  - action: action_give_clue
 
 - rule: room_one
   condition:
@@ -30,6 +26,7 @@ rules:
   steps: 
   - intent: current_object
   - action: action_room_two_interact
+  wait_for_user_input: false
 
 - rule: intro
   steps: 
@@ -61,6 +58,7 @@ rules:
   steps: 
   - intent: ask_for_clue
   - action: action_give_clue
+  wait_for_user_input: false
 
 - rule: Submit form
   condition:
@@ -99,4 +97,28 @@ rules:
     - name: null 
   - action: name_form
   - active_loop: name_form
+
+- rule: answer form ask clue
+  condition:
+  # Condition that form is active.
+  - active_loop: answer_form
+  - slot_was_set:
+    - first_room_clues_done: true
+  steps:
+  # This unhappy path handles the case of an intent `chitchat`.
+  - intent: ask_for_clue
+  - action: action_give_clue
+  # Return to form after handling the `chitchat` intent
+  - action: answer_form
+  - active_loop: answer_form
+
+- rule: answer form ask clue
+  condition:
+  # Condition that form is active.
+  - active_loop: answer_form
+  - slot_was_set:
+    - first_room_clues_done: true
+  steps:
+  - intent: current_object
+  - action: action_room_two_interact
 

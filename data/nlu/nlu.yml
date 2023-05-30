@@ -132,11 +132,11 @@ nlu:
     -Look in the [cupboard](current_object)
     -[cupboard](current_object)
     -Explore [cupboard](current_object)
-    -Show me the [lens](current_object)
-    -Look at the [lens](current_object)
-    -Use the [lens](current_object)
-    -Look through the [lens]
-    -Take out the [lens](current_object)
+    -Show me the [magnifying_lens](current_object)
+    -Look at the [magnifying_lens](current_object)
+    -Use the [magnifying_lens](current_object)
+    -Look through the [magnifying_lens]
+    -Take out the [magnifying_lens](current_object)
     - Inspect the surface using the [lens](current_object)
     - Examine [cloth](current_object)
     - Look at the [cloth](current_object)
@@ -145,6 +145,11 @@ nlu:
     - Use [water](current_object)
     - Pour [water](current_object)
     - Clean with [water](current_object)
+    - [mannequin](current_object)
+    - Inspect the surface using the [mannequin](current_object)
+    - Examine [mannequin](current_object)
+    - Look at the [mannequin](current_object)
+    - pick up the [mannequin](current_object)
 
 - intent: look_around_room
   examples: |
@@ -166,11 +171,7 @@ nlu:
     - Look around and describe the room
 
 
-- intent: help
-  examples: |
-    - how does this work?
-    - help
-    - what should I type?
+
 
 - intent: test
   examples: |
@@ -195,3 +196,6 @@ nlu:
     - Help me out with a clue.
     - I'm stuck. Can you assist me with a clue?
     - Any suggestions on how to proceed?
+    - how does this work?
+    - help
+    - what should I type?

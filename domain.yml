@@ -5,13 +5,13 @@ intents:
 - help
 - interest_in_game
 - intro
+- look_around_room
 - name
 - number_answer
 - preface
 - riddle_answer
 - start
 - test
-- look_around_room
 responses:
   utter_help:
   - text: You can search, move, use, break, shake and rotate objects. Write what you want to do.
@@ -34,20 +34,21 @@ entities:
 - object
 - PERSON
 actions:
+- action_give_clue
+- test_action
+- action_room_two_interact
+- look_around
 - action_intro
 - action_room_one_answer_interact
-- action_room_two_interact
 - action_room_one_interact
 - action_game_interest
 - action_room_two_answer_interact
 - action_ask_name
-- action_give_clue
 - validate_name_form
 - validate_answer_form
 - validate_key_form
 - action_get_door_key
-- test_action
-- look_around
+- action_ask_answer
 slots:
   data:
     type: rasa.shared.core.slots.AnySlot
@@ -102,7 +103,6 @@ slots:
     initial_value: null
     mappings:
     - type: custom
-
   number_answer:
     type: rasa.shared.core.slots.AnySlot
     initial_value: null
@@ -121,8 +121,12 @@ forms:
     required_slots:
     - key
   answer_form:
+    ignored_intents: 
+    - ask_for_clue
+    - current_object
+    - 
     required_slots:
-    - answer 
+    - answer
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

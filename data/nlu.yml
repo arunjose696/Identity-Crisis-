@@ -15,6 +15,11 @@ nlu:
     - [Watch]{"entity": "current_object", "value": "watch"}
     - [Diary]{"entity": "current_object", "value": "diary"}
     - Pick up cat
+    - [cabinet]{"entity": "current_object", "value": "Cabinet"}
+    - [Torch]{"entity": "current_object", "value": "torch"}
+    - [Cupboard]{"entity": "current_object", "value": "cabinet"}
+    - [Cloth]{"entity": "current_object", "value": "cloth"}
+    - [Water]{"entity": "current_object", "value": "water"}
 - intent: number_answer
   examples: |
     - [5](number_answer)
@@ -24,3 +29,24 @@ nlu:
 - intent: riddle_answer
   examples: |
     - [Dead sea](answer)
+- intent: test
+  examples: |
+    - Asdfghjkl
+- intent: look_around_room
+  examples: |
+    - Look around
+- intent: ask_for_clue
+  examples: |
+    - Clue
+- synonym: yes
+  examples: |
+    - Yes
+- synonym: rock
+  examples: |
+    - Rock
+- synonym: watch
+  examples: |
+    - Watch
+- synonym: diary
+  examples: |
+    - Diary

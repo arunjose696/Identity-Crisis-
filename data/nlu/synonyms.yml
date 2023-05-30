@@ -45,7 +45,14 @@ nlu:
     - lockers
     - pantries
     - cabinet
-    
+
+- synonym: magnifying_lens
+  examples: |
+    - magnifying lens
+    - lens
+    - magnifier
+    - Reading lens 
+  
 - synonym: cell
   examples: |
     - cells
