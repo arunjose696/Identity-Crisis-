@@ -72,6 +72,16 @@ rules:
     - requested_slot: null
   - action: action_intro
 
+- rule: Submit answer form
+  condition:
+  - active_loop: answer_form
+  steps:
+  - action: answer_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: look_around
+
 - rule: Submit form
   condition:
   - active_loop: key_form

@@ -101,9 +101,13 @@ nlu:
 
 - intent: riddle_answer
   examples: |
-    - [0](number_answer)
-    - [1](number_answer)
-    - [2](number_answer)
+    - The answer is [Dead Sea](riddle_answer)
+    - Is it [Dead Sea](riddle_answer)
+    - [Dead Sea](riddle_answer)
+    - [Blood](riddle_answer)
+    - The answer is [Blood](riddle_answer)
+    - Is it [Blood](riddle_answer)
+    - [Blood](riddle_answer)
 
 - intent: current_object
   examples: |
@@ -137,6 +141,10 @@ nlu:
     - Examine [cloth](current_object)
     - Look at the [cloth](current_object)
     - pick up the [cloth](current_object)
+    - [water](current_object)
+    - Use [water](current_object)
+    - Pour [water](current_object)
+    - Clean with [water](current_object)
 
 - intent: look_around_room
   examples: |

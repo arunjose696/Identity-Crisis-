@@ -24,7 +24,9 @@ from word2number import w2n
 import re
 from .intro import intro_messages,room_setting,all_objects,no_option_message
 from .utils import look_around
-from rasa_sdk.events import UserUtteranceReverted
+from rasa_sdk.events import UserUtteranceReverted, ActionExecuted
+import spacy
+nlp = spacy.load("en_core_web_md")
 
 FIRST_ROOM_KEY="459"
 
@@ -286,8 +288,10 @@ class RoomTwoInteract(Action):
                         return events
 
                 if object_data['type'] == "final":
-                    dispatcher.utter_message(text=object_data['question']) 
-                    events.append(SlotSet("current_object", current_object))       
+                    dispatcher.utter_message(text=object_data['question'])
+                    print("-----------") 
+                    events.append(SlotSet("current_object", current_object)) 
+                    events.append(FollowupAction("answer_form")   )   
                 elif object_data['type'] == "mechanical":
                     dispatcher.utter_message(text=object_data['completed'])
                     finished_objects.append(current_object)
@@ -305,6 +309,7 @@ class RoomTwoInteract(Action):
                    
                 return events
         dispatcher.utter_message(text="pick up something in the room")
+        return events
 
 
 
@@ -340,6 +345,9 @@ class RoomTwoAnswerInteract(Action):
         print("current_prop {}".format(tracker.get_slot('current_prop')))
         print("current_prop {}".format(bag))
         print("all_objects {}".format(all_objects))
+        print("=================================================")
+        print(tracker.latest_message)
+        print("=================================================")
         global level
         level=1
         
@@ -369,6 +377,52 @@ class ValidateNameForm(FormValidationAction):
                 return {"name":name}       
         
         return {"name":None}
+
+class ValidateAnswerForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_answer_form"
+
+    def validate_answer(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate `key` value."""
+        print("validate action")
+        print(tracker)
+        form_exit_intents = ["current_object","look_around_room"]
+        user_answer= nlp(tracker.latest_message["text"])
+        
+        current_object = tracker.get_slot('current_object')
+        finished_objects = tracker.get_slot('finished_objects')
+        current_object_details = all_objects[level][current_object]
+        correct_answer = nlp(current_object_details['answer'])
+        similarity = correct_answer.similarity(user_answer)
+        if similarity>0.7:
+            dispatcher.utter_message(text="You got it right")
+            finished_objects.append(current_object)
+            finished_objects_statment = ", ".join(finished_objects)
+            remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
+            if len(remaining_objects) > 0:
+                remaining_objects_statment = ", ".join(remaining_objects)
+                display_rem_item_text = "As you have already solved {0}, you are left with {1}. What are you gonna do now ?".format(finished_objects_statment,remaining_objects_statment)
+                dispatcher.utter_message(text=display_rem_item_text)
+                return {"answer":None}
+            else:
+                dispatcher.utter_message(text="You have solved all clues")
+                return {"answer":None}
+        else:
+            dispatcher.utter_message(text="Not exactly") 
+            dispatcher.utter_message(text=current_object_details['clue']) 
+        return {"answer":current_object_details['answer']} 
+             
+            
+         
+        
+        
+
     
 class ValidateKeyForm(FormValidationAction):
     def name(self) -> Text:
@@ -415,6 +469,8 @@ class ValidateKeyForm(FormValidationAction):
             level = level+1
             finished_objects =[]
             return {"key":FIRST_ROOM_KEY} 
+
+
             
         
 class ActionDefaultFallback(Action):

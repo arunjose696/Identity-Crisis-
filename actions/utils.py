@@ -8,9 +8,9 @@ def look_around(all_objects=[], finished_objects=[]):
         display_rem_item_text=""
         look_around_setting = "\n\nWhen you glance around the room, "
         if finished_objects:
-            solved_item = "\nYou have already solved {0}!!".format(finished_objects_statment)
+            solved_item = "\nYou have already solved clues from {0}!!".format(finished_objects_statment)
         if remaining_objects_statment:
-            display_rem_item_text = "Now you  see a {0}. What are you gonna do now ?".format(remaining_objects_statment)
+            display_rem_item_text = "you notice you still have to explore a {0}. What are you gonna do now ?".format(remaining_objects_statment)
         return look_around_setting+display_rem_item_text#+solved_item
     else:
         return "You dont have anything more in the room to solve"
