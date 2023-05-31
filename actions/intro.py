@@ -1,14 +1,14 @@
 intro_messages=[
     
     """ 
-you have entered my haunted mansion, you have to find a way to leave or else you will become my ghost friend forever.
-If you have to escape this mansion you have to crack the door’s secret code of numbers.
-I will show some kindness and guide you through my super dark mansion.\n Try your best.
-Are you ready to explore my deadly mansion??.""",
+you have entered my haunted mansion, you have to find a way to leave or else you will become my GHOST FRIEND FOREVER.
+If you have to escape this mansion you have to crack the door’s secret code of NUMBERS.
+I will show some kindness and guide you through.\nTry your best.
+Are you ready to explore??.""",
     """
 Well that was easy I guess, 
-Now you have entered my favorite room, after my death i started living here.
-I promise this is the last test I'll put you through, escape this room and you’ll be free to go.
+Now you have entered my favorite room, after my death I started living here.\n
+Try to escape this room.
 
 Do you want to explore the room?    
     """
@@ -17,17 +17,13 @@ Do you want to explore the room?
 
 room_setting= [
     """
-There is a clock on the wall, an old diary and an ancient ROMAN rock. Which one do you want to pick? 
+There is a clock on the wall\U0001F552, an old diary\U0001F4D6 , and an ancient ROMAN rock\U0001FAA8 . Which object do you want to pick to get the NUMBER Code?\nIf you are stuck you can ask for help.
 
     """,
     """
 In this room there are many SCARY OBJECTS  and some PROPS to explore those objects. \n
-a spooky little girl mannequine \U0001F9DB, a creepy looking cupboard \U0001F5C4, some hidden skeletons \U0001F480, chinese vase \U0001F3FA, \n yellow shaded goggles \U0001F97D, shovel \U00013B49, torch light \U0001F526, \n
-and a small bowl filled with water.
-
-
-Also there are lot of skeletons burried in this room. If you could dig them up, there might be a clue for you.
-
+a spooky little girl mannequine\U0001F9DB, a creepy looking cupboard\U0001F5C4, some hidden skeletons\U0001F480, chinese vase\U0001F3FA, 
+\n yellow shaded goggles\U0001F97D, shovel \U000026CF, torch light\U0001F526, and a small bowl filled with water\U0001F963.
     """
     
 ]
@@ -39,7 +35,7 @@ no_option_message=[
 
 all_objects = [{'diary':{'item':'diary','type':'final','question':"Text on the diary reads \nUntil I am measured I am not known, Yet how you miss me when I have flown. The Number you seek is the letters I contain",'answer':"4",'clue':"Clock measures it.",'completed':False},
                'watch':{'item':'watch','type':'final','question':"The time is 3'o clock, it's a watch from The USA, \n and I love New York’s \"TIME'S SQUARE\", the number you want lies in time's square",'answer':"9",'completed':False, 'clue':"Square the Time" },
-               'rock':{'item':'rock','type':'final','question':"You can see letter 'V' inscribed on it. Which number it can be?",'answer':"5",'completed':False, 'clue':"I am a Roman numberal indicating a number" },
+               'rock':{'item':'rock','type':'final','question':"You can see letter \U00002164 inscribed on it. Which number it can be?",'answer':"5",'completed':False, 'clue':"I am a Roman numberal indicating a number" },
               },
                {
                    'mannequin':{'item':'mannequin', 'required_prop':None,'type':'final','question':"I only turned her into a mannequin, so be careful!!! A t-shirt on her says, \n“I am present, but also past. I am wrapped, but not a gift. I am named after a parent, but have no children”",'answer':"mummy",'clue':"Egypt",'completed':False},

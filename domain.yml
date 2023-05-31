@@ -24,7 +24,7 @@ responses:
   utter_preface:
   - text: Welcome to my mansion, my dear guests. I'm sorry to inform you that you have been invited for a very special party. I have been lonely for a long time, ever since I died in this mansion many years ago. I have been looking for some company, but no one ever comes to visit me. That's why I had to resort to more...creative methods. That's where you come in. You have one hour to find the exit of my mansion, or else you will join me as my permanent guests. Don't worry, it will be fun...for me. Good luck!
   utter_ask_key:
-  - text: Enter your key to open the door
+  - text: Enter your key to open the door.
 entities:
 - current_object
 - number_answer

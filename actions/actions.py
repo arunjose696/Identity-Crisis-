@@ -230,7 +230,7 @@ class RoomOneAnswerInteract(Action):
                         remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
                         if len(remaining_objects) > 0:
                             remaining_objects_statment = ", ".join(remaining_objects)
-                            display_rem_item_text = "As you have already solved {0}, you are left with {1}. What are you gonna do now ?".format(finished_objects_statment,remaining_objects_statment)
+                            display_rem_item_text = "As you have already solved {0}, you are left with {1}. Pick the next object?".format(finished_objects_statment,remaining_objects_statment)
                             dispatcher.utter_message(text=display_rem_item_text)
                             return [SlotSet("finished_objects", list(set(finished_objects))), SlotSet("current_object", None)]
                         else:
