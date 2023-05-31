@@ -201,7 +201,10 @@ class RoomOneAnswerInteract(Action):
         if current_object is None:
             dispatcher.utter_message(text="Pick up something first")
             return
-            
+        print(current_object)
+        print(all_objects)
+        print(level)
+        print(all_objects[level])
         if current_object in all_objects[level]:
             current_object_details = all_objects[level][current_object]
             answer = current_object_details['answer']
@@ -220,7 +223,7 @@ class RoomOneAnswerInteract(Action):
                             dispatcher.utter_message(text=display_rem_item_text)
                             return [SlotSet("finished_objects", list(set(finished_objects))), SlotSet("current_object", None)]
                         else:
-                            dispatcher.utter_message(text="Now you have found all the important number of my life. Arrange it an order of birth to death to escape this room")
+                            dispatcher.utter_message(text=" Great, looks like you have all the numbers for the secret code!  I love arranging everything in “order”, same can go with the digits you got. \nArrange it an order of birth to death to escape this room")
                             return [SlotSet("first_room_clues_done", True),FollowupAction("key_form"), SlotSet("current_object", None)]
                         # return [ConversationPaused()]
                     else:
@@ -419,10 +422,10 @@ class ValidateAnswerForm(FormValidationAction):
                 remaining_objects_statment = ", ".join(remaining_objects)
                 display_rem_item_text = "As you have already solved {0}, you are left with {1}. What are you gonna do now ?".format(finished_objects_statment,remaining_objects_statment)
                 dispatcher.utter_message(text=display_rem_item_text)
-                return {"answer":current_object_details['answer']} 
+                return {"answer":current_object_details['answer'],"finished_objects":finished_objects} 
             else:
                 dispatcher.utter_message(text="You have solved all clues")
-                return {"answer":current_object_details['answer']} 
+                return {"answer":current_object_details['answer'],"finished_objects":finished_objects} 
         else:
             dispatcher.utter_message(text="Not exactly what I have in mind try again")
         return {"answer":None} 

@@ -32,6 +32,19 @@ nlu:
 - synonym: watch
   examples: |
     - clock
+
+- synonym: goggles
+  examples: |
+    - goggle
+    - coolers
+    - shades 
+    - glass
+
+- synonym: skeleton
+  examples: |
+    - body
+    - bones
+  
     
 - synonym: cabinet
   examples: |

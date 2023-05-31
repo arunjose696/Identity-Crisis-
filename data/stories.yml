@@ -110,71 +110,71 @@ stories:
 #   - intent: look_around_room
 #   - action: look_around
 
-- story: interactive_story_2
-  steps:
-  - intent: test
-    entities:
-    - LANGUAGE: Asdfghjkl
-  - action: test_action
-  - slot_was_set:
-    - first_room_clues_done: true
-  - slot_was_set:
-    - current_object: null
-  - slot_was_set:
-    - current_prop: null
-  - intent: current_object
-    entities:
-    - ORG: cabinet
-    - current_object: cabinet
-  - action: action_room_two_interact
-  - slot_was_set:
-    - current_object: cabinet
-  - intent: current_object
-    entities:
-    - ORG: torch
-    - current_object: torch
-  - action: action_room_two_interact
-  - slot_was_set:
-    - finished_objects:
-      - cabinet
-  - intent: current_object
-    entities:
-    - current_object: cloth
-  - action: action_room_two_interact
-  - slot_was_set:
-    - current_object: cloth
-  - intent: current_object
-    entities:
-    - current_object: cloth
-  - action: action_room_two_interact
-  - slot_was_set:
-    - current_object: cloth
-  - intent: current_object
-    entities:
-    - current_object: water
-  - action: action_room_two_interact
-  - slot_was_set:
-    - current_prop: null
-  - slot_was_set:
-    - current_object: cloth
-  - action: answer_form
-  - active_loop: answer_form
-  - slot_was_set:
-    - requested_slot: answer
-  - intent: ask_for_clue
-  - action: action_give_clue
-  - action: answer_form
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: look_around
-  - intent: current_object
-    entities:
-    - current_object: cloth
-  - action: action_room_two_interact
-  - slot_was_set:
-    - current_object: cloth
-  - intent: current_object
-    entities:
-    - current_object: water
-  - action: action_room_two_interact
+# - story: interactive_story_2
+#   steps:
+#   - intent: test
+#     entities:
+#     - LANGUAGE: Asdfghjkl
+#   - action: test_action
+#   - slot_was_set:
+#     - first_room_clues_done: true
+#   - slot_was_set:
+#     - current_object: null
+#   - slot_was_set:
+#     - current_prop: null
+#   - intent: current_object
+#     entities:
+#     - ORG: cabinet
+#     - current_object: cabinet
+#   - action: action_room_two_interact
+#   - slot_was_set:
+#     - current_object: cabinet
+#   - intent: current_object
+#     entities:
+#     - ORG: torch
+#     - current_object: torch
+#   - action: action_room_two_interact
+#   - slot_was_set:
+#     - finished_objects:
+#       - cabinet
+#   - intent: current_object
+#     entities:
+#     - current_object: cloth
+#   - action: action_room_two_interact
+#   - slot_was_set:
+#     - current_object: cloth
+#   - intent: current_object
+#     entities:
+#     - current_object: cloth
+#   - action: action_room_two_interact
+#   - slot_was_set:
+#     - current_object: cloth
+#   - intent: current_object
+#     entities:
+#     - current_object: water
+#   - action: action_room_two_interact
+#   - slot_was_set:
+#     - current_prop: null
+#   - slot_was_set:
+#     - current_object: cloth
+#   - action: answer_form
+#   - active_loop: answer_form
+#   - slot_was_set:
+#     - requested_slot: answer
+#   - intent: ask_for_clue
+#   - action: action_give_clue
+#   - action: answer_form
+#   - slot_was_set:
+#     - requested_slot: null
+#   - active_loop: null
+#   - action: look_around
+#   - intent: current_object
+#     entities:
+#     - current_object: cloth
+#   - action: action_room_two_interact
+#   - slot_was_set:
+#     - current_object: cloth
+#   - intent: current_object
+#     entities:
+#     - current_object: water
+#   - action: action_room_two_interact

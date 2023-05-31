@@ -150,6 +150,15 @@ nlu:
     - Examine [mannequin](current_object)
     - Look at the [mannequin](current_object)
     - pick up the [mannequin](current_object)
+    - put [goggles](current_object)
+    - wear [goggles](current_object)
+    - take [goggles](current_object)
+    - use [goggles](current_object)
+    - Explore with [goggles](current_object)
+    - Take [shovel](current_object)
+    - use [shovel](current_object)
+    - Take [skeleton](current_object)
+    - touch [skeleton](current_object)
 
 - intent: look_around_room
   examples: |
