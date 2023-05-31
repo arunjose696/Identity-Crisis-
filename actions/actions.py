@@ -149,9 +149,9 @@ class RoomOneInteract(Action):
             if entity["entity"] == "current_object":
                 current_object = entity["value"]
                 current_object.lower()
+                finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
                 current_object = current_object.lower()
-                if current_object.lower() in collections_list:
-                    finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
+                if current_object.lower() in collections_list:                    
                     finished_objects.append(current_object)
                     dispatcher.utter_message(text="You have kept Paper in the bag")
                     dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
@@ -275,9 +275,8 @@ class RoomTwoInteract(Action):
                             dispatcher.utter_message(text=object_data['use'])
                             object_data=all_objects[level][current_object]
                             events.append(SlotSet("current_prop", None))
-                            bag[object] = object_data
                             if object in all_objects[level]:
-                                all_objects[level].pop(object)        
+                                bag[object]= all_objects[level].pop(object)        
                         else:
                             dispatcher.utter_message(text=object_data["inoperable"].format(current_object))
                             
