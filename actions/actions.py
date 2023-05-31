@@ -140,7 +140,7 @@ class RoomOneGiveClue(Action):
             if helps_remaining == 0:
                  dispatcher.utter_message(text="You have no more clues left")  
             else:
-                dispatcher.utter_message(text="Be cautius you have just {} more clues!!!".format(helps_remaining))        
+                dispatcher.utter_message(text="Be cautious you have just {} more clues!!!".format(helps_remaining))        
         else:
             dispatcher.utter_message(text="You have exhausted your helps")
             
@@ -231,11 +231,11 @@ class RoomOneAnswerInteract(Action):
                         remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
                         if len(remaining_objects) > 0:
                             remaining_objects_statment = ", ".join(remaining_objects)
-                            display_rem_item_text = "As you have already solved {0}, you are left with {1}. Pick the next object?".format(finished_objects_statment,remaining_objects_statment)
+                            display_rem_item_text = "As you have already solved {0}, you are left with {1}. Pick the next object.".format(finished_objects_statment,remaining_objects_statment)
                             dispatcher.utter_message(text=display_rem_item_text)
                             return [SlotSet("finished_objects", list(set(finished_objects))), SlotSet("current_object", None)]
                         else:
-                            dispatcher.utter_message(text=" Great, looks like you have all the numbers for the secret code!  I love arranging everything in “order”, same can go with the digits you got. \nArrange it an order of birth to death to escape this room")
+                            dispatcher.utter_message(text=" Great, you got the digits. I love arranging everything in “order”, same can go with the digits. \nArrange it in the order of small to big.")
                             return [SlotSet("first_room_clues_done", True),FollowupAction("key_form"), SlotSet("current_object", None)]
                         # return [ConversationPaused()]
                     else:
@@ -437,7 +437,7 @@ class ValidateAnswerForm(FormValidationAction):
             remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
             if len(remaining_objects) > 0:
                 remaining_objects_statment = ", ".join(remaining_objects)
-                display_rem_item_text = "As you have already solved {0}, you are left with {1}. What are you gonna do now ?".format(finished_objects_statment,remaining_objects_statment)
+                display_rem_item_text = "As you have already solved {0}, you are left with {1}. Pickup the next object.".format(finished_objects_statment,remaining_objects_statment)
                 dispatcher.utter_message(text=display_rem_item_text)
                 return {"answer":current_object_details['answer'],"finished_objects":finished_objects} 
             else:
@@ -482,7 +482,7 @@ class ValidateKeyForm(FormValidationAction):
         numbers=re.findall(r"\d+", slot_value)
         
         if not numbers or len(numbers[0]) !=3:
-            dispatcher.utter_message(text="The door lock only accepts one number which should be 3 digits")
+            dispatcher.utter_message(text="The door lock only accepts one number which should be 3 digits.")
             return {"key":None}
         user_entry=numbers[0]
         status=""
@@ -497,16 +497,16 @@ class ValidateKeyForm(FormValidationAction):
         #todo add validations to handle different type of numbers
         if mistakes>0:
             print("inside if")
-            dispatcher.utter_message(text="Looks like the key is wrong, the number lock shows\n")
+            dispatcher.utter_message(text="Looks like the key is wrong, the number lock shows.\n")
             dispatcher.utter_message(text=numberlock(status))
             dispatcher.utter_message(text="\n")
             
             return {"key":None}
         else:
-            dispatcher.utter_message(text="The number lock clicks")
+            dispatcher.utter_message(text="The number lock clicks.")
             dispatcher.utter_message(text=numberlock(status))
             dispatcher.utter_message(text="\n")
-            dispatcher.utter_message(text="Good the door opens for you  \U00002705")
+            dispatcher.utter_message(text="Good the door opens for you \U00002705")
             global level, finished_objects
             # level = level+1
             # finished_objects =[]
