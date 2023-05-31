@@ -207,6 +207,7 @@ class RoomOneAnswerInteract(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print("RoomOneAnswerInteract") 
+        
         current_object = tracker.get_slot('current_object')
         finished_objects = tracker.get_slot('finished_objects')
         if current_object is None:
@@ -253,7 +254,7 @@ class RoomTwoInteract(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print("action_room_two_interact")
         print(tracker.latest_message["entities"])
-        global all_objects
+        global all_objects,level
         events=[]
         finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
         for entity in tracker.latest_message["entities"]:
@@ -324,7 +325,11 @@ class RoomTwoInteract(Action):
                     #dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
                     events.append(SlotSet("finished_objects", list(set(finished_objects))))
                     return [SlotSet("finished_objects", list(set(finished_objects)))]
-                   
+                remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
+                if len(remaining_objects)==0:
+                    level=level+1
+                    dispatcher.utter_message(text="room setting of third room")
+                    events.append(SlotSet("finished_objects", []))
                 return events
         dispatcher.utter_message(text="pick up something in the room")
         return events
@@ -415,6 +420,7 @@ class ValidateAnswerForm(FormValidationAction):
         """Validate `key` value."""
         print("validate action")
         print(tracker.latest_message)
+        global level
         form_exit_intents = ["current_object","look_around_room"]
         user_answer= nlp(tracker.latest_message["text"])
         
@@ -435,8 +441,10 @@ class ValidateAnswerForm(FormValidationAction):
                 dispatcher.utter_message(text=display_rem_item_text)
                 return {"answer":current_object_details['answer'],"finished_objects":finished_objects} 
             else:
-                dispatcher.utter_message(text="You have solved all clues")
-                return {"answer":current_object_details['answer'],"finished_objects":finished_objects} 
+                dispatcher.utter_message(text="You have solved all clues in this room")
+                level = level+1
+                dispatcher.utter_message(text="room setting of third room")
+                return {"answer":current_object_details['answer'],"finished_objects":[]} 
         else:
             dispatcher.utter_message(text="Not exactly what I have in mind try again")
         return {"answer":None} 
