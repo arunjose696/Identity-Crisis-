@@ -37,6 +37,12 @@ diary = []
 helps_remaining = 5
 level = 0
 
+def increase_level():
+    global level
+    level+=1 
+    return [SlotSet("finished_objects", [])]
+    
+
 def create_box(text):
     lines = text.split('\n')
     max_line_length = max(len(line) for line in lines)
@@ -122,6 +128,11 @@ class RoomOneGiveClue(Action):
         if helps_remaining>0:
             current_object = tracker.get_slot('current_object')
             current_object_details = all_objects[level][current_object]
+            if "clue" not in current_object_details: 
+                if "use" in current_object_details:
+                    dispatcher.utter_message(text = "If you try to use, {}".format(current_object_details["use"]))
+                dispatcher.utter_message(text = "There are no clues I can give you for the {}".format(current_object))  
+                return
             clue = current_object_details['clue']
             dispatcher.utter_message(text = "The screen gets tuned on and you see")
             dispatcher.utter_message(text=create_box(clue))     
@@ -310,7 +321,7 @@ class RoomTwoInteract(Action):
                         all_objects[level][item["item"]] = item                    
                     finished_objects.append(current_object)
                     dispatcher.utter_message(text=object_data['action'])
-                    dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
+                    #dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
                     events.append(SlotSet("finished_objects", list(set(finished_objects))))
                     return [SlotSet("finished_objects", list(set(finished_objects)))]
                    
@@ -489,8 +500,9 @@ class ValidateKeyForm(FormValidationAction):
             dispatcher.utter_message(text="\n")
             dispatcher.utter_message(text="Good the door opens for you  \U00002705")
             global level, finished_objects
-            level = level+1
-            finished_objects =[]
+            # level = level+1
+            # finished_objects =[]
+            increase_level()
             return {"key":FIRST_ROOM_KEY} 
 
 
