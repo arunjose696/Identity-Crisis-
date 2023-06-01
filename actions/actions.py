@@ -95,7 +95,7 @@ class IntroAction(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print("action_intro")
         name = tracker.get_slot('name')
-        message = "Hello {0}".format(name)+intro_messages[level]
+        message = "Hello {0} !!!".format(name)+intro_messages[level]
         dispatcher.utter_message(text=message)
         return []
 class AskName(Action):
