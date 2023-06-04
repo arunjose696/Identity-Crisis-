@@ -49,6 +49,7 @@ actions:
 - validate_key_form
 - action_get_door_key
 - action_ask_answer
+- action_reset_answer
 slots:
   data:
     type: rasa.shared.core.slots.AnySlot

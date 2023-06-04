@@ -310,7 +310,7 @@ class RoomTwoInteract(Action):
                     dispatcher.utter_message(text=object_data['question'])
                     print("-----------") 
                     events.append(SlotSet("current_object", current_object)) 
-                    events.append(FollowupAction("answer_form")   )   
+                    events.append(FollowupAction("answer_form")   )
                 elif object_data['type'] == "mechanical":
                     dispatcher.utter_message(text=object_data['completed'])
                     finished_objects.append(current_object)
@@ -462,7 +462,14 @@ class ActionAskCarVersion(Action):
 
         return []           
          
-        
+class ActionResetAnswerSlot(Action):
+    def name(self) -> Text:
+        return "action_reset_answer"
+    
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        return [SlotSet("answer", None)]     
         
 
     

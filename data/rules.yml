@@ -78,7 +78,7 @@ rules:
   - active_loop: null
   - slot_was_set:
     - requested_slot: null
-  # - action: look_around
+  - action: action_reset_answer
 
 - rule: Submit form
   condition:
