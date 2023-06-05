@@ -1,0 +1,11 @@
+{
+    "escape_room_name": "Trap for dummies ",
+    "chatbot_name": "Ghost",
+    "messagebox_caption": "Type your answer here",
+    "send_button_caption": "Send",
+    "user_name": "You",
+    "id": "lokal",
+    "background-image": "trapfordummies.jpg",
+    "api_url": "http://localhost:5005",
+    "welcome-message": "Hi"
+}
