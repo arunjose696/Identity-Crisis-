@@ -534,12 +534,3 @@ class ActionDefaultFallback(Action):
 
         # Revert user message which led to fallback.
         return [UserUtteranceReverted()]
-    
-class ActionResetAnswerSlot(Action):
-    def name(self) -> Text:
-        return "action_reset_answer"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        return [SlotSet("answer", None)]  
