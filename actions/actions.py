@@ -26,7 +26,9 @@ from .intro import intro_messages,room_setting,all_objects,no_option_message
 from .utils import look_around
 from rasa_sdk.events import UserUtteranceReverted, ActionExecuted
 import spacy
+from random import shuffle
 nlp = spacy.load("en_core_web_md")
+
 
 FIRST_ROOM_KEY="459"
 
@@ -37,37 +39,20 @@ diary = []
 helps_remaining = 5
 level = 0
 
-def increase_level():
-    global level
-    level+=1 
-    return [SlotSet("finished_objects", [])]
+def get_jumbled_name(name):
+    word = list(name)
+    shuffle(word)
+    word = " ".join(word)
+    return word
     
 
 def create_box(text):
-    lines = text.split('\n')
-    max_line_length = max(len(line) for line in lines)
-    box_width = max_line_length + 4
-    box_height = len(lines) + 2
-    horizontal_line = '─' * box_width
-    box = '┌' + horizontal_line + '┐\n'
-    for line in lines:
-        padding = ' ' * (max_line_length - len(line))
-        box += '│  ' + line + padding + '  │\n'
-    box += '└' + horizontal_line + '┘\n'
-    return box
+    
+    return text
 
 def numberlock(text):
-    lines = text.split('\n')
-    max_line_length = max(len(line) for line in lines)
-    box_width = max_line_length + 11
-    box_height = len(lines) + 2
-    horizontal_line = '─' * box_width
-    box = '┌' + horizontal_line + '┐\n'
-    for line in lines:
-        padding = ' ' * (max_line_length - len(line))
-        box += '│    ' + line + padding + '    │\n'
-    box += '└' + horizontal_line + '┘\n'
-    return box
+    
+    return text
 class GameInterest(Action):
     def name(self) -> Text:
         return "action_game_interest"
@@ -105,7 +90,7 @@ class AskName(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:     
-        dispatcher.utter_message(text="Welcome to Escape Room Challenge!. To Start the challenge please enter your name.")
+        dispatcher.utter_message(text="Welcome to Trap for Dummies!. To Start the challenge please enter your name.")
     
         return
 
@@ -241,9 +226,7 @@ class RoomOneAnswerInteract(Action):
                     else:
                         dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(helps_remaining))
                     break
-        dispatcher.utter_message(text="ROOM ONE Answer")
         return 
-
 
 class RoomTwoInteract(Action):
     def name(self) -> Text:
@@ -307,7 +290,12 @@ class RoomTwoInteract(Action):
                         return events
 
                 if object_data['type'] == "final":
-                    dispatcher.utter_message(text=object_data['question'])
+                    if object_data['item'] == 'paper':
+                        name = tracker.get_slot('name')
+                        jumbled_name = get_jumbled_name(name)
+                        dispatcher.utter_message(text=object_data['question'].format(jumbled_name))
+                    else:
+                        dispatcher.utter_message(text=object_data['question'])
                     print("-----------") 
                     events.append(SlotSet("current_object", current_object)) 
                     events.append(FollowupAction("answer_form")   )
@@ -328,7 +316,7 @@ class RoomTwoInteract(Action):
                 remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
                 if len(remaining_objects)==0:
                     level=level+1
-                    dispatcher.utter_message(text="room setting of third room")
+                    dispatcher.utter_message(text="You see door infront of you. When you to try to approach the door A big vase appears infront of you. Let's see how you get past it")
                     events.append(SlotSet("finished_objects", []))
                 return events
         dispatcher.utter_message(text="pick up something in the room")
@@ -427,27 +415,33 @@ class ValidateAnswerForm(FormValidationAction):
         current_object = tracker.get_slot('current_object')
         finished_objects = tracker.get_slot('finished_objects')
         current_object_details = all_objects[level][current_object]
-        correct_answer = nlp(current_object_details['answer'])
-        similarity = correct_answer.similarity(user_answer)
-        
-        if similarity>0.7:
-            dispatcher.utter_message(text="You got it right")
-            finished_objects.append(current_object)
-            finished_objects_statment = ", ".join(finished_objects)
-            remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
-            if len(remaining_objects) > 0:
-                remaining_objects_statment = ", ".join(remaining_objects)
-                display_rem_item_text = "As you have already solved {0}, you are left with {1}. Pickup the next object.".format(finished_objects_statment,remaining_objects_statment)
-                dispatcher.utter_message(text=display_rem_item_text)
-                return {"answer":current_object_details['answer'],"finished_objects":finished_objects} 
-            else:
-                dispatcher.utter_message(text="You have solved all clues in this room")
-                level = level+1
-                dispatcher.utter_message(text="room setting of third room")
-                return {"answer":current_object_details['answer'],"finished_objects":[]} 
+        if level == 2 and current_object == 'paper':
+            correct_answer = tracker.get_slot('name')
+            if correct_answer == user_answer:
+                dispatcher.utter_message(text="Yes, you were the survivor afterall and now that you revealed the name yourself there is no way you can escape.I always intended for you to stay here with me, let's live together forever HAHAHAHAHAHA")
+                return [ConversationPaused()]
         else:
-            dispatcher.utter_message(text="Not exactly what I have in mind try again")
-        return {"answer":None} 
+            correct_answer = nlp(current_object_details['answer'])
+            similarity = correct_answer.similarity(user_answer)
+        
+            if similarity>0.7:
+                dispatcher.utter_message(text="You got it right")
+                finished_objects.append(current_object)
+                finished_objects_statment = ", ".join(finished_objects)
+                remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
+                if len(remaining_objects) > 0:
+                    remaining_objects_statment = ", ".join(remaining_objects)
+                    display_rem_item_text = "As you have already solved {0}, you are left with {1}. Pickup the next object.".format(finished_objects_statment,remaining_objects_statment)
+                    dispatcher.utter_message(text=display_rem_item_text)
+                    return {"answer":current_object_details['answer'],"finished_objects":finished_objects} 
+                else:
+                    dispatcher.utter_message(text="You have solved all clues in this room")
+                    level = level+1
+                    dispatcher.utter_message(text="You see door infront of you. When you to try to approach the door A big vase appears infront of you. Let's see how you get past it")
+                    return {"answer":current_object_details['answer'],"finished_objects":[]} 
+            else:
+                dispatcher.utter_message(text="Not exactly what I have in mind try again")
+            return {"answer":None} 
              
         
 class ActionAskCarVersion(Action):
@@ -515,9 +509,8 @@ class ValidateKeyForm(FormValidationAction):
             dispatcher.utter_message(text="\n")
             dispatcher.utter_message(text="Good the door opens for you \U00002705")
             global level, finished_objects
-            # level = level+1
-            # finished_objects =[]
-            increase_level()
+            level = level+1
+            finished_objects =[]
             return {"key":FIRST_ROOM_KEY} 
 
 
@@ -541,3 +534,12 @@ class ActionDefaultFallback(Action):
 
         # Revert user message which led to fallback.
         return [UserUtteranceReverted()]
+    
+class ActionResetAnswerSlot(Action):
+    def name(self) -> Text:
+        return "action_reset_answer"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        return [SlotSet("answer", None)]  
