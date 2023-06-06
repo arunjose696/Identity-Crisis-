@@ -27,6 +27,8 @@ from .utils import look_around
 from rasa_sdk.events import UserUtteranceReverted, ActionExecuted
 import spacy
 from random import shuffle
+import nltk
+nltk.download('popular')
 nlp = spacy.load("en_core_web_md")
 
 
