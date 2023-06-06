@@ -4,7 +4,7 @@
     "messagebox_caption": "Type your answer here",
     "send_button_caption": "Send",
     "user_name": "You",
-    "id": "lokal",
+    "id": "trap-for-dummies",
     "background-image": "trapfordummies.jpg",
     "api_url": "http://localhost:5005",
     "welcome-message": "Hi"
