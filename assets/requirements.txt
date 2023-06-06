@@ -1,7 +1,7 @@
 truecase==0.0.14
 rasa==3.4.2
 spacy==3.5.3
-pydantic==1.10.8 --no-deps
+pydantic
 word2number==1.1
 websockets==10.0
 en-core-web-md@https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.5.0/en_core_web_md-3.5.0-py3-none-any.whl
