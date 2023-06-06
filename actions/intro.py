@@ -19,7 +19,7 @@ There is a wall clock \U0001F552, an old diary \U0001F4D6 , and an ancient ROMAN
 
     """,
     """
-If you look around the room you can find some props like magnifying lens \U0001F50D, shovel \U000026CF, torch light \U0001F526, and a small bowl filled with water \U0001F963 and 
+If you look around the room you can find some props like shovel \U000026CF, torch light \U0001F526, and a small bowl filled with water \U0001F963 and 
 many SCARY OBJECTS like a spooky little girl mannequine \U0001F9DB, a creepy looking cupboard \U0001F5C4, some hidden skeletons \U0001F480, yellow shaded goggles \U0001F97D ,and chinese vase\U0001F3FA, 
 . You have to use the PROPS to explore the OBJECTS. Pick up one object?
     """
