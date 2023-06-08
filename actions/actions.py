@@ -224,7 +224,8 @@ class RoomOneAnswerInteract(Action):
                             return [SlotSet("first_room_clues_done", True),FollowupAction("key_form"), SlotSet("current_object", None)]
                         # return [ConversationPaused()]
                     else:
-                        dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(5))
+                        help_remaining = tracker.get_slot("helps_remaining")
+                        dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(help_remaining))
                     break
         return 
 
@@ -477,7 +478,8 @@ class ValidateAnswerForm(FormValidationAction):
                     dispatcher.utter_message(text="You see door infront of you. When you to try to approach the door A big vase appears infront of you. Let's see how you get past it")
                     return {"answer":current_object_details['answer'],"finished_objects":[],"level":level} 
             else:
-                dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(5))
+                help_remaining = tracker.get_slot("helps_remaining")
+                dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(help_remaining))
             return {"answer":None} 
              
         
