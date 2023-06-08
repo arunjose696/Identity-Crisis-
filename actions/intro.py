@@ -22,12 +22,16 @@ There is a wall clock \U0001F552, an old diary \U0001F4D6 , and an ancient ROMAN
 If you look around the room you can find many SCARY OBJECTS like a spooky little girl mannequin \U0001F9DB, a creepy looking cupboard \U0001F5C4, some hidden skeletons \U0001F480, yellow shaded goggles \U0001F97D ,and chinese vase\U0001F3FA,
 and some props like shovel \U000026CF, torch light \U0001F526, and a small bowl filled with water \U0001F963 . 
 You have to use the PROPS to explore some OBJECTS. Pick any Scary Object?
+    """,
+    """
+Almost at the last state.
     """
     
 ]
 no_option_message=[
     "You don't have an option, My room my rules \n",
-    "It is funny you still think you have an option.\n"
+    "It is funny you still think you have an option.\n",
+    "in last few mins"
 ]
 
 

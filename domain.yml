@@ -56,7 +56,7 @@ slots:
     initial_value: 0
     mappings:
     - type: custom
-  finished_objects:
+  bag:
     type: rasa.shared.core.slots.AnySlot
     initial_value: {}
     mappings:

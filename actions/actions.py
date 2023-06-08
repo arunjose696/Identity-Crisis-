@@ -37,7 +37,7 @@ FIRST_ROOM_KEY="459"
 
 collections_list = []
 diary = []
-level = 0
+
 
 def get_jumbled_name(name):
     word = list(name)
@@ -278,7 +278,10 @@ class RoomTwoInteract(Action):
                             events.append(SlotSet("current_prop", None))
                             if object in all_objects[level]:
                                 bag[object]= all_objects[level].pop(object) 
-                                events.append(SlotSet("bag", bag))       
+                                events.append(SlotSet("bag", bag)) 
+                                events.append(SlotSet("all_objects", all_objects)) 
+                                 
+                                     
                         else:
                             dispatcher.utter_message(text=object_data["inoperable"].format(current_object))
                             
@@ -288,6 +291,7 @@ class RoomTwoInteract(Action):
                         events.append(SlotSet("bag", bag))   
                         dispatcher.utter_message(text="You have kept the {} in your bag it may come in handy later".format(object))
                         events.append(SlotSet("current_prop", object))
+                        events.append(SlotSet("all_objects", all_objects)) 
                         return events
                     else:
                         dispatcher.utter_message(text=object_data["inoperable"].format("room"))
@@ -318,7 +322,7 @@ class RoomTwoInteract(Action):
                     dispatcher.utter_message(text=object_data['action'])
                     #dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
                     events.append(SlotSet("finished_objects", list(set(finished_objects))))
-                    return [SlotSet("finished_objects", list(set(finished_objects)))]
+                    return events
                 remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
                 if len(remaining_objects)==0:
                     level=level+1
@@ -348,6 +352,7 @@ class RoomTwoAnswerInteract(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         all_objects = tracker.get_slot('all_objects')
+        level = tracker.get_slot('level')
         finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
         dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
 
@@ -394,11 +399,11 @@ class ValidateNameForm(FormValidationAction):
         for entity in tracker.latest_message["entities"]:
             if entity["entity"] == "PERSON" or entity["entity"]=="name":
                 name = entity["value"] 
-                return {"name":name} 
+                return {"name":name,"all_objects":all_objects_global} 
         if len(tracker.latest_message["text"])>2:
             text = tracker.latest_message["text"]
             name =''.join(e for e in text if e.isalnum())
-            return {"name":name}
+            return {"name":name,"all_objects":all_objects_global}
                       
         
         return {"name":None,"key":None,"all_objects":all_objects_global}
@@ -424,11 +429,19 @@ class ValidateAnswerForm(FormValidationAction):
         current_object = tracker.get_slot('current_object')
         finished_objects = tracker.get_slot('finished_objects')
         current_object_details = all_objects[level][current_object]
+        print("level {} current_object{}".format(level,current_object))
         if level == 2 and current_object == 'paper':
+            print("user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
             correct_answer = tracker.get_slot('name')
-            if correct_answer == user_answer:
+            user_answer = str(user_answer)
+            if correct_answer.strip().lower() == user_answer.strip().lower():
+                print("inside if user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
                 dispatcher.utter_message(text="Yes, you were the survivor afterall and now that you revealed the name yourself there is no way you can escape.I always intended for you to stay here with me, let's live together forever HAHAHAHAHAHA")
-                return [ConversationPaused()]
+                return {"answer":user_answer} 
+            else:
+                print("inside else user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
+                dispatcher.utter_message(text="Try to solve the  jumbled letters")
+                return {"answer":None} 
         else:
             correct_answer = nlp(current_object_details['answer'])
             similarity = correct_answer.similarity(user_answer)
