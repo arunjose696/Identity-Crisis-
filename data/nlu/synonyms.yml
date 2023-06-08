@@ -2,6 +2,12 @@ nlu:
 - synonym: bed
   examples: |
     - beds
+    - bde
+    - bd
+    - bet
+    - bded
+    - beed
+    - bbed
 - synonym: board
   examples: |
     - loose board
@@ -11,6 +17,16 @@ nlu:
     - slat
     - board
     - loose boards
+    - borad
+    - bord
+    - boad
+    - baord
+    - boarrd
+    - sleep surface
+    - mattress
+    - cot
+    - bunk
+    - berth
 - synonym: book
   examples: |
     - novel
@@ -22,6 +38,12 @@ nlu:
     - literatures
     - texts
     - manuscripts
+    - bok
+    - boook
+    - bock
+    - boik
+    - buk
+    
 - synonym: bookshelf
   examples: |
     - bookcase
@@ -29,9 +51,25 @@ nlu:
     - bookshelves
     - bookcases
     - shelves
+    - bookself
+    - bookshlef
+    - bookshelfh
+    - booshelf
+    - bokshel
+
 - synonym: watch
   examples: |
     - clock
+    - timepiece
+    - wristwatch
+    - timekeeping device
+    - chronometer
+    - time recorder
+    - wach
+    - wtach
+    - watsh
+    - wacth
+    - watchh
 
 - synonym: goggles
   examples: |
@@ -39,12 +77,24 @@ nlu:
     - coolers
     - shades 
     - glass
+    - googles
+    - gogles
+    - goggels
+    - gogglse
+    - gogglles
+    - shades
+    - spectacle
 
 - synonym: skeleton
   examples: |
     - body
     - bones
-  
+    - skelton
+    - skeleon
+    - skeloton
+    - skleton
+    - skelleton
+    - skeletal system
     
 - synonym: cabinet
   examples: |
@@ -58,6 +108,11 @@ nlu:
     - lockers
     - pantries
     - cabinet
+    - cabnet
+    - cabnit
+    - cabient
+    - cabint
+    - cabnet
 
 - synonym: magnifying_lens
   examples: |
@@ -65,6 +120,12 @@ nlu:
     - lens
     - magnifier
     - Reading lens 
+    - hand lens
+    - optical lens
+    - magnfying lens
+    - magnifying lense
+    - magnifying len
+    - magnifing lens
   
 - synonym: cell
   examples: |
@@ -81,6 +142,11 @@ nlu:
     - stools
     - benches
     - sofas
+    - char
+    - chaire
+    - cheir
+    - chaor
+    - chait
 - synonym: clock hand
   examples: |
     - clock hands
@@ -88,6 +154,12 @@ nlu:
     - hour hand
     - minute hand
     - second hand
+    - clock hnd
+    - clock handd
+    - clok hand
+    - clck hand
+    - lock hand
+    - watch hand
 - synonym: code
   examples: |
     - passcode
@@ -126,6 +198,11 @@ nlu:
     - front doors
     - back doors
     - interior doors
+    - dor
+    - dooor
+    - dorr
+    - doer
+    - dore
 - synonym: drawer
   examples: |
     - compartment
@@ -137,9 +214,24 @@ nlu:
     - cubbyholes
     - trays
     - sleeves
+    - drawr
+    - dawer
+    - drwaer
+    - drawwer
+    - drower
 - synonym: drawing
   examples: |
     - drawings
+    - drawwing
+    - drwaing
+    - drawinng
+    - drowing
+    - drawign
+    - sketch
+    - illustration
+    - artwork
+    - design
+    - diagram
 - synonym: frame
   examples: |
     - picture frame
@@ -149,12 +241,21 @@ nlu:
     - poster frame
     - frame
     - picture frames
+    - frmae
+    - famre
+    - frane
+    - frme
+    - fram
 - synonym: key
   examples: |
     - passkey
     - skeleton key
     - keycard
     - keys
+    - Keeys
+    - keyy
+    - kye
+    - ke
     - passkeys
     - skeleton keys
     - keycards
@@ -169,11 +270,21 @@ nlu:
     - light fixtures
     - table lamps
     - floor lamps
+    - lmap
+    - lammp
+    - lomp
+    - lapm
+    - lam
 - synonym: mirror
   examples: |
     - looking glass
     - reflective surface
     - mirrors
+    - miror
+    - mirrir
+    - mirorr
+    - miror
+    - mirr
     - looking glasses
     - reflective surfaces
 - synonym: pen
@@ -183,6 +294,12 @@ nlu:
     - marker
     - pencil
     - stylus
+    - fountain pen
+    - pe
+    - peen
+    - peenn
+    - pn
+    - pn
 - synonym: phone
   examples: |
     - phone
@@ -190,6 +307,13 @@ nlu:
     - cell phone
     - smartphone
     - mobile device
+    - device
+    -  hanndy
+    - fone
+    - phne
+    - phon
+    - phoen
+    - pone
 - synonym: picture
   examples: |
     - painting
@@ -197,6 +321,11 @@ nlu:
     - artwork
     - portrait
     - pictures
+    - picure
+    - pictyur
+    - pictr
+    - pic
+    - piture
     - paintings
     - photographs
     - artworks
@@ -204,6 +333,14 @@ nlu:
 - synonym: poster
   examples: |
     - posters
+    - adverstisement
+    - placard
+    - sign
+    - postar
+    - poser
+    - postre
+    - poatre
+    - pposter
 - synonym: rug
   examples: |
     - carpet
@@ -211,6 +348,10 @@ nlu:
     - floor covering
     - area rug
     - rugs
+    - rugg
+    - ru
+    - ruug
+    - ru
     - carpets
     - mats
     - floor coverings
@@ -222,6 +363,11 @@ nlu:
     - vault
     - lockbox
     - safe-deposit box
+    - saffe
+    - sefe
+    - saaf
+    - save
+    - seaf
 - synonym: shoe
   examples: |
     - shoe
@@ -229,6 +375,12 @@ nlu:
     - boot
     - sneaker
     - slipper
+    - sandal
+    - shoo
+    - sheo
+    - showe
+    - shue
+    - sho
 - synonym: table
   examples: |
     - desk
@@ -240,6 +392,11 @@ nlu:
     - workbenches
     - countertops
     - surfaces
+    - tabel
+    - tablee
+    - tablbe
+    - tabe
+    - tble
 - synonym: toolbox
   examples: |
     - toolbox
@@ -247,15 +404,36 @@ nlu:
     - tool kit
     - tool set
     - tool case
+    - tool storage
+    - tool container
+    - toolboks
+    - toolbox
+    - toolboox
 - synonym: umbrella
   examples: |
     - umbrella
     - parasol
     - rain gear
     - sunshade
+    - umberlla
+    - umbralla
+    - umbrlla
+    - umbarala
+    - parasol
+    - brolly
+
 - synonym: wall
   examples: |
     - walls
+    - barrier
+    - partition
+    - divider
+    - panel
+    - wll
+    - wal
+    - waal
+    - walll
+
 - synonym: window
   examples: |
     - pane
@@ -267,6 +445,11 @@ nlu:
     - glasses
     - casements
     - sashes
+    - windo
+    - winodw
+    - winodw
+    - wondow
+    - windwo
 - synonym: window blinds
   examples: |
     - blinds
@@ -279,3 +462,17 @@ nlu:
     - window curtains
     - window drapes
     - window coverings
+    - window blind
+    - window blinnds
+    - window blidns
+    - window blind
+
+- synonym: mannequin
+  examples: |
+    - girl
+    - mannequine
+    - mannequine girl
+    - grl
+    - manequ girl
+    - spooky girl
+    
