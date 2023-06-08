@@ -31,7 +31,7 @@ no_option_message=[
 ]
 
 
-all_objects = [{'diary':{'item':'diary','type':'final','question':"Text on the diary reads \n\"Until I am measured I am not known, yet how you miss me when I have flown. The Number you seek is the letters I contain in my word?",'answer':"4",'clue':"Clock measures it.",'completed':False},
+all_objects_global = [{'diary':{'item':'diary','type':'final','question':"Text on the diary reads \n\"Until I am measured I am not known, yet how you miss me when I have flown. The Number you seek is the letters I contain in my word?",'answer':"4",'clue':"Clock measures it.",'completed':False},
                'watch':{'item':'watch','type':'final','question':"The watch from The USA shows 3'o clock, \n and I love New York’s \"TIME'S SQUARE\", the number you want lies in time's square?",'answer':"9",'completed':False, 'clue':"Square the Time." },
                'rock':{'item':'rock','type':'final','question':"You can see letter \U00002164 inscribed on it. Which number it can be?",'answer':"5",'completed':False, 'clue':"I am a Roman numeral indicating a number." },
               },

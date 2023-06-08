@@ -22,7 +22,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 from word2number import w2n
 import re
-from .intro import intro_messages,room_setting,all_objects,no_option_message
+from .intro import intro_messages,room_setting,all_objects_global,no_option_message
 from .utils import look_around
 from rasa_sdk.events import UserUtteranceReverted, ActionExecuted
 import spacy
@@ -36,9 +36,7 @@ FIRST_ROOM_KEY="459"
 
 
 collections_list = []
-bag = {}
 diary = []
-helps_remaining = 5
 level = 0
 
 def get_jumbled_name(name):
@@ -66,7 +64,7 @@ class GameInterest(Action):
         
         
         print("HELOO","interest_in_game")
-        
+        level =tracker.get_slot('level')
         if interest_in_game.lower() in ['yes','ya','yeah','ja','okay']:
             dispatcher.utter_message(text=room_setting[level])
         else:
@@ -82,6 +80,7 @@ class IntroAction(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print("action_intro")
         name = tracker.get_slot('name')
+        level =tracker.get_slot('level')
         message = "Hello {0} !!!".format(name)+intro_messages[level]
         dispatcher.utter_message(text=message)
         return []
@@ -106,13 +105,15 @@ class RoomOneGiveClue(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]: 
         current_object = tracker.get_slot('current_object')
         finished_objects = tracker.get_slot('finished_objects')
+        all_objects = tracker.get_slot('all_objects')
+        level =tracker.get_slot('level')
         print("action_give_clue") 
         if current_object is None:
             dispatcher.utter_message(text="Pick up something first")
             return
         
-        global helps_remaining
-        if helps_remaining>0:
+        
+        if True:
             current_object = tracker.get_slot('current_object')
             current_object_details = all_objects[level][current_object]
             if "clue" not in current_object_details: 
@@ -123,13 +124,7 @@ class RoomOneGiveClue(Action):
             clue = current_object_details['clue']
             dispatcher.utter_message(text = "The screen gets tuned on and you see")
             dispatcher.utter_message(text=create_box(clue))     
-            helps_remaining -= 1
-            if helps_remaining == 0:
-                 dispatcher.utter_message(text="You have no more clues left")  
-            else:
-                dispatcher.utter_message(text="Be cautious you have just {} more clues!!!".format(helps_remaining))        
-        else:
-            dispatcher.utter_message(text="You have exhausted your helps")
+        
             
 
 class RoomOneInteract(Action):
@@ -141,8 +136,10 @@ class RoomOneInteract(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]: 
         print (tracker.latest_message)
         print(tracker.get_slot("first_room_clues_done"))
+        level =tracker.get_slot('level')
         print("RoomOneInteract")
         print(tracker.latest_message)
+        all_objects = tracker.get_slot('all_objects')
         for entity in tracker.latest_message["entities"]:
             if entity["entity"] == "current_object":
                 current_object = entity["value"]
@@ -200,6 +197,8 @@ class RoomOneAnswerInteract(Action):
         if current_object is None:
             dispatcher.utter_message(text="Pick up something first")
             return
+        level =tracker.get_slot('level')
+        all_objects = tracker.get_slot('all_objects')
         print(current_object)
         print(all_objects)
         print(level)
@@ -239,9 +238,11 @@ class RoomTwoInteract(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print("action_room_two_interact")
         print(tracker.latest_message["entities"])
-        global all_objects,level
+        all_objects = tracker.get_slot('all_objects')
+        level =tracker.get_slot('level')
         events=[]
         finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
+        bag = tracker.get_slot('bag')
         for entity in tracker.latest_message["entities"]:
             if entity["entity"] == "current_object":
                 object = entity["value"]
@@ -276,13 +277,15 @@ class RoomTwoInteract(Action):
                             object_data=all_objects[level][current_object]
                             events.append(SlotSet("current_prop", None))
                             if object in all_objects[level]:
-                                bag[object]= all_objects[level].pop(object)        
+                                bag[object]= all_objects[level].pop(object) 
+                                events.append(SlotSet("bag", bag))       
                         else:
                             dispatcher.utter_message(text=object_data["inoperable"].format(current_object))
                             
                     elif object_data['item'] not in  bag:
                         object_data = all_objects[level].pop(object)
                         bag[object] = object_data
+                        events.append(SlotSet("bag", bag))   
                         dispatcher.utter_message(text="You have kept the {} in your bag it may come in handy later".format(object))
                         events.append(SlotSet("current_prop", object))
                         return events
@@ -309,7 +312,8 @@ class RoomTwoInteract(Action):
                     events.append(SlotSet("finished_objects", list(set(finished_objects))))
                 elif object_data['type'] == "collection":
                     for item in object_data["collection"]:
-                        all_objects[level][item["item"]] = item                    
+                        all_objects[level][item["item"]] = item
+                        events.append(SlotSet("all_objects", all_objects))                    
                     finished_objects.append(current_object)
                     dispatcher.utter_message(text=object_data['action'])
                     #dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
@@ -318,6 +322,7 @@ class RoomTwoInteract(Action):
                 remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
                 if len(remaining_objects)==0:
                     level=level+1
+                    events.append(SlotSet("level", level))
                     dispatcher.utter_message(text="You see door infront of you. When you to try to approach the door A big vase appears infront of you. Let's see how you get past it")
                     events.append(SlotSet("finished_objects", []))
                 return events
@@ -342,6 +347,7 @@ class RoomTwoAnswerInteract(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        all_objects = tracker.get_slot('all_objects')
         finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
         dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
 
@@ -353,19 +359,20 @@ class RoomTwoAnswerInteract(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        all_objects = tracker.get_slot('all_objects')
         print("test_action")
         print("current_object {}".format(tracker.get_slot('current_object')))
         print("current_prop {}".format(tracker.get_slot('current_prop')))
-        print("current_prop {}".format(bag))
+        print("current_prop {}".format(tracker.get_slot('bag')))
         print("all_objects {}".format(all_objects))
         print("=================================================")
         print(tracker.latest_message)
         print("=================================================")
-        global level
         level=1
         
         dispatcher.utter_message(text="test_action")
-        return  [SlotSet("first_room_clues_done", True),SlotSet("current_object", None), SlotSet("current_prop", None) ]
+        
+        return  [SlotSet("first_room_clues_done", True),SlotSet("current_object", None), SlotSet("current_prop", None),  SlotSet("level", level)]
 
 
 
@@ -394,7 +401,7 @@ class ValidateNameForm(FormValidationAction):
             return {"name":name}
                       
         
-        return {"name":None}
+        return {"name":None,"key":None,"all_objects":all_objects_global}
 
 class ValidateAnswerForm(FormValidationAction):
     def name(self) -> Text:
@@ -410,10 +417,10 @@ class ValidateAnswerForm(FormValidationAction):
         """Validate `key` value."""
         print("validate action")
         print(tracker.latest_message)
-        global level
+        level = tracker.get_slot('level')
         form_exit_intents = ["current_object","look_around_room"]
         user_answer= nlp(tracker.latest_message["text"])
-        
+        all_objects = tracker.get_slot('all_objects')
         current_object = tracker.get_slot('current_object')
         finished_objects = tracker.get_slot('finished_objects')
         current_object_details = all_objects[level][current_object]
@@ -440,7 +447,7 @@ class ValidateAnswerForm(FormValidationAction):
                     dispatcher.utter_message(text="You have solved all clues in this room")
                     level = level+1
                     dispatcher.utter_message(text="You see door infront of you. When you to try to approach the door A big vase appears infront of you. Let's see how you get past it")
-                    return {"answer":current_object_details['answer'],"finished_objects":[]} 
+                    return {"answer":current_object_details['answer'],"finished_objects":[],"level":level} 
             else:
                 dispatcher.utter_message(text="Not exactly what I have in mind try again")
             return {"answer":None} 
@@ -483,6 +490,8 @@ class ValidateKeyForm(FormValidationAction):
         """Validate `key` value."""
         print("validate action")
         numbers=re.findall(r"\d+", slot_value)
+        level = tracker.get_slot('level')
+        finished_objects = tracker.get_slot('finished_objects')
         
         if not numbers or len(numbers[0]) !=3:
             dispatcher.utter_message(text="The door lock only accepts one number which should be 3 digits.")
@@ -510,10 +519,10 @@ class ValidateKeyForm(FormValidationAction):
             dispatcher.utter_message(text=numberlock(status))
             dispatcher.utter_message(text="\n")
             dispatcher.utter_message(text="Good the door opens for you \U00002705")
-            global level, finished_objects
+            
             level = level+1
             finished_objects =[]
-            return {"key":FIRST_ROOM_KEY} 
+            return {"key":FIRST_ROOM_KEY,"level":level, "finished_objects":finished_objects} 
 
 
             
