@@ -60,7 +60,7 @@ slots:
     - type: custom
   helps_remaining:
     type: rasa.shared.core.slots.AnySlot
-    initial_value: 5
+    initial_value: 10
     mappings:
     - type: custom
   bag:

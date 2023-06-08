@@ -118,11 +118,12 @@ class RoomOneGiveClue(Action):
             if "clue" not in current_object_details: 
                 if "use" in current_object_details:
                     dispatcher.utter_message(text = "If you try to use, {}".format(current_object_details["use"]))
-                dispatcher.utter_message(text = "There are no clues I can give you for the {}".format(current_object))  
-                return
+                dispatcher.utter_message(text = "There are no clues I can give you for the {}".format(current_object)) 
+                return 
             clue = current_object_details['clue']
             dispatcher.utter_message(text = "The screen gets tuned on and you see")
             dispatcher.utter_message(text=create_box(clue))     
+            return [SlotSet("helps_remaining", help_remaining - 1)]
         else:
             dispatcher.utter_message(text="You have used all your clues")
 
@@ -536,16 +537,13 @@ class ValidateKeyForm(FormValidationAction):
         #todo add validations to handle different type of numbers
         if mistakes>0:
             print("inside if")
-            dispatcher.utter_message(text="Looks like the key is wrong, the number lock shows.\n")
+            dispatcher.utter_message(text="Looks like the key is wrong, the number lock shows.\n Arrange the numbers in ascending order.")
             dispatcher.utter_message(text=numberlock(status))
-            dispatcher.utter_message(text="\n")
             
             return {"key":None}
         else:
             dispatcher.utter_message(text="The number lock clicks.")
             dispatcher.utter_message(text=numberlock(status))
-            dispatcher.utter_message(text="\n")
-            dispatcher.utter_message(text="Good the door opens for you \U00002705")
             
             level = level+1
             finished_objects =[]
