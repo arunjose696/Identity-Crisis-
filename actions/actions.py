@@ -43,7 +43,7 @@ def get_jumbled_name(name):
     word = list(name)
     shuffle(word)
     word = " ".join(word)
-    return word
+    return word.lower()
     
 
 def create_box(text):
