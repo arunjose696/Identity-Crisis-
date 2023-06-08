@@ -12,6 +12,7 @@ intents:
 - riddle_answer
 - start
 - test
+- look_in_bag
 responses:
   utter_help:
   - text: You can search, move, use, break, shake and rotate objects. Write what you want to do.
@@ -50,10 +51,16 @@ actions:
 - action_get_door_key
 - action_ask_answer
 - action_reset_answer
+- look_bag
 slots:
   level:
     type: rasa.shared.core.slots.AnySlot
     initial_value: 0
+    mappings:
+    - type: custom
+  helps_remaining:
+    type: rasa.shared.core.slots.AnySlot
+    initial_value: 5
     mappings:
     - type: custom
   bag:

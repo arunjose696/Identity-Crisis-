@@ -13,7 +13,7 @@ def look_around(all_objects=[], finished_objects=[]):
             display_rem_item_text = "you notice you still have to explore a {0}. What are you gonna do now ?".format(remaining_objects_statment)
         return look_around_setting+display_rem_item_text#+solved_item
     else:
-        return "You dont have anything more in the room to solve"
+        return "You don't have anything more in the room to solve"
 
 def unwrap(finished_objects, tracker, current_object):
     finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []

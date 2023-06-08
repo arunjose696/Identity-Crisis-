@@ -42,6 +42,11 @@ rules:
   - intent: look_around_room
   - action: look_around
 
+- rule: look bag
+  steps:
+  - intent: look_in_bag
+  - action: look_bag
+
 
 - rule: checkAnswer
   condition:

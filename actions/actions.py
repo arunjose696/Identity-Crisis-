@@ -47,11 +47,9 @@ def get_jumbled_name(name):
     
 
 def create_box(text):
-    
     return text
 
 def numberlock(text):
-    
     return text
 class GameInterest(Action):
     def name(self) -> Text:
@@ -113,7 +111,8 @@ class RoomOneGiveClue(Action):
             return
         
         
-        if True:
+        help_remaining = tracker.get_slot("helps_remaining")
+        if True and help_remaining and help_remaining > 0:
             current_object = tracker.get_slot('current_object')
             current_object_details = all_objects[level][current_object]
             if "clue" not in current_object_details: 
@@ -124,8 +123,8 @@ class RoomOneGiveClue(Action):
             clue = current_object_details['clue']
             dispatcher.utter_message(text = "The screen gets tuned on and you see")
             dispatcher.utter_message(text=create_box(clue))     
-        
-            
+        else:
+            dispatcher.utter_message(text="You have used all your clues")
 
 class RoomOneInteract(Action):
     def name(self) -> Text:
@@ -152,32 +151,31 @@ class RoomOneInteract(Action):
                     dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
                     return [SlotSet("finished_objects", list(set(finished_objects)))]
                 else:
-                    if current_object not in all_objects[level]:
-                        if current_object in finished_objects:
-                            dispatcher.utter_message(text="You had already cracked the puzzle I had in  {}".format(current_object))                       
-                        else:  
-                            dispatcher.utter_message(text="You dont have a {} in the room".format(current_object))                       
+                    if current_object in finished_objects:
+                        dispatcher.utter_message(text="You had already cracked the puzzle I had in  {}".format(current_object))
+                    elif current_object not in all_objects[level]: 
+                        dispatcher.utter_message(text="You don't have a {} in this room".format(current_object))                       
                         dispatcher.utter_message(text=look_around(all_objects[level]))
                         print("-------------")
                         return 
+                    else:
+                        object_data = all_objects[level][current_object]
+                        print(object_data)
+                        if object_data['type'] == "final":
+                            dispatcher.utter_message(text=object_data['question'])        
+                        elif object_data['type'] == "mechanical":
+                            dispatcher.utter_message(text=object_data['clue'])
+                        elif object_data['type'] == "collection":
+                            for item in object_data["collection"]:
+                                all_objects[level][item["item"]] = item
+                            finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
+                            finished_objects.append(current_object)
+                            dispatcher.utter_message(text=object_data['action'])
+                            dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
+                            
+                            return [SlotSet("finished_objects", list(set(finished_objects)))]
                         
-                    object_data = all_objects[level][current_object]
-                    print(object_data)
-                    if object_data['type'] == "final":
-                        dispatcher.utter_message(text=object_data['question'])        
-                    elif object_data['type'] == "mechanical":
-                        dispatcher.utter_message(text=object_data['clue'])
-                    elif object_data['type'] == "collection":
-                        for item in object_data["collection"]:
-                            all_objects[level][item["item"]] = item
-                        finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
-                        finished_objects.append(current_object)
-                        dispatcher.utter_message(text=object_data['action'])
-                        dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
-                        
-                        return [SlotSet("finished_objects", list(set(finished_objects)))]
-                        
-                    return [SlotSet("current_object", current_object)]  
+                        return [SlotSet("current_object", current_object)]  
         dispatcher.utter_message(text=look_around(all_objects[level]))
 
 
@@ -225,7 +223,7 @@ class RoomOneAnswerInteract(Action):
                             return [SlotSet("first_room_clues_done", True),FollowupAction("key_form"), SlotSet("current_object", None)]
                         # return [ConversationPaused()]
                     else:
-                        dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(helps_remaining))
+                        dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(5))
                     break
         return 
 
@@ -250,7 +248,7 @@ class RoomTwoInteract(Action):
                 object = object.lower()
                 
                 if object not in all_objects[level] and object not in bag:
-                    dispatcher.utter_message(text="You dont have a {} in the room".format(object))                       
+                    dispatcher.utter_message(text="You don't have a {} in this room".format(object))                       
                     dispatcher.utter_message(text=look_around(all_objects[level]))
                     return 
                 if object in  all_objects[level]:
@@ -344,6 +342,7 @@ class RoomTwoAnswerInteract(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print("action_room_two_answer_interact")
         dispatcher.utter_message(text="action_room_two_answer_interact")
+        
 class RoomTwoAnswerInteract(Action):
     def name(self) -> Text:
         return "look_around"
@@ -355,6 +354,21 @@ class RoomTwoAnswerInteract(Action):
         level = tracker.get_slot('level')
         finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
         dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
+
+class BagInteract(Action):
+    def name(self) -> Text:
+        return "look_bag"
+    
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        bag = tracker.get_slot('bag')
+        if len(bag) > 0:
+            bag_items = bag.keys()
+            bag_items_statment = ", a".join(bag_items)
+            dispatcher.utter_message(text="In Bag you can find {}. Things in bag will be used automatically when its needed".format(bag_items_statment))
+        else:
+            dispatcher.utter_message(text="No Things in bag")
 
 
 class RoomTwoAnswerInteract(Action):
@@ -462,7 +476,7 @@ class ValidateAnswerForm(FormValidationAction):
                     dispatcher.utter_message(text="You see door infront of you. When you to try to approach the door A big vase appears infront of you. Let's see how you get past it")
                     return {"answer":current_object_details['answer'],"finished_objects":[],"level":level} 
             else:
-                dispatcher.utter_message(text="Not exactly what I have in mind try again")
+                dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(5))
             return {"answer":None} 
              
         

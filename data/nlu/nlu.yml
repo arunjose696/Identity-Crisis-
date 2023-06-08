@@ -178,6 +178,15 @@ nlu:
     - Observe the room
     - Have a quick peek around
     - Look around and describe the room
+  
+- intent: look_in_bag
+  examples: |
+    - Look in the bag
+    - Look bag
+    - Inside bag
+    - Bag
+    - Whats inside bag
+    - Check Bag
 
 
 
