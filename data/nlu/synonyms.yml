@@ -1,478 +1,478 @@
 nlu:
-- synonym: bed
-  examples: |
-    - beds
-    - bde
-    - bd
-    - bet
-    - bded
-    - beed
-    - bbed
-- synonym: board
-  examples: |
-    - loose board
-    - floorboard
-    - panel
-    - plank
-    - slat
-    - board
-    - loose boards
-    - borad
-    - bord
-    - boad
-    - baord
-    - boarrd
-    - sleep surface
-    - mattress
-    - cot
-    - bunk
-    - berth
-- synonym: book
-  examples: |
-    - novel
-    - literature
-    - text
-    - manuscript
-    - books
-    - novels
-    - literatures
-    - texts
-    - manuscripts
-    - bok
-    - boook
-    - bock
-    - boik
-    - buk
-    
-- synonym: bookshelf
-  examples: |
-    - bookcase
-    - shelf
-    - bookshelves
-    - bookcases
-    - shelves
-    - bookself
-    - bookshlef
-    - bookshelfh
-    - booshelf
-    - bokshel
+  - synonym: bed
+    examples: |
+      - beds
+      - bde
+      - bd
+      - bet
+      - bded
+      - beed
+      - bbed
+  - synonym: board
+    examples: |
+      - loose board
+      - floorboard
+      - panel
+      - plank
+      - slat
+      - board
+      - loose boards
+      - borad
+      - bord
+      - boad
+      - baord
+      - boarrd
+      - sleep surface
+      - mattress
+      - cot
+      - bunk
+      - berth
+  - synonym: book
+    examples: |
+      - novel
+      - literature
+      - text
+      - manuscript
+      - books
+      - novels
+      - literatures
+      - texts
+      - manuscripts
+      - bok
+      - boook
+      - bock
+      - boik
+      - buk
 
-- synonym: watch
-  examples: |
-    - clock
-    - timepiece
-    - wristwatch
-    - timekeeping device
-    - chronometer
-    - time recorder
-    - wach
-    - wtach
-    - watsh
-    - wacth
-    - watchh
+  - synonym: bookshelf
+    examples: |
+      - bookcase
+      - shelf
+      - bookshelves
+      - bookcases
+      - shelves
+      - bookself
+      - bookshlef
+      - bookshelfh
+      - booshelf
+      - bokshel
 
-- synonym: goggles
-  examples: |
-    - goggle
-    - coolers
-    - shades 
-    - glass
-    - googles
-    - gogles
-    - goggels
-    - gogglse
-    - gogglles
-    - shades
-    - spectacle
+  - synonym: watch
+    examples: |
+      - clock
+      - timepiece
+      - wristwatch
+      - timekeeping device
+      - chronometer
+      - time recorder
+      - wach
+      - wtach
+      - watsh
+      - wacth
+      - watchh
 
-- synonym: skeleton
-  examples: |
-    - body
-    - bones
-    - skelton
-    - skeleon
-    - skeloton
-    - skleton
-    - skelleton
-    - skeletal system
-    
-- synonym: cabinet
-  examples: |
-    - cupboard
-    - wardrobe
-    - locker
-    - pantry
-    - cabinets
-    - cupboards
-    - wardrobes
-    - lockers
-    - pantries
-    - cabinet
-    - cabnet
-    - cabnit
-    - cabient
-    - cabint
-    - cabnet
+  - synonym: werewolf
+    examples: |
+      - were wolf
+      - warewolf
+      - ware wolf
+      - wolf mask
+      - werewolf mask
+      - were wolf mask
+      - warewolf mask
+      - ware wolf mask
+      - wolf
+      - wear wolf
+      - wearwolf
+      - wearwolf mask
 
-- synonym: magnifying_lens
-  examples: |
-    - magnifying lens
-    - lens
-    - magnifier
-    - Reading lens 
-    - hand lens
-    - optical lens
-    - magnfying lens
-    - magnifying lense
-    - magnifying len
-    - magnifing lens
-  
-- synonym: cell
-  examples: |
-    - cells
-    - prison
-- synonym: chair
-  examples: |
-    - seat
-    - stool
-    - bench
-    - sofa
-    - chairs
-    - seats
-    - stools
-    - benches
-    - sofas
-    - char
-    - chaire
-    - cheir
-    - chaor
-    - chait
-- synonym: clock hand
-  examples: |
-    - clock hands
-    - hands
-    - hour hand
-    - minute hand
-    - second hand
-    - clock hnd
-    - clock handd
-    - clok hand
-    - clck hand
-    - lock hand
-    - watch hand
-- synonym: code
-  examples: |
-    - passcode
-    - code
-    - combination
-    - pin
-    - password
-    - access code
-    - secret code
-    - codes
-    - combinations
-    - pins
-    - passwords
-    - access codes
-    - secret codes
-- synonym: door
-  examples: |
-    - portal door
-    - entryway door
-    - exit door
-    - wooden door
-    - hinged door
-    - solid door
-    - panel door
-    - front door
-    - back door
-    - interior door
-    - doors
-    - portal doors
-    - entryway doors
-    - exit doors
-    - wooden doors
-    - hinged doors
-    - solid doors
-    - panel doors
-    - front doors
-    - back doors
-    - interior doors
-    - dor
-    - dooor
-    - dorr
-    - doer
-    - dore
-- synonym: drawer
-  examples: |
-    - compartment
-    - cubbyhole
-    - tray
-    - sleeve
-    - drawers
-    - compartments
-    - cubbyholes
-    - trays
-    - sleeves
-    - drawr
-    - dawer
-    - drwaer
-    - drawwer
-    - drower
-- synonym: drawing
-  examples: |
-    - drawings
-    - drawwing
-    - drwaing
-    - drawinng
-    - drowing
-    - drawign
-    - sketch
-    - illustration
-    - artwork
-    - design
-    - diagram
-- synonym: frame
-  examples: |
-    - picture frame
-    - photo frame
-    - painting frame
-    - art frame
-    - poster frame
-    - frame
-    - picture frames
-    - frmae
-    - famre
-    - frane
-    - frme
-    - fram
-- synonym: key
-  examples: |
-    - passkey
-    - skeleton key
-    - keycard
-    - keys
-    - Keeys
-    - keyy
-    - kye
-    - ke
-    - passkeys
-    - skeleton keys
-    - keycards
-- synonym: lamp
-  examples: |
-    - light
-    - light fixture
-    - table lamp
-    - floor lamp
-    - lamps
-    - lights
-    - light fixtures
-    - table lamps
-    - floor lamps
-    - lmap
-    - lammp
-    - lomp
-    - lapm
-    - lam
-- synonym: mirror
-  examples: |
-    - looking glass
-    - reflective surface
-    - mirrors
-    - miror
-    - mirrir
-    - mirorr
-    - miror
-    - mirr
-    - looking glasses
-    - reflective surfaces
-- synonym: pen
-  examples: |
-    - pen
-    - writing instrument
-    - marker
-    - pencil
-    - stylus
-    - fountain pen
-    - pe
-    - peen
-    - peenn
-    - pn
-    - pn
-- synonym: phone
-  examples: |
-    - phone
-    - telephone
-    - cell phone
-    - smartphone
-    - mobile device
-    - device
-    -  hanndy
-    - fone
-    - phne
-    - phon
-    - phoen
-    - pone
-- synonym: picture
-  examples: |
-    - painting
-    - photograph
-    - artwork
-    - portrait
-    - pictures
-    - picure
-    - pictyur
-    - pictr
-    - pic
-    - piture
-    - paintings
-    - photographs
-    - artworks
-    - portraits
-- synonym: poster
-  examples: |
-    - posters
-    - adverstisement
-    - placard
-    - sign
-    - postar
-    - poser
-    - postre
-    - poatre
-    - pposter
-- synonym: rug
-  examples: |
-    - carpet
-    - mat
-    - floor covering
-    - area rug
-    - rugs
-    - rugg
-    - ru
-    - ruug
-    - ru
-    - carpets
-    - mats
-    - floor coverings
-    - area rugs
-- synonym: safe
-  examples: |
-    - safe
-    - strongbox
-    - vault
-    - lockbox
-    - safe-deposit box
-    - saffe
-    - sefe
-    - saaf
-    - save
-    - seaf
-- synonym: shoe
-  examples: |
-    - shoe
-    - footwear
-    - boot
-    - sneaker
-    - slipper
-    - sandal
-    - shoo
-    - sheo
-    - showe
-    - shue
-    - sho
-- synonym: table
-  examples: |
-    - desk
-    - workbench
-    - countertop
-    - surface
-    - tables
-    - desks
-    - workbenches
-    - countertops
-    - surfaces
-    - tabel
-    - tablee
-    - tablbe
-    - tabe
-    - tble
-- synonym: toolbox
-  examples: |
-    - toolbox
-    - tool chest
-    - tool kit
-    - tool set
-    - tool case
-    - tool storage
-    - tool container
-    - toolboks
-    - toolbox
-    - toolboox
-- synonym: umbrella
-  examples: |
-    - umbrella
-    - parasol
-    - rain gear
-    - sunshade
-    - umberlla
-    - umbralla
-    - umbrlla
-    - umbarala
-    - parasol
-    - brolly
+  - synonym: skeleton
+    examples: |
+      - body
+      - bones
+      - skelton
+      - skeleon
+      - skeloton
+      - skleton
+      - skelleton
+      - skeletal system
 
-- synonym: wall
-  examples: |
-    - walls
-    - barrier
-    - partition
-    - divider
-    - panel
-    - wll
-    - wal
-    - waal
-    - walll
+  - synonym: cabinet
+    examples: |
+      - cupboard
+      - wardrobe
+      - locker
+      - pantry
+      - cabinets
+      - cupboards
+      - wardrobes
+      - lockers
+      - pantries
+      - cabinet
+      - cabnet
+      - cabnit
+      - cabient
+      - cabint
+      - cabnet
 
-- synonym: window
-  examples: |
-    - pane
-    - glass
-    - casement
-    - sash
-    - windows
-    - panes
-    - glasses
-    - casements
-    - sashes
-    - windo
-    - winodw
-    - winodw
-    - wondow
-    - windwo
-- synonym: window blinds
-  examples: |
-    - blinds
-    - shades
-    - curtains
-    - drapes
-    - window coverings
-    - window blinds
-    - window shades
-    - window curtains
-    - window drapes
-    - window coverings
-    - window blind
-    - window blinnds
-    - window blidns
-    - window blind
+  - synonym: magnifying_lens
+    examples: |
+      - magnifying lens
+      - lens
+      - magnifier
+      - Reading lens 
+      - hand lens
+      - optical lens
+      - magnfying lens
+      - magnifying lense
+      - magnifying len
+      - magnifing lens
 
-- synonym: mannequin
-  examples: |
-    - girl
-    - mannequine
-    - mannequine girl
-    - grl
-    - manequ girl
-    - spooky girl
-    
+  - synonym: cell
+    examples: |
+      - cells
+      - prison
+  - synonym: chair
+    examples: |
+      - seat
+      - stool
+      - bench
+      - sofa
+      - chairs
+      - seats
+      - stools
+      - benches
+      - sofas
+      - char
+      - chaire
+      - cheir
+      - chaor
+      - chait
+  - synonym: clock hand
+    examples: |
+      - clock hands
+      - hands
+      - hour hand
+      - minute hand
+      - second hand
+      - clock hnd
+      - clock handd
+      - clok hand
+      - clck hand
+      - lock hand
+      - watch hand
+  - synonym: code
+    examples: |
+      - passcode
+      - code
+      - combination
+      - pin
+      - password
+      - access code
+      - secret code
+      - codes
+      - combinations
+      - pins
+      - passwords
+      - access codes
+      - secret codes
+  - synonym: door
+    examples: |
+      - portal door
+      - entryway door
+      - exit door
+      - wooden door
+      - hinged door
+      - solid door
+      - panel door
+      - front door
+      - back door
+      - interior door
+      - doors
+      - portal doors
+      - entryway doors
+      - exit doors
+      - wooden doors
+      - hinged doors
+      - solid doors
+      - panel doors
+      - front doors
+      - back doors
+      - interior doors
+      - dor
+      - dooor
+      - dorr
+      - doer
+      - dore
+  - synonym: drawer
+    examples: |
+      - compartment
+      - cubbyhole
+      - tray
+      - sleeve
+      - drawers
+      - compartments
+      - cubbyholes
+      - trays
+      - sleeves
+      - drawr
+      - dawer
+      - drwaer
+      - drawwer
+      - drower
+  - synonym: drawing
+    examples: |
+      - drawings
+      - drawwing
+      - drwaing
+      - drawinng
+      - drowing
+      - drawign
+      - sketch
+      - illustration
+      - artwork
+      - design
+      - diagram
+  - synonym: frame
+    examples: |
+      - picture frame
+      - photo frame
+      - painting frame
+      - art frame
+      - poster frame
+      - frame
+      - picture frames
+      - frmae
+      - famre
+      - frane
+      - frme
+      - fram
+  - synonym: key
+    examples: |
+      - passkey
+      - skeleton key
+      - keycard
+      - keys
+      - Keeys
+      - keyy
+      - kye
+      - ke
+      - passkeys
+      - skeleton keys
+      - keycards
+  - synonym: lamp
+    examples: |
+      - light
+      - light fixture
+      - table lamp
+      - floor lamp
+      - lamps
+      - lights
+      - light fixtures
+      - table lamps
+      - floor lamps
+      - lmap
+      - lammp
+      - lomp
+      - lapm
+      - lam
+  - synonym: mirror
+    examples: |
+      - looking glass
+      - reflective surface
+      - mirrors
+      - miror
+      - mirrir
+      - mirorr
+      - miror
+      - mirr
+      - looking glasses
+      - reflective surfaces
+  - synonym: pen
+    examples: |
+      - pen
+      - writing instrument
+      - marker
+      - pencil
+      - stylus
+      - fountain pen
+      - pe
+      - peen
+      - peenn
+      - pn
+      - pn
+  - synonym: phone
+    examples: |
+      - phone
+      - telephone
+      - cell phone
+      - smartphone
+      - mobile device
+      - device
+      -  hanndy
+      - fone
+      - phne
+      - phon
+      - phoen
+      - pone
+  - synonym: picture
+    examples: |
+      - painting
+      - photograph
+      - artwork
+      - portrait
+      - pictures
+      - picure
+      - pictyur
+      - pictr
+      - pic
+      - piture
+      - paintings
+      - photographs
+      - artworks
+      - portraits
+  - synonym: poster
+    examples: |
+      - posters
+      - adverstisement
+      - placard
+      - sign
+      - postar
+      - poser
+      - postre
+      - poatre
+      - pposter
+  - synonym: rug
+    examples: |
+      - carpet
+      - mat
+      - floor covering
+      - area rug
+      - rugs
+      - rugg
+      - ru
+      - ruug
+      - ru
+      - carpets
+      - mats
+      - floor coverings
+      - area rugs
+  - synonym: safe
+    examples: |
+      - safe
+      - strongbox
+      - vault
+      - lockbox
+      - safe-deposit box
+      - saffe
+      - sefe
+      - saaf
+      - save
+      - seaf
+  - synonym: shoe
+    examples: |
+      - shoe
+      - footwear
+      - boot
+      - sneaker
+      - slipper
+      - sandal
+      - shoo
+      - sheo
+      - showe
+      - shue
+      - sho
+  - synonym: table
+    examples: |
+      - desk
+      - workbench
+      - countertop
+      - surface
+      - tables
+      - desks
+      - workbenches
+      - countertops
+      - surfaces
+      - tabel
+      - tablee
+      - tablbe
+      - tabe
+      - tble
+  - synonym: toolbox
+    examples: |
+      - toolbox
+      - tool chest
+      - tool kit
+      - tool set
+      - tool case
+      - tool storage
+      - tool container
+      - toolboks
+      - toolbox
+      - toolboox
+  - synonym: umbrella
+    examples: |
+      - umbrella
+      - parasol
+      - rain gear
+      - sunshade
+      - umberlla
+      - umbralla
+      - umbrlla
+      - umbarala
+      - parasol
+      - brolly
+
+  - synonym: wall
+    examples: |
+      - walls
+      - barrier
+      - partition
+      - divider
+      - panel
+      - wll
+      - wal
+      - waal
+      - walll
+
+  - synonym: window
+    examples: |
+      - pane
+      - glass
+      - casement
+      - sash
+      - windows
+      - panes
+      - glasses
+      - casements
+      - sashes
+      - windo
+      - winodw
+      - winodw
+      - wondow
+      - windwo
+  - synonym: window blinds
+    examples: |
+      - blinds
+      - shades
+      - curtains
+      - drapes
+      - window coverings
+      - window blinds
+      - window shades
+      - window curtains
+      - window drapes
+      - window coverings
+      - window blind
+      - window blinnds
+      - window blidns
+      - window blind
+
+  - synonym: mannequin
+    examples: |
+      - girl
+      - mannequine
+      - mannequine girl
+      - grl
+      - manequ girl
+      - spooky girl

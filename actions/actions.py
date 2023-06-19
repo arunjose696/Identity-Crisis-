@@ -216,7 +216,8 @@ class RoomOneAnswerInteract(Action):
                         remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
                         if len(remaining_objects) > 0:
                             remaining_objects_statment = ", ".join(remaining_objects)
-                            display_rem_item_text = "As you have already solved {0}, you are left with <h2> {1} </h2>. Pick the next object.".format(finished_objects_statment,remaining_objects_statment)
+                            display_rem_item_text = "<h3>Fantastic !!! You got it right!! </h3>As you have already solved {0}, you are left with <h1> {1} </h1> Pick the next object.".format(finished_objects_statment,remaining_objects_statment)
+                            
                             dispatcher.utter_message(text=display_rem_item_text)
                             return [SlotSet("finished_objects", list(set(finished_objects))), SlotSet("current_object", None)]
                         else:
@@ -463,19 +464,19 @@ class ValidateAnswerForm(FormValidationAction):
             similarity = correct_answer.similarity(user_answer)
         
             if similarity>0.7:
-                dispatcher.utter_message(text="You got it right")
+                # dispatcher.utter_message(text="Fantastic !!! You are one hurdle less from escaping!!")
                 finished_objects.append(current_object)
                 finished_objects_statment = ", ".join(finished_objects)
                 remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
                 if len(remaining_objects) > 0:
                     remaining_objects_statment = ", ".join(remaining_objects)
-                    display_rem_item_text = "As you have already solved {0}, you are left with <h2> {1} </h2>. Pickup the next object.".format(finished_objects_statment,remaining_objects_statment)
+                    display_rem_item_text = "<h3>Fantastic !!! You are one hurdle less from escaping!!</h3> As you have already solved {0}, you are left with <h2> {1} </h2> Pickup the next object.".format(finished_objects_statment,remaining_objects_statment)
                     dispatcher.utter_message(text=display_rem_item_text)
                     return {"answer":current_object_details['answer'],"finished_objects":finished_objects} 
                 else:
-                    dispatcher.utter_message(text="You have solved all clues in this room")
+                    # dispatcher.utter_message(text="You have solved all clues in this room")
                     level = level+1
-                    dispatcher.utter_message(text="You see door infront of you. When you to try to approach the door A big vase appears infront of you. Let's see how you get past it")
+                    dispatcher.utter_message(text="<h3>Faboulous !!! You almost escaped from me, but I can't leave you that easy !!</h3> A door appears infront of you. When you to try to approach the door A big vase appears infront of you. Let's see how you get past it")
                     return {"answer":current_object_details['answer'],"finished_objects":[],"level":level} 
             else:
                 help_remaining = tracker.get_slot("helps_remaining")
