@@ -22,15 +22,15 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 from word2number import w2n
 import re
-from .intro import intro_messages,room_setting,all_objects_global,no_option_message
-from .utils import look_around
+from .intro import intro_messages,room_setting,all_objects_global,no_option_message,fakekey_utterences
+from .utils import look_around,type_write
 from rasa_sdk.events import UserUtteranceReverted, ActionExecuted
 import spacy
 from random import shuffle
 import nltk
 nltk.download('popular')
 nlp = spacy.load("en_core_web_md")
-
+import uuid
 
 FIRST_ROOM_KEY="459"
 
@@ -43,6 +43,8 @@ def get_jumbled_name(name):
     word = list(name)
     shuffle(word)
     word = " ".join(word)
+    if word==name:
+        return get_jumbled_name(word)        
     return word.lower()
     
 
@@ -121,7 +123,6 @@ class RoomOneGiveClue(Action):
                 dispatcher.utter_message(text = "There are no clues I can give you for the {}".format(current_object)) 
                 return 
             clue = current_object_details['clue']
-            dispatcher.utter_message(text = "The screen gets tuned on and you see")
             dispatcher.utter_message(text=create_box(clue))     
             return [SlotSet("helps_remaining", help_remaining - 1)]
         else:
@@ -374,6 +375,17 @@ class BagInteract(Action):
             dispatcher.utter_message(text="No Things in bag")
 
 
+class StartFakeKeyForm(Action):
+    def name(self) -> Text:
+        return "action_start_fakekey_form"
+    
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print("action_start_fakekey_form")
+        return [FollowupAction("fakekey_form")]
+
+
 class RoomTwoAnswerInteract(Action):
     def name(self) -> Text:
         return "test_action"
@@ -505,7 +517,105 @@ class ActionResetAnswerSlot(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         return [SlotSet("answer", None)]     
         
+class ValidateKeyForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_fakekey_form"
 
+    def validate_fakekey(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate `key` value."""
+        print("validate fake_key action")
+        attempt = tracker.get_slot('attempt')
+        
+        numbers=re.findall(r"\d+", slot_value)
+        if not numbers:
+            dispatcher.utter_message(text="Let us deal with all that later, now try to guess a 3 digit key")
+            return {"fakekey":None}
+        if  len(numbers[0]) !=3:
+            dispatcher.utter_message(text="Lock takes a 3 digit key")
+            return {"fakekey":None}
+        attempt=attempt+1
+        if attempt >= 3:
+            #dispatcher.utter_message(text=type_write(text="Password is wrong the clown laughs viciously and stabs you right in your throat. You look at the clock it is 6:15, 6:15 the time of your death.", id="abc"))
+            texts=["Password is wrong the clown laughs viciously and stabs you right in your throat. You look at the clock it is 6:15, 6:15 the time of your death",
+                   "It was all a dream, The clock rings 6 am, wake up to start the game."]
+            dispatcher.utter_message(text=type_write(texts))
+            return {"fakekey":"value"}
+            
+        status=""
+        mistakes = 0
+        user_entry=numbers[0]
+        for i in range(3):
+            if user_entry[i] == FIRST_ROOM_KEY[i]:
+                status+="\U00002705 "
+            else:
+                status+= "\U0000274C "
+                mistakes += 1
+        
+        #todo add validations to handle different type of numbers
+        if mistakes>0:
+            print("inside if")
+            dispatcher.utter_message(text="Looks like the key is wrong, the number lock shows \n{}".format(status))
+            
+            
+            return {"fakekey":None,"attempt":attempt}
+        else:
+            dispatcher.utter_message(text="Looks like the key is right, but the door does not open\n{}".format(status))
+            return {"fakekey":None,"attempt":attempt}
+    
+    def validate_wakeup(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        intent = tracker.latest_message.get('intent', {}).get('name')
+        if intent== "wake_up":
+            return {"wakeup":"Done"}
+        else:
+            dispatcher.utter_message(text="Try waking up first")
+            return  {"wakeup":None}
+            
+            
+        
+class ActionAskFakeKey(Action):
+    def name(self):
+        return "action_ask_fakekey"
+
+    def run(self, dispatcher, tracker, domain):
+        print( "action_ask_fakekey")
+        attempt = tracker.get_slot('attempt')
+        previousattempt = tracker.get_slot('previousattempt')
+        if attempt != previousattempt:
+            dispatcher.utter_message(text="{}".format(fakekey_utterences[attempt]))
+        
+        previousattempt = attempt
+
+        return [SlotSet("previousattempt", previousattempt)] 
+
+class ActionAskWakeUp(Action):
+    def name(self):
+        return "action_ask_wakeup"
+
+    def run(self, dispatcher, tracker, domain):
+        print( "action_ask_wakeup")
+        
+        level=tracker.get_slot('level')
+        if level==-1:
+            level+=1
+            dispatcher.utter_message(text="......")
+            return [SlotSet("level",level)]
+        else:
+            dispatcher.utter_message(text="Wake up to start the game")
+            
+        
+        
     
 class ValidateKeyForm(FormValidationAction):
     def name(self) -> Text:

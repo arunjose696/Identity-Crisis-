@@ -30,5 +30,24 @@ def add_audio_and_image(text, audio_id=None,image_id=None):
         return text+audio
     else:
         return
+def type_write(text, id):
+    output = """ <p id="{id}"></p> <script> const text = "{text}"; const speed = 100; let index = 0; const {id} = document.getElementById("{id}"); function type() {{ if (index < text.length) {{ {id}.innerHTML += text.charAt(index); index++; setTimeout(type, speed); }} }} type(); </script> """.format(id=id,text=text)
     
+    return output
+
+
+def type_write(texts):
+    num_instances = len(texts) 
+    code_segments = []
+    for i in range(1, num_instances + 1):
+      code_segments.append(f"<p id=\'abc{i}\'>.</p>")
+    code_segments.append("<script>")
+    for i in range(1, num_instances + 1):
+        code_segment = f''' const text{i} = \"{texts[i-1]}\"; const speed{i} = 100; let index{i} = 0; const abc{i} = document.getElementById(\"abc{i}\"); function type{i}() {{ if (index{i} < text{i}.length) {{ abc{i}.innerHTML += text{i}.charAt(index{i}); index{i}++; setTimeout(type{i}, speed{i}); }} else {{ setTimeout(() =>type{i+1}(), 2000); }} }} '''
     
+        code_segments.append(code_segment)
+    
+    code_segments.append("type1();")
+    code_segments.append("</script>")
+    generated_code = '\n'.join(code_segments)
+    return generated_code

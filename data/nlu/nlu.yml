@@ -157,6 +157,21 @@ nlu:
       - Take [skeleton](current_object)
       - touch [skeleton](current_object)
 
+  - intent: wake_up
+    examples: |
+      - I want to wake up
+      - Wake me up
+      - Time to wake up
+      - Wakey wakey!
+      - Can you help me wake up?
+      - I need to wake up early tomorrow
+      - What time should I wake up?
+      - I can't seem to wake up on time
+      - How can I wake up refreshed?
+      - Wake up
+      - Get up 
+      - Wake
+      - Awaken
   - intent: look_around_room
     examples: |
       - Look around the room

@@ -13,6 +13,7 @@ intents:
 - start
 - test
 - look_in_bag
+- wake_up
 responses:
   utter_help:
   - text: You can search, move, use, break, shake and rotate objects. Write what you want to do.
@@ -48,14 +49,28 @@ actions:
 - validate_name_form
 - validate_answer_form
 - validate_key_form
+- validate_fakekey_form
 - action_get_door_key
 - action_ask_answer
 - action_reset_answer
+- action_start_fakekey_form
 - look_bag
+- action_ask_fakekey
+- action_ask_wakeup
 slots:
   level:
     type: rasa.shared.core.slots.AnySlot
+    initial_value: -1
+    mappings:
+    - type: custom
+  attempt:
+    type: rasa.shared.core.slots.AnySlot
     initial_value: 0
+    mappings:
+    - type: custom
+  previousattempt:
+    type: rasa.shared.core.slots.AnySlot
+    initial_value: -1
     mappings:
     - type: custom
   helps_remaining:
@@ -110,6 +125,25 @@ slots:
       conditions:
       - active_loop: name_form
         requested_slot: name
+  fakekey:
+    type: text
+    influence_conversation: true
+    initial_value: null
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: fakekey_form
+        requested_slot: fakekey
+  wakeup:
+    type: text
+    influence_conversation: true
+    initial_value: null
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: fakekey_form
+        requested_slot: wakeup
+
   interest_in_game:
     type: rasa.shared.core.slots.AnySlot
     initial_value: null
@@ -143,6 +177,10 @@ forms:
   key_form:
     required_slots:
     - key
+  fakekey_form:
+    required_slots:
+    - fakekey
+    - wakeup
   answer_form:
     ignored_intents: 
     - ask_for_clue

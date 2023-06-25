@@ -20,6 +20,8 @@ nlu:
     - [Cupboard]{"entity": "current_object", "value": "cabinet"}
     - [Cloth]{"entity": "current_object", "value": "cloth"}
     - [Water]{"entity": "current_object", "value": "water"}
+
+
 - intent: number_answer
   examples: |
     - [5](number_answer)

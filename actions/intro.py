@@ -1,4 +1,25 @@
 from .utils import add_audio_and_image
+
+fakekey_utterences=[
+    """
+    Like a dream the game starts from the middle of nowhere.
+    It is chaotic everywhere. The time is 6:15 in the morning. In Front of you is a little girl. She looks terrified.
+    <p style="color:green;">Little girl:The clown is approaching, he will kill us both  enter the 3 digit lock.</p>
+    
+    <p style="color:brown;">Narration:You don’t remember any code but there is a door with a 3 digit lock, try guessing a 3 digit number as a scary  clown with a shovel is approaching.</p>
+    """,
+    """
+    <p style="color:brown;">The footsteps of the killer are getting closer.</p>
+    <p style="color:green;">Your face looks like you don’t even remember the code,  you already  gained  the code solving riddles. Please try again. The killer is very close.</p>
+    <p style="color:brown;">Try guessing a 3 digit code again</p>
+    
+    """,
+    add_audio_and_image("""
+    <p style="color:brown;">Narration: The clown is right beside you, he makes a severe blow with with a shovel, the girl's head is chopped off brutally and blood sprays on your face</p>
+    <p style="color:green;">Little girl: AAHHH, I b…b.believed you were my savior</p>
+    <p style="color:brown;">Narration: She is dead , You may have one more try for the lock to save at least yourself. Do a last guess</p>
+    """,audio_id="1WlnVNbiX4yYnGHFb7ndT5lBGBtrrPwXT",image_id="1BOv4W_7KdZ64MdruMMJelMd3p3c9dEDZ")
+]
 intro_messages=[
     
     """ 
@@ -6,11 +27,12 @@ you have entered my haunted mansion, you have to find a way to LEAVE \U0001F4A8 
 If you have to escape this mansion you have to crack the door’s secret code of NUMBERS.
 I will show some kindness and guide you through.\nTry your best.
 Are you ready to explore??.""",
-    """
-Well that was easy I guess, now you have entered my favorite room, I am living here since my death \U0001FAA6.
-Try to escape this room.
+    add_audio_and_image("""
+Little girl turns to a witch,
+<p style="color:red;">Witch:Hehe thank you for letting me escape. I am the witch you, you stupid clown trapped to save the world from me. I blinded you and took away your memories so I can escape from your room of riddles</p>
+Now I have escaped you are in my room now. I will let you play a game here,  you will again solve clues, if you solve all my clues I don’t kill you today.
 Do you want to explore the room?    
-    """
+    """,audio_id="1cxR9lUcyYRpdivh9AHXUS0E-Dj7iWb4E",image_id="1kgAnnELo1MPJZLxCNSIhl6E9adpA-loD")
     
 ]
 
@@ -19,11 +41,11 @@ room_setting= [
 There is a wall clock \U0001F552, an old diary \U0001F4D6 , and an ancient ROMAN rock \U0001FAA8 . Which object do you want to pick to get the NUMBER Code?\nIf you are stuck you can ask for help/clue. Also there is bag to carry few object which might be helpful later.
 
     """,
-    add_audio_and_image("""
+    """
     If you look around the room you can find many SCARY OBJECTS like a spooky little girl mannequin \U0001F9DB, a creepy looking cupboard \U0001F5C4, some hidden skeletons \U0001F480, and a Werewolf mask \U0001F43A ,
 and some props like shovel \U000026CF, torch light \U0001F526, and a small bowl filled with water \U0001F963 . 
 You have to use the PROPS to explore some OBJECTS. Pick any Scary Object?
-""",audio_id="1WlnVNbiX4yYnGHFb7ndT5lBGBtrrPwXT",image_id="1BOv4W_7KdZ64MdruMMJelMd3p3c9dEDZ")
+"""
     
     
     ,
