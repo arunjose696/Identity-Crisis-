@@ -18,3 +18,17 @@ def look_around(all_objects=[], finished_objects=[]):
 def unwrap(finished_objects, tracker, current_object):
     finished_objects = tracker.get_slot('finished_objects') if tracker.get_slot('finished_objects') else []
     finished_objects.append(current_object)
+    
+def add_audio_and_image(text, audio_id=None,image_id=None):
+    image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; })(); </script>"
+    audio = "<audio autoplay> <source src= \"https://drive.google.com/uc?id={} \" type= \"audio/ogg \"></audio>".format(audio_id)
+    if audio_id and image_id:
+        return text + image + audio
+    elif image_id:
+        return text + image
+    elif audio_id:
+        return text+audio
+    else:
+        return
+    
+    
