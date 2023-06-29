@@ -239,6 +239,7 @@ class RoomTwoInteract(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print("action_room_two_interact")
+        print(tracker.slots)
         print(tracker.latest_message["entities"])
         all_objects = tracker.get_slot('all_objects')
         level =tracker.get_slot('level')
@@ -264,15 +265,18 @@ class RoomTwoInteract(Action):
                     if object_data['required_prop'] ==  tracker.get_slot("current_prop"):
                         pass
                     elif object_data['required_prop'] not in bag:
+                        print(f"not in bag here {object}")
                         dispatcher.utter_message(text=object_data['pretext'])
                         return [SlotSet("current_object", object)]
                     else :
                         dispatcher.utter_message(text=object_data['pretext'])
                         dispatcher.utter_message(text="something in your bag would help")
+                        print(f"matched here {object}")
                         return [SlotSet("current_object", object)]
             
                 if object_data['type']=='prop':
                     current_object = tracker.get_slot("current_object")
+                    
                     if current_object:
                         if all_objects[level][current_object]['required_prop']==object:
                             dispatcher.utter_message(text=object_data['use'])
