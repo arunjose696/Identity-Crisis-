@@ -31,6 +31,8 @@ import nltk
 nltk.download('popular')
 nlp = spacy.load("en_core_web_md")
 import uuid
+from .utils import add_audio_and_image
+
 
 FIRST_ROOM_KEY="459"
 
@@ -322,7 +324,9 @@ class RoomTwoInteract(Action):
                     events.append(SlotSet("finished_objects", list(set(finished_objects))))
                 elif object_data['type'] == "collection":
                     for item in object_data["collection"]:
+                        
                         all_objects[level][item["item"]] = item
+                        print(f"all_objects is {all_objects}")
                         events.append(SlotSet("all_objects", all_objects))                    
                     finished_objects.append(current_object)
                     dispatcher.utter_message(text=object_data['action'])
@@ -333,7 +337,7 @@ class RoomTwoInteract(Action):
                 if len(remaining_objects)==0:
                     level=level+1
                     events.append(SlotSet("level", level))
-                    dispatcher.utter_message(text="You see door infront of you. When you to try to approach the door A big vase appears infront of you. Let's see how you get past it")
+                    dispatcher.utter_message(text=add_audio_and_image("You see door infront of you. When you to try to approach the door A big vase appears infront of you. Let's see how you get past it",image_id="16hTtS9bKQJUZX1RcHjEX4qv8g9il0hk2"))
                     events.append(SlotSet("finished_objects", []))
                 return events
         dispatcher.utter_message(text="pick up something in the room")
@@ -659,7 +663,7 @@ class ValidateKeyForm(FormValidationAction):
             
             return {"key":None}
         else:
-            dispatcher.utter_message(text="The number lock clicks.")
+            dispatcher.utter_message(text=("The number lock clicks."))
             dispatcher.utter_message(text=numberlock(status))
             
             level = level+1
