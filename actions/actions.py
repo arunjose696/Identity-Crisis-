@@ -287,7 +287,7 @@ class RoomTwoInteract(Action):
                             if object in all_objects[level]:
                                 bag[object]= all_objects[level].pop(object) 
                                 events.append(SlotSet("bag", bag)) 
-                                events.append(SlotSet("all_objects", all_objects)) 
+                                #events.append(SlotSet("all_objects", all_objects)) 
                                  
                                      
                         else:
