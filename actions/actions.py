@@ -542,8 +542,8 @@ class ValidateKeyForm(FormValidationAction):
         attempt=attempt+1
         if attempt >= 3:
             #dispatcher.utter_message(text=type_write(text="Password is wrong the clown laughs viciously and stabs you right in your throat. You look at the clock it is 6:15, 6:15 the time of your death.", id="abc"))
-            texts=["Password is wrong the clown laughs viciously and stabs you right in your throat. You look at the clock it is 6:15, 6:15 the time of your death",
-                   "It was all a dream, The clock rings 6 am, wake up to start the game."]
+            texts=["Password is wrong, the clown laughs viciously and stabs you right in your throat and you lie dead there, 6:15 the time of your death",
+                   "Suddenly you hear the alarm ringing at 6 am, you realise that it was all a deadly dream, and you WAKE UP slowly to play the actual game."]
             dispatcher.utter_message(text=type_write(texts))
             return {"fakekey":"value"}
             
