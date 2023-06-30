@@ -157,9 +157,12 @@ class RoomOneInteract(Action):
                 else:
                     if current_object in finished_objects:
                         dispatcher.utter_message(text="You had already cracked the puzzle I had in  {}".format(current_object))
+                        dispatcher.utter_message(text=look_around(all_objects[level],finished_objects))
+                        print("-------------")
+                        return
                     elif current_object not in all_objects[level]: 
                         dispatcher.utter_message(text="You don't have a {} in this room".format(current_object))                       
-                        dispatcher.utter_message(text=look_around(all_objects[level]))
+                        dispatcher.utter_message(text=look_around(all_objects[level],finished_objects))
                         print("-------------")
                         return 
                     else:
