@@ -72,7 +72,7 @@ nlu:
       - wacth
       - watchh
 
-  - synonym: werewolf
+  - synonym: werewolf mask
     examples: |
       - were wolf
       - warewolf
