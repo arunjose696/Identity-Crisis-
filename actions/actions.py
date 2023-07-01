@@ -158,6 +158,7 @@ class RoomOneInteract(Action):
                     if current_object in finished_objects:
                         dispatcher.utter_message(text="You had already cracked the puzzle I had in  {}".format(current_object))
                     elif current_object not in all_objects[level]: 
+                        
                         dispatcher.utter_message(text="You don't have a {} in this room".format(current_object))                       
                         dispatcher.utter_message(text=look_around(all_objects[level]))
                         print("-------------")
@@ -241,8 +242,8 @@ class RoomTwoInteract(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print("action_room_two_interact")
-        print(tracker.slots)
-        print(tracker.latest_message["entities"])
+        # print(tracker.slots)
+        print(tracker.latest_message["text"])
         all_objects = tracker.get_slot('all_objects')
         level =tracker.get_slot('level')
         events=[]
@@ -255,6 +256,7 @@ class RoomTwoInteract(Action):
                 object = object.lower()
                 
                 if object not in all_objects[level] and object not in bag:
+                    print(f"---{object}---{level}------")
                     dispatcher.utter_message(text="You don't have a {} in this room".format(object))                       
                     dispatcher.utter_message(text=look_around(all_objects[level]))
                     return 
@@ -278,7 +280,7 @@ class RoomTwoInteract(Action):
             
                 if object_data['type']=='prop':
                     current_object = tracker.get_slot("current_object")
-                    
+                    print(f"CURRENT 345 {current_object}")
                     if current_object:
                         if all_objects[level][current_object]['required_prop']==object:
                             dispatcher.utter_message(text=object_data['use'])
@@ -687,7 +689,8 @@ class ActionDefaultFallback(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
         print("fallback")
+        print(tracker.latest_message)
         dispatcher.utter_message(template="my_custom_fallback_template")
 
         # Revert user message which led to fallback.
-        return [UserUtteranceReverted()]
+        return []

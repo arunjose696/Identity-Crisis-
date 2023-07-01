@@ -29,17 +29,18 @@ stories:
     - first_room_clues_done: false
   - action: action_give_clue
 
-# - story: second_room
-#   steps:
-#   # - intent: preface
-#   - intent: current_object
-#   - slot_was_set:
-#     - first_room_clues_done: true
-#   - action: action_room_two_interact
-#   - intent: riddle_answer
-#   - slot_was_set:
-#     - first_room_clues_done: True
-#   - action: action_room_one_answer_interact
+
+- story: second_room
+  steps:
+  # - intent: preface
+  - intent: current_object
+  - slot_was_set:
+    - first_room_clues_done: true
+  - action: action_room_two_interact
+  - intent: riddle_answer
+  - slot_was_set:
+    - first_room_clues_done: True
+  - action: action_room_two_interact
 
 
 # - story: interactive_story_1

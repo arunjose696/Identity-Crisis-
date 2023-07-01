@@ -57,6 +57,7 @@ actions:
 - look_bag
 - action_ask_fakekey
 - action_ask_wakeup
+- action_default_fallback
 slots:
   level:
     type: rasa.shared.core.slots.AnySlot
