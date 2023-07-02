@@ -166,6 +166,7 @@ nlu:
       - touch [skeleton](current_object)
       - Dig it [skeleton](current_object)
       - Dig [skeleton](current_object)
+      - [skeleton]
 
   - intent: wake_up
     examples: |
