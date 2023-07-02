@@ -93,7 +93,7 @@ class AskName(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:     
-        dispatcher.utter_message(text="Welcome to Trap for Dummies!. To Start the challenge please enter your name.")
+        dispatcher.utter_message(text="""Welcome to Trap for Dummies!. To Start the challenge please enter your name.    <head><link rel="preload" href="https://drive.google.com/uc?id=18w_boFKDWwOVsc0g12CZBMWhKVQJQc_-" as="image"></head>""")
     
         return
 

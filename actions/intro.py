@@ -5,8 +5,24 @@ fakekey_utterences=[
     The game has started but it looks like a DREAM to you.,
     It is chaotic everywhere. The time is 6:15 in the morning. In the dream you are seeing a LITTLE GIRL in front of you. She looks terrified and is trying to tell you something.
     <p style="color:green;">Little girl:The clown is approaching, he will kill us both if you stay still, there is a door with 3 DIGIT LOCK in front of you, try entering any random 3 digit number and please help me.</p>
-    
+
     <p style="color:brown;">Narration:You can try your LUCK and enter a random 3 digit number to unlock the door to escape, try fast, as the scary clown with a shovel is approaching you and the little girl.</p>
+    <head>
+        <link rel="preload" href="https://drive.google.com/uc?id=1BOv4W_7KdZ64MdruMMJelMd3p3c9dEDZ" as="image">
+        <link rel="preload" href="https://drive.google.com/uc?id=18w_boFKDWwOVsc0g12CZBMWhKVQJQc_-" as="image">
+        <link rel="preload" href="https://drive.google.com/uc?id=11R8WIAChMu1PKQ9HnyhLcMq94DijDL0S" as="image">
+        <link rel="preload" href="https://drive.google.com/uc?id=1kgAnnELo1MPJZLxCNSIhl6E9adpA-loD" as="image">
+        <link rel="preload" href="https://drive.google.com/uc?id=1hVztJmnl7miC1hFldqbamn2ADEhLcR6g" as="image">
+        <link rel="preload" href="https://drive.google.com/uc?id=1Psuf3GLNsZY0SzxMQQuSwLjjwusnYl0n" as="image">
+        <link rel="preload" href="https://drive.google.com/uc?id=17V2oA9aOFGWkFWbsAEwlD15wiz_W_QGi" as="image">
+        <link rel="preload" href="https://drive.google.com/uc?id=1YWdCXvTLI3J38tgYx3LijQpPLlVnhfOc" as="image">
+        <link rel="preload" href="https://drive.google.com/uc?id=16hTtS9bKQJUZX1RcHjEX4qv8g9il0hk2" as="image">
+        <link rel="preload" href="https://drive.google.com/uc?id=1Rxzp4Ocd3Nqb2ghL-e3ENMBTuVctKJcP" as="image">
+        <link rel="preload" href="https://drive.google.com/uc?id=1A9uQlCaSm3ea69JT8R_YSGUZGp0ZDaid" as="image">
+        <link rel="preload" href="https://drive.google.com/uc?id=1vzZp4KOSi5bmZsnCzx2n3B98tIMCPniT" as="image">
+        <link rel="preload" href="https://drive.google.com/uc?id=12fjvp72GU8xnhgphZWEgm777lOOjqmmY" as="image">
+        <link rel="preload" href="https://drive.google.com/uc?id=1GcITuGdiIRIvqWRGmx72wUrAHaX7em7q" as="image">
+        </head>
     """,image_id="18w_boFKDWwOVsc0g12CZBMWhKVQJQc_-"),
     
     """
