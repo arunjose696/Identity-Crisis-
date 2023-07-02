@@ -7,10 +7,13 @@ def look_around(all_objects=[], finished_objects=[]):
         solved_item=""
         display_rem_item_text=""
         look_around_setting = "\n\nWhen you glance around the room, "
+        print("JJJJJJ")
+        print(remaining_objects_statment)
         if finished_objects:
             solved_item = "\nYou have already solved clues from <h3> {0} </h3>!!".format(finished_objects_statment)
         if remaining_objects_statment:
-            display_rem_item_text = "you notice you still have to explore <h2> a {0} </h2>. What are you gonna do now ?".format(remaining_objects_statment)
+            display_rem_item_text = """<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet">you notice you still have to explore <h2 style="font-family: 'Nosifer', cursive; font-size:15px;"> a {0} </h2>. What are you gonna do now ?""".format(remaining_objects_statment)
+        print(display_rem_item_text)
         return look_around_setting+display_rem_item_text#+solved_item
     else:
         return "You don't have anything more in the room to solve"
@@ -40,14 +43,15 @@ def type_write(texts):
     num_instances = len(texts) 
     code_segments = []
     for i in range(1, num_instances + 1):
-      code_segments.append(f"<p id=\'abc{i}\'>.</p>")
+      code_segments.append(f"<p id=\'abc{i}\'></p>")
     code_segments.append("<script>")
     for i in range(1, num_instances + 1):
-        code_segment = f''' const text{i} = \"{texts[i-1]}\"; const speed{i} = 100; let index{i} = 0; const abc{i} = document.getElementById(\"abc{i}\"); function type{i}() {{ if (index{i} < text{i}.length) {{ abc{i}.innerHTML += text{i}.charAt(index{i}); index{i}++; setTimeout(type{i}, speed{i}); }} else {{ setTimeout(() =>type{i+1}(), 2000); }} }} '''
+        code_segment = f''' const text{i} = \"{texts[i-1]}\"; const speed{i} = 25; let index{i} = 0; const abc{i} = document.getElementById(\"abc{i}\"); function type{i}() {{ if (index{i} < text{i}.length) {{ abc{i}.innerHTML += text{i}.charAt(index{i}); index{i}++; setTimeout(type{i}, speed{i}); }} else {{ setTimeout(() =>type{i+1}(), 2000); }} }} '''
     
         code_segments.append(code_segment)
     
     code_segments.append("type1();")
     code_segments.append("</script>")
     generated_code = '\n'.join(code_segments)
+ 
     return generated_code

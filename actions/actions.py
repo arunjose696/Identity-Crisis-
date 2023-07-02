@@ -83,7 +83,10 @@ class IntroAction(Action):
         print("action_intro")
         name = tracker.get_slot('name')
         level =tracker.get_slot('level')
-        message = "Hello {0} !!!".format(name)+intro_messages[level]
+        if level == 1:
+            message = intro_messages[level]
+        else:
+            message = "Hello {0} !!!".format(name)+intro_messages[level]
         dispatcher.utter_message(text=message)
         return []
 class AskName(Action):
@@ -236,12 +239,12 @@ class RoomOneAnswerInteract(Action):
                         remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
                         if len(remaining_objects) > 0:
                             remaining_objects_statment = ", ".join(remaining_objects)
-                            display_rem_item_text = "<h3>Fantastic !!! You got it right!! </h3>As you have already solved {0}, you are left with <h1> {1} </h1> Pick the next object.".format(finished_objects_statment,remaining_objects_statment)
+                            display_rem_item_text = """<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"><h3>Fantastic !!! You got it right!! </h3>As you have already solved {0}, you are left with <h2 style="font-family: 'Nosifer', cursive; font-size:17pxpx;"> {1} </h2> Pick the next object.""".format(finished_objects_statment,remaining_objects_statment)
                             
                             dispatcher.utter_message(text=display_rem_item_text)
                             return [SlotSet("finished_objects", list(set(finished_objects))), SlotSet("current_object", None)]
                         else:
-                            dispatcher.utter_message(text=" Great, you got the digits. I love arranging everything in “order”, same can go with the digits. \nArrange it in the order of small to big.")
+                            dispatcher.utter_message(text="""<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"> <p style="color:green;font-family: 'Nosifier', cursive; font-size:17px;>Great, you got the digits. I love arranging everything in “order”, same can go with the digits. \nArrange it in the order of small to big.</p>""")
                             return [SlotSet("first_room_clues_done", True),FollowupAction("key_form"), SlotSet("current_object", None)]
                         # return [ConversationPaused()]
                     else:
@@ -517,13 +520,13 @@ class ValidateAnswerForm(FormValidationAction):
                 remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
                 if len(remaining_objects) > 0:
                     remaining_objects_statment = ", ".join(remaining_objects)
-                    display_rem_item_text = "<h3>Fantastic !!! You are one hurdle less from escaping!!</h3> As you have already solved {0}, you are left with <h2> {1} </h2> Pickup the next object.".format(finished_objects_statment,remaining_objects_statment)
+                    display_rem_item_text = """<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"><h3>Fantastic !!! You are one hurdle less from escaping!!</h3> As you have already solved {0}, you are left with <h2 style="font-family: 'Nosifer', cursive; font-size:17px;"> {1} </h2> Pickup the next object.""".format(finished_objects_statment,remaining_objects_statment)
                     dispatcher.utter_message(text=display_rem_item_text)
                     return {"answer":current_object_details['answer'],"finished_objects":finished_objects} 
                 else:
                     # dispatcher.utter_message(text="You have solved all clues in this room")
                     level = level+1
-                    dispatcher.utter_message(text="<h3>Faboulous !!! You almost escaped from me, but I can't leave you that easy !!</h3> A door appears infront of you. When you to try to approach the door A big vase appears infront of you. Let's see how you get past it")
+                    dispatcher.utter_message(text="""<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"><h3>Faboulous !!! You almost escaped from me, but I can't leave you that easy !!</h3> <p style="color:green; font-family: 'Nosifier', cursive;font-size:17px"> A door appears infront of you. When you to try to approach the door A big VASE appears infront of you. Let's see how you get past it</p>""")
                     return {"answer":current_object_details['answer'],"finished_objects":[],"level":level} 
             else:
                 help_remaining = tracker.get_slot("helps_remaining")
