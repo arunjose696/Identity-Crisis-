@@ -26,7 +26,7 @@ rules:
   steps: 
   - intent: current_object
   - action: action_room_two_interact
-  wait_for_user_input: false
+
 
 - rule: intro
   steps: 
@@ -63,7 +63,7 @@ rules:
   steps: 
   - intent: ask_for_clue
   - action: action_give_clue
-  wait_for_user_input: false
+
 
 - rule: Submit form
   condition:

@@ -164,6 +164,8 @@ nlu:
       - use [shovel](current_object)
       - Take [skeleton](current_object)
       - touch [skeleton](current_object)
+      - Dig it [skeleton](current_object)
+      - Dig [skeleton](current_object)
 
   - intent: wake_up
     examples: |

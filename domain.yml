@@ -171,6 +171,11 @@ slots:
     initial_value: []
     mappings:
     - type: custom
+  clue_level:
+    type: rasa.shared.core.slots.AnySlot
+    initial_value: 0
+    mappings:
+    - type: custom
 forms:
   name_form:
     required_slots:

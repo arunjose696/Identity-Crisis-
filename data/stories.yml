@@ -43,6 +43,11 @@ stories:
   - action: action_room_two_interact
 
 
+- story: third
+  steps:
+  - action: action_room_two_interact
+  - action: action_room_two_interact
+
 # - story: interactive_story_1
 #   steps:
 #   - slot_was_set:

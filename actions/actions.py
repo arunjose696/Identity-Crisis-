@@ -114,7 +114,7 @@ class RoomOneGiveClue(Action):
             dispatcher.utter_message(text="Pick up something first")
             return
         
-        
+        events = []        
         help_remaining = tracker.get_slot("helps_remaining")
         if True and help_remaining and help_remaining > 0:
             current_object = tracker.get_slot('current_object')
@@ -125,8 +125,18 @@ class RoomOneGiveClue(Action):
                 dispatcher.utter_message(text = "There are no clues I can give you for the {}".format(current_object)) 
                 return 
             clue = current_object_details['clue']
-            dispatcher.utter_message(text=create_box(clue))     
-            return [SlotSet("helps_remaining", help_remaining - 1)]
+            if type(clue) == str:
+                dispatcher.utter_message(text=create_box(clue))    
+            elif type(clue) == list:
+                clue_level = tracker.get_slot("clue_level")
+                if int(clue_level) + 1 <= len(clue):
+                    dispatcher.utter_message(text=create_box(clue[clue_level]))
+                    events.append(SlotSet("clue_level", clue_level + 1))
+                else:
+                    dispatcher.utter_message(text=create_box("THE CLUES FOR THIS RIDDLE HAS EXHAUSTED"))
+            
+            events.append(SlotSet("helps_remaining", help_remaining - 1))
+            return events
         else:
             dispatcher.utter_message(text="You have used all your clues")
 
@@ -143,6 +153,7 @@ class RoomOneInteract(Action):
         print("RoomOneInteract")
         print(tracker.latest_message)
         all_objects = tracker.get_slot('all_objects')
+        events = []
         for entity in tracker.latest_message["entities"]:
             if entity["entity"] == "current_object":
                 current_object = entity["value"]
@@ -180,10 +191,12 @@ class RoomOneInteract(Action):
                             finished_objects.append(current_object)
                             dispatcher.utter_message(text=object_data['action'])
                             dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
-                            
-                            return [SlotSet("finished_objects", list(set(finished_objects)))]
-                        
-                        return [SlotSet("current_object", current_object)]  
+                            events.append(SlotSet("clue_level", 0))
+                            events.append(SlotSet("finished_objects", list(set(finished_objects))))
+                            return events
+                        events.append(SlotSet("clue_level", 0))
+                        events.append(SlotSet("current_object", current_object))
+                        return events 
         dispatcher.utter_message(text=look_around(all_objects[level]))
 
 
@@ -274,12 +287,16 @@ class RoomTwoInteract(Action):
                     elif object_data['required_prop'] not in bag:
                         print(f"not in bag here {object}")
                         dispatcher.utter_message(text=object_data['pretext'])
-                        return [SlotSet("current_object", object)]
+                        events.append(SlotSet("clue_level", 0))
+                        events.append(SlotSet("current_object", object))
+                        return events
                     else :
                         dispatcher.utter_message(text=object_data['pretext'])
                         dispatcher.utter_message(text="something in your bag would help")
                         print(f"matched here {object}")
-                        return [SlotSet("current_object", object)]
+                        events.append(SlotSet("clue_level", 0))
+                        events.append(SlotSet("current_object", object))
+                        return events
             
                 if object_data['type']=='prop':
                     current_object = tracker.get_slot("current_object")
@@ -292,7 +309,7 @@ class RoomTwoInteract(Action):
                             if object in all_objects[level]:
                                 bag[object]= all_objects[level].pop(object) 
                                 events.append(SlotSet("bag", bag)) 
-                                #events.append(SlotSet("all_objects", all_objects)) 
+                                events.append(SlotSet("all_objects", all_objects)) 
                                  
                                      
                         else:
@@ -321,11 +338,13 @@ class RoomTwoInteract(Action):
                     print("-----------") 
                     events.append(SlotSet("current_object", current_object)) 
                     events.append(FollowupAction("answer_form")   )
+                    events.append(SlotSet("clue_level", 0))
                 elif object_data['type'] == "mechanical":
                     dispatcher.utter_message(text=object_data['completed'])
                     finished_objects.append(current_object)
                     dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
                     events.append(SlotSet("current_object", None))
+                    events.append(SlotSet("clue_level", 0))
                     events.append(SlotSet("finished_objects", list(set(finished_objects))))
                 elif object_data['type'] == "collection":
                     for item in object_data["collection"]:
@@ -491,6 +510,9 @@ class ValidateAnswerForm(FormValidationAction):
             if similarity>0.7:
                 # dispatcher.utter_message(text="Fantastic !!! You are one hurdle less from escaping!!")
                 finished_objects.append(current_object)
+                current_prop = tracker.get_slot("current_prop")
+                if current_prop is not None:
+                    finished_objects.append(current_prop)
                 finished_objects_statment = ", ".join(finished_objects)
                 remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
                 if len(remaining_objects) > 0:
@@ -693,7 +715,7 @@ class ActionDefaultFallback(Action):
     ) -> List[Dict[Text, Any]]:
         print("fallback")
         print(tracker.latest_message)
-        dispatcher.utter_message(template="my_custom_fallback_template")
+        dispatcher.utter_message(text="my_custom_fallback_template")
 
         # Revert user message which led to fallback.
         return []
