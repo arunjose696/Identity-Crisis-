@@ -7,8 +7,6 @@ def look_around(all_objects=[], finished_objects=[]):
         solved_item=""
         display_rem_item_text=""
         look_around_setting = "\n\nWhen you glance around the room, "
-        print("JJJJJJ")
-        print(remaining_objects_statment)
         if finished_objects:
             solved_item = "\nYou have already solved clues from <h3> {0} </h3>!!".format(finished_objects_statment)
         if remaining_objects_statment:

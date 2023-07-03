@@ -542,7 +542,7 @@ class ActionAskCarVersion(Action):
         print( "action_ask_answer")
         
         current_object = tracker.get_slot('current_object')
-        dispatcher.utter_message(text="The {} awaits an answer".format(current_object))
+        dispatcher.utter_message(text="The {} awaits an answer. You can use HELP to get clues from the girl.".format(current_object))
 
         return []           
          
@@ -581,7 +581,7 @@ class ValidateKeyForm(FormValidationAction):
         if attempt >= 3:
             #dispatcher.utter_message(text=type_write(text="Password is wrong the clown laughs viciously and stabs you right in your throat. You look at the clock it is 6:15, 6:15 the time of your death.", id="abc"))
             texts=["Password is wrong, the clown laughs viciously and stabs you right in your throat and you lie dead there, 6:15 the time of your death",
-                   "Suddenly you hear the alarm ringing at 6 am, you realise that it was all a deadly dream, and you WAKE UP slowly to play the actual game."]
+                   "Suddenly you hear the alarm ringing at 6 am, you realise that it was all a deadly dream afterall, now you have to actually WAKE UP to play the actual game. Type WAKEUP to start the game."]
             dispatcher.utter_message(text=type_write(texts))
             return {"fakekey":"value"}
             

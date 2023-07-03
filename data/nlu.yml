@@ -12,7 +12,7 @@ nlu:
 - intent: current_object
   examples: |
     - [Rock]{"entity": "current_object", "value": "rock"}
-    - [Watch]{"entity": "current_object", "value": "watch"}
+    - [Clock]{"entity": "current_object", "value": "clock"}
     - [Diary]{"entity": "current_object", "value": "diary"}
     - Pick up cat
     - [cabinet]{"entity": "current_object", "value": "Cabinet"}
@@ -49,6 +49,7 @@ nlu:
 - synonym: watch
   examples: |
     - Watch
+    - clock
 - synonym: diary
   examples: |
     - Diary

@@ -111,6 +111,7 @@ nlu:
       -Read [diary](current_object)
       -Read [old diary](current_object)
       -See [watch](current_object)
+      -See [clock](current_object)
       -Grab [warewolf mask](current_object)
       -Take the [vase](current_object)
       -Pick up [vase](current_object)

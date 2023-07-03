@@ -86,6 +86,8 @@ nlu:
       - wear wolf
       - wearwolf
       - wearwolf mask
+      - werewolf
+      - mask
 
   - synonym: skeleton
     examples: |
@@ -479,3 +481,13 @@ nlu:
       - grl
       - manequ girl
       - spooky girl
+
+  - synonym: water
+    examples: |
+      - bowl
+      - bowl of water
+      - bwl
+      - wter
+      - water bowl
+      - liquid bowl
+      - bowl with water
