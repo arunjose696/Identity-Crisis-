@@ -66,7 +66,7 @@ room_setting= [
     """,image_id="1hVztJmnl7miC1hFldqbamn2ADEhLcR6g"),
     """
     <link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"> 
-    <p style="font-family: 'Nosifer', cursive; font-size:17px;">If you look around the room you can find many SCARY OBJECTS like a spooky <h3 style="color:green;">little girl mannequin \U0001F9DB, a creepy looking cupboard \U0001F5C4, some hidden skeletons \U0001F480, and a Werewolf mask \U0001F43A,
+    <p style="font-family: 'Nosifer', cursive; font-size:17px;">If you look around the room you can find many SCARY OBJECTS like <h3 style="color:green;">a spooky little girl mannequin \U0001F9DB, a creepy looking cupboard \U0001F5C4, some hidden skeletons \U0001F480, and a Werewolf mask \U0001F43A,
 and some props like shovel \U000026CF, torch light \U0001F526, and a small bowl filled with water \U0001F963. 
 You have to use the PROPS to explore some OBJECTS. Pick any Scary Object</p>
 """
