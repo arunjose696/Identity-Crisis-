@@ -484,6 +484,8 @@ nlu:
       - little girl
       - spooky little girl
       - spooky
+      - girl mannequin
+
 
   - synonym: water
     examples: |
