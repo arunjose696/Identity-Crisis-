@@ -26,7 +26,7 @@ rules:
   steps: 
   - intent: current_object
   - action: action_room_two_interact
-  wait_for_user_input: false
+
 
 - rule: intro
   steps: 
@@ -63,7 +63,7 @@ rules:
   steps: 
   - intent: ask_for_clue
   - action: action_give_clue
-  wait_for_user_input: false
+
 
 - rule: Submit form
   condition:
@@ -73,7 +73,7 @@ rules:
   - active_loop: null
   - slot_was_set:
     - requested_slot: null
-  - action: action_intro
+  - action: action_start_fakekey_form
 
 - rule: Submit answer form
   condition:
@@ -90,6 +90,16 @@ rules:
   - active_loop: key_form
   steps:
   - action: key_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_intro
+
+- rule: Submit fake key form
+  condition:
+  - active_loop: fakekey_form
+  steps:
+  - action: fakekey_form
   - active_loop: null
   - slot_was_set:
     - requested_slot: null

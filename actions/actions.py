@@ -22,14 +22,16 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 from word2number import w2n
 import re
-from .intro import intro_messages,room_setting,all_objects_global,no_option_message
-from .utils import look_around
+from .intro import intro_messages,room_setting,all_objects_global,no_option_message,fakekey_utterences
+from .utils import look_around,type_write
 from rasa_sdk.events import UserUtteranceReverted, ActionExecuted
 import spacy
 from random import shuffle
 import nltk
 nltk.download('popular')
 nlp = spacy.load("en_core_web_md")
+import uuid
+from .utils import add_audio_and_image
 
 
 FIRST_ROOM_KEY="459"
@@ -43,6 +45,8 @@ def get_jumbled_name(name):
     word = list(name)
     shuffle(word)
     word = " ".join(word)
+    if word==name:
+        return get_jumbled_name(word)        
     return word.lower()
     
 
@@ -79,7 +83,10 @@ class IntroAction(Action):
         print("action_intro")
         name = tracker.get_slot('name')
         level =tracker.get_slot('level')
-        message = "Hello {0} !!!".format(name)+intro_messages[level]
+        if level == 1:
+            message = intro_messages[level]
+        else:
+            message = "Hello {0} !!!".format(name)+intro_messages[level]
         dispatcher.utter_message(text=message)
         return []
 class AskName(Action):
@@ -89,7 +96,7 @@ class AskName(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:     
-        dispatcher.utter_message(text="Welcome to Trap for Dummies!. To Start the challenge please enter your name.")
+        dispatcher.utter_message(text="""Welcome to Trap for Dummies!. To Start the challenge please enter your name.    <head><link rel="preload" href="https://drive.google.com/uc?id=18w_boFKDWwOVsc0g12CZBMWhKVQJQc_-" as="image"></head>""")
     
         return
 
@@ -110,7 +117,7 @@ class RoomOneGiveClue(Action):
             dispatcher.utter_message(text="Pick up something first")
             return
         
-        
+        events = []        
         help_remaining = tracker.get_slot("helps_remaining")
         if True and help_remaining and help_remaining > 0:
             current_object = tracker.get_slot('current_object')
@@ -121,9 +128,18 @@ class RoomOneGiveClue(Action):
                 dispatcher.utter_message(text = "There are no clues I can give you for the {}".format(current_object)) 
                 return 
             clue = current_object_details['clue']
-            dispatcher.utter_message(text = "The screen gets tuned on and you see")
-            dispatcher.utter_message(text=create_box(clue))     
-            return [SlotSet("helps_remaining", help_remaining - 1)]
+            if type(clue) == str:
+                dispatcher.utter_message(text=create_box(clue))    
+            elif type(clue) == list:
+                clue_level = tracker.get_slot("clue_level")
+                if int(clue_level) + 1 <= len(clue):
+                    dispatcher.utter_message(text=create_box(clue[clue_level]))
+                    events.append(SlotSet("clue_level", clue_level + 1))
+                else:
+                    dispatcher.utter_message(text=create_box("THE CLUES FOR THIS RIDDLE HAS EXHAUSTED"))
+            
+            events.append(SlotSet("helps_remaining", help_remaining - 1))
+            return events
         else:
             dispatcher.utter_message(text="You have used all your clues")
 
@@ -140,6 +156,7 @@ class RoomOneInteract(Action):
         print("RoomOneInteract")
         print(tracker.latest_message)
         all_objects = tracker.get_slot('all_objects')
+        events = []
         for entity in tracker.latest_message["entities"]:
             if entity["entity"] == "current_object":
                 current_object = entity["value"]
@@ -154,9 +171,13 @@ class RoomOneInteract(Action):
                 else:
                     if current_object in finished_objects:
                         dispatcher.utter_message(text="You had already cracked the puzzle I had in  {}".format(current_object))
+                        dispatcher.utter_message(text=look_around(all_objects[level],finished_objects))
+                        print("-------------")
+                        return
                     elif current_object not in all_objects[level]: 
+                        
                         dispatcher.utter_message(text="You don't have a {} in this room".format(current_object))                       
-                        dispatcher.utter_message(text=look_around(all_objects[level]))
+                        dispatcher.utter_message(text=look_around(all_objects[level],finished_objects))
                         print("-------------")
                         return 
                     else:
@@ -173,10 +194,12 @@ class RoomOneInteract(Action):
                             finished_objects.append(current_object)
                             dispatcher.utter_message(text=object_data['action'])
                             dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
-                            
-                            return [SlotSet("finished_objects", list(set(finished_objects)))]
-                        
-                        return [SlotSet("current_object", current_object)]  
+                            events.append(SlotSet("clue_level", 0))
+                            events.append(SlotSet("finished_objects", list(set(finished_objects))))
+                            return events
+                        events.append(SlotSet("clue_level", 0))
+                        events.append(SlotSet("current_object", current_object))
+                        return events 
         dispatcher.utter_message(text=look_around(all_objects[level]))
 
 
@@ -216,12 +239,12 @@ class RoomOneAnswerInteract(Action):
                         remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
                         if len(remaining_objects) > 0:
                             remaining_objects_statment = ", ".join(remaining_objects)
-                            display_rem_item_text = "<h3>Fantastic !!! You got it right!! </h3>As you have already solved {0}, you are left with <h1> {1} </h1> Pick the next object.".format(finished_objects_statment,remaining_objects_statment)
+                            display_rem_item_text = """<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"><h3>Fantastic !!! You got it right!! </h3>As you have already solved {0}, you are left with <h2 style="font-family: 'Nosifer', cursive; font-size:17pxpx;"> {1} </h2> Pick the next object.""".format(finished_objects_statment,remaining_objects_statment)
                             
                             dispatcher.utter_message(text=display_rem_item_text)
                             return [SlotSet("finished_objects", list(set(finished_objects))), SlotSet("current_object", None)]
                         else:
-                            dispatcher.utter_message(text=" Great, you got the digits. I love arranging everything in “order”, same can go with the digits. \nArrange it in the order of small to big.")
+                            dispatcher.utter_message(text="""<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"> <p style="color:green;font-family: 'Nosifier', cursive; font-size:17px;>Great, you got the digits. I love arranging everything in “order”, same can go with the digits. \nArrange it in the order of small to big.</p>""")
                             return [SlotSet("first_room_clues_done", True),FollowupAction("key_form"), SlotSet("current_object", None)]
                         # return [ConversationPaused()]
                     else:
@@ -238,7 +261,8 @@ class RoomTwoInteract(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print("action_room_two_interact")
-        print(tracker.latest_message["entities"])
+        # print(tracker.slots)
+        print(tracker.latest_message["text"])
         all_objects = tracker.get_slot('all_objects')
         level =tracker.get_slot('level')
         events=[]
@@ -251,6 +275,7 @@ class RoomTwoInteract(Action):
                 object = object.lower()
                 
                 if object not in all_objects[level] and object not in bag:
+                    print(f"---{object}---{level}------")
                     dispatcher.utter_message(text="You don't have a {} in this room".format(object))                       
                     dispatcher.utter_message(text=look_around(all_objects[level]))
                     return 
@@ -263,15 +288,22 @@ class RoomTwoInteract(Action):
                     if object_data['required_prop'] ==  tracker.get_slot("current_prop"):
                         pass
                     elif object_data['required_prop'] not in bag:
+                        print(f"not in bag here {object}")
                         dispatcher.utter_message(text=object_data['pretext'])
-                        return [SlotSet("current_object", object)]
+                        events.append(SlotSet("clue_level", 0))
+                        events.append(SlotSet("current_object", object))
+                        return events
                     else :
                         dispatcher.utter_message(text=object_data['pretext'])
                         dispatcher.utter_message(text="something in your bag would help")
-                        return [SlotSet("current_object", object)]
+                        print(f"matched here {object}")
+                        events.append(SlotSet("clue_level", 0))
+                        events.append(SlotSet("current_object", object))
+                        return events
             
                 if object_data['type']=='prop':
                     current_object = tracker.get_slot("current_object")
+                    print(f"CURRENT 345 {current_object}")
                     if current_object:
                         if all_objects[level][current_object]['required_prop']==object:
                             dispatcher.utter_message(text=object_data['use'])
@@ -309,15 +341,19 @@ class RoomTwoInteract(Action):
                     print("-----------") 
                     events.append(SlotSet("current_object", current_object)) 
                     events.append(FollowupAction("answer_form")   )
+                    events.append(SlotSet("clue_level", 0))
                 elif object_data['type'] == "mechanical":
                     dispatcher.utter_message(text=object_data['completed'])
                     finished_objects.append(current_object)
                     dispatcher.utter_message(text=look_around(all_objects[level], finished_objects=finished_objects))
                     events.append(SlotSet("current_object", None))
+                    events.append(SlotSet("clue_level", 0))
                     events.append(SlotSet("finished_objects", list(set(finished_objects))))
                 elif object_data['type'] == "collection":
                     for item in object_data["collection"]:
+                        
                         all_objects[level][item["item"]] = item
+                        print(f"all_objects is {all_objects}")
                         events.append(SlotSet("all_objects", all_objects))                    
                     finished_objects.append(current_object)
                     dispatcher.utter_message(text=object_data['action'])
@@ -328,7 +364,7 @@ class RoomTwoInteract(Action):
                 if len(remaining_objects)==0:
                     level=level+1
                     events.append(SlotSet("level", level))
-                    dispatcher.utter_message(text="You see door infront of you. When you to try to approach the door A big vase appears infront of you. Let's see how you get past it")
+                    dispatcher.utter_message(text=add_audio_and_image("You see door infront of you. When you to try to approach the door A big VASE appears infront of you. Let's see how you get past it, (try to pick it up)",image_id="16hTtS9bKQJUZX1RcHjEX4qv8g9il0hk2"))
                     events.append(SlotSet("finished_objects", []))
                 return events
         dispatcher.utter_message(text="pick up something in the room")
@@ -372,6 +408,17 @@ class BagInteract(Action):
             dispatcher.utter_message(text="In Bag you can find {}. Things in bag will be used automatically when its needed".format(bag_items_statment))
         else:
             dispatcher.utter_message(text="No Things in bag")
+
+
+class StartFakeKeyForm(Action):
+    def name(self) -> Text:
+        return "action_start_fakekey_form"
+    
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print("action_start_fakekey_form")
+        return [FollowupAction("fakekey_form")]
 
 
 class RoomTwoAnswerInteract(Action):
@@ -453,7 +500,7 @@ class ValidateAnswerForm(FormValidationAction):
             user_answer = str(user_answer)
             if correct_answer.strip().lower() == user_answer.strip().lower():
                 print("inside if user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
-                dispatcher.utter_message(text="Yes, you were the survivor afterall and now that you revealed the name yourself there is no way you can escape.I always intended for you to stay here with me, let's live together forever HAHAHAHAHAHA")
+                dispatcher.utter_message(text="Yes, you were the survivor afterall and now that you revealed the name yourself .I am letting you free this time.")
                 return {"answer":user_answer} 
             else:
                 print("inside else user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
@@ -466,17 +513,20 @@ class ValidateAnswerForm(FormValidationAction):
             if similarity>0.7:
                 # dispatcher.utter_message(text="Fantastic !!! You are one hurdle less from escaping!!")
                 finished_objects.append(current_object)
+                current_prop = tracker.get_slot("current_prop")
+                if current_prop is not None:
+                    finished_objects.append(current_prop)
                 finished_objects_statment = ", ".join(finished_objects)
                 remaining_objects = list((set(all_objects[level].keys())) - set(finished_objects))
                 if len(remaining_objects) > 0:
                     remaining_objects_statment = ", ".join(remaining_objects)
-                    display_rem_item_text = "<h3>Fantastic !!! You are one hurdle less from escaping!!</h3> As you have already solved {0}, you are left with <h2> {1} </h2> Pickup the next object.".format(finished_objects_statment,remaining_objects_statment)
+                    display_rem_item_text = """<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"><h3>Fantastic !!! You are one hurdle less from escaping!!</h3> As you have already solved {0}, you are left with <h2 style="font-family: 'Nosifer', cursive; font-size:17px;"> {1} </h2> Pickup the next object.""".format(finished_objects_statment,remaining_objects_statment)
                     dispatcher.utter_message(text=display_rem_item_text)
                     return {"answer":current_object_details['answer'],"finished_objects":finished_objects} 
                 else:
                     # dispatcher.utter_message(text="You have solved all clues in this room")
                     level = level+1
-                    dispatcher.utter_message(text="<h3>Faboulous !!! You almost escaped from me, but I can't leave you that easy !!</h3> A door appears infront of you. When you to try to approach the door A big vase appears infront of you. Let's see how you get past it")
+                    dispatcher.utter_message(text="""<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"><h3>Faboulous !!! You almost escaped from me, but I can't leave you that easy !!</h3> <p style="color:green; font-family: 'Nosifier', cursive;font-size:17px"> A door appears infront of you. When you to try to approach the door A big VASE appears infront of you. Let's see how you get past it</p>""")
                     return {"answer":current_object_details['answer'],"finished_objects":[],"level":level} 
             else:
                 help_remaining = tracker.get_slot("helps_remaining")
@@ -492,7 +542,7 @@ class ActionAskCarVersion(Action):
         print( "action_ask_answer")
         
         current_object = tracker.get_slot('current_object')
-        dispatcher.utter_message(text="The {} awaits an answer".format(current_object))
+        dispatcher.utter_message(text="The {} awaits an answer. You can use HELP to get clues from the girl.".format(current_object))
 
         return []           
          
@@ -505,7 +555,105 @@ class ActionResetAnswerSlot(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         return [SlotSet("answer", None)]     
         
+class ValidateKeyForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_fakekey_form"
 
+    def validate_fakekey(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate `key` value."""
+        print("validate fake_key action")
+        attempt = tracker.get_slot('attempt')
+        
+        numbers=re.findall(r"\d+", slot_value)
+        if not numbers:
+            dispatcher.utter_message(text="Let us deal with all that later, now try to guess a 3 digit key")
+            return {"fakekey":None}
+        if  len(numbers[0]) !=3:
+            dispatcher.utter_message(text="Lock takes a 3 digit key")
+            return {"fakekey":None}
+        attempt=attempt+1
+        if attempt >= 3:
+            #dispatcher.utter_message(text=type_write(text="Password is wrong the clown laughs viciously and stabs you right in your throat. You look at the clock it is 6:15, 6:15 the time of your death.", id="abc"))
+            texts=["Password is wrong, the clown laughs viciously and stabs you right in your throat and you lie dead there, 6:15 the time of your death",
+                   "Suddenly you hear the alarm ringing at 6 am, you realise that it was all a deadly dream afterall, now you have to actually WAKE UP to play the actual game. Type WAKEUP to start the game."]
+            dispatcher.utter_message(text=type_write(texts))
+            return {"fakekey":"value"}
+            
+        status=""
+        mistakes = 0
+        user_entry=numbers[0]
+        for i in range(3):
+            if user_entry[i] == FIRST_ROOM_KEY[i]:
+                status+="\U00002705 "
+            else:
+                status+= "\U0000274C "
+                mistakes += 1
+        
+        #todo add validations to handle different type of numbers
+        if mistakes>0:
+            print("inside if")
+            dispatcher.utter_message(text="Looks like the key is wrong, the number lock shows \n{}".format(status))
+            
+            
+            return {"fakekey":None,"attempt":attempt}
+        else:
+            dispatcher.utter_message(text="Looks like the key is right, but the door does not open\n{}".format(status))
+            return {"fakekey":None,"attempt":attempt}
+    
+    def validate_wakeup(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        intent = tracker.latest_message.get('intent', {}).get('name')
+        if intent== "wake_up":
+            return {"wakeup":"Done"}
+        else:
+            dispatcher.utter_message(text="Try waking up first")
+            return  {"wakeup":None}
+            
+            
+        
+class ActionAskFakeKey(Action):
+    def name(self):
+        return "action_ask_fakekey"
+
+    def run(self, dispatcher, tracker, domain):
+        print( "action_ask_fakekey")
+        attempt = tracker.get_slot('attempt')
+        previousattempt = tracker.get_slot('previousattempt')
+        if attempt != previousattempt:
+            dispatcher.utter_message(text="{}".format(fakekey_utterences[attempt]))
+        
+        previousattempt = attempt
+
+        return [SlotSet("previousattempt", previousattempt)] 
+
+class ActionAskWakeUp(Action):
+    def name(self):
+        return "action_ask_wakeup"
+
+    def run(self, dispatcher, tracker, domain):
+        print( "action_ask_wakeup")
+        
+        level=tracker.get_slot('level')
+        if level==-1:
+            level+=1
+            dispatcher.utter_message(text=add_audio_and_image("......",audio_id="1xKmT7QwYQjxJg9Rnymv3QO9eQThG2YaF"))
+            return [SlotSet("level",level)]
+        else:
+            dispatcher.utter_message(text="Wake up to start the game")
+            
+        
+        
     
 class ValidateKeyForm(FormValidationAction):
     def name(self) -> Text:
@@ -545,7 +693,7 @@ class ValidateKeyForm(FormValidationAction):
             
             return {"key":None}
         else:
-            dispatcher.utter_message(text="The number lock clicks.")
+            dispatcher.utter_message(text=("The number lock clicks."))
             dispatcher.utter_message(text=numberlock(status))
             
             level = level+1
@@ -569,7 +717,8 @@ class ActionDefaultFallback(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
         print("fallback")
-        dispatcher.utter_message(template="my_custom_fallback_template")
+        print(tracker.latest_message)
+        dispatcher.utter_message(text="my_custom_fallback_template")
 
         # Revert user message which led to fallback.
-        return [UserUtteranceReverted()]
+        return []

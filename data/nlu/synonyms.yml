@@ -1,3 +1,4 @@
+version: "3.1"
 nlu:
   - synonym: bed
     examples: |
@@ -71,7 +72,7 @@ nlu:
       - wacth
       - watchh
 
-  - synonym: werewolf
+  - synonym: werewolf mask
     examples: |
       - were wolf
       - warewolf
@@ -85,6 +86,8 @@ nlu:
       - wear wolf
       - wearwolf
       - wearwolf mask
+      - werewolf
+      - mask
 
   - synonym: skeleton
     examples: |
@@ -96,6 +99,8 @@ nlu:
       - skleton
       - skelleton
       - skeletal system
+      - dig it
+      - skeletons
 
   - synonym: cabinet
     examples: |
@@ -476,3 +481,73 @@ nlu:
       - grl
       - manequ girl
       - spooky girl
+      - little girl
+      - spooky little girl
+      - spooky
+      - girl mannequin
+
+
+  - synonym: water
+    examples: |
+      - bowl
+      - bowl of water
+      - bwl
+      - wter
+      - water bowl
+      - liquid bowl
+      - bowl with water
+      - bowl filled with water
+  - synonym: torch
+    examples: |
+      - torch light
+      - light
+      - torchlight
+      - tarch
+      - yellow light
+  - synonym: diary
+    examples: |
+      - dairy
+      - old dairy
+      - old diary
+      - an old diary
+      - an old dairy
+      - a diary
+      - a dairy
+      - olddairy
+      - olddiary
+  - synonym: clock
+    examples: |
+      - wall clock
+      - watch
+      - clck
+      - time
+      - wallclock
+      - clock from USA
+      - USA clock
+  - synonym: rock
+    examples: |
+      - roman rock
+      - ancient rock
+      - ancient roman rock
+      - romanrock
+      - ancientrock
+      - romon rock
+      - rack
+      - ancientromanrock
+      - roman
+      - ancient
+      - stone
+  - synonym: vase
+    examples: |
+      - vose
+      - dusty vase
+  - synonym: paper
+    examples: |
+      - scrambled paper
+      - scramble
+      - scrample paper
+      - scrumble paper
+      - scrambled paper
+      - scrampled paper
+      - scrambledpaper
+      - scrambled
