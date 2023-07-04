@@ -46,7 +46,7 @@ intro_messages=[
 <link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet">
 <p style="color:brown;font-family: 'Nosifer', cursive; font-size:17px;">You have to play the game in a HAUNTED MANSION where you can see only darkness, so practically you wil be blind. As soon as you enter the mansion you hear a voice.</p>
 <p style="color:green;font-family: 'Nosifer', cursive; font-size:17px;">Little girl: Hey....Mate!!!! Welcome to the mansion, Do you remember me??? Probably not!!!! You are a person who could see future in dreams, yes you are thinking it right, we both are trapped here by a CLOWN for real this time, he is coming to kill us. He has set up some puzzles. If we solve those problems we will get some 3 digit key to exit a door. Will you please help me?</p>
-    """,image_id="11R8WIAChMu1PKQ9HnyhLcMq94DijDL0S"),
+    """,image_id="1hVztJmnl7miC1hFldqbamn2ADEhLcR6g"),
 
     add_audio_and_image("""
 <link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet">
@@ -54,7 +54,7 @@ intro_messages=[
 <p style="color:red;font-family: 'Nosifer', cursive; font-size:15px;">Witch:Hehe thank you for letting me escape. I am the witch you, you stupid clown trapped to save the world from me. I blinded you and took away your memories so I can escape from your room of riddles</p>
 <h3> Now I have escaped you are in my room now. I will let you play a game here,  you will again solve clues, if you solve all my clues I don’t kill you today.
 Do you want to explore the room?</h3>    
-    """,audio_id="1cxR9lUcyYRpdivh9AHXUS0E-Dj7iWb4E",image_id="1kgAnnELo1MPJZLxCNSIhl6E9adpA-loD")
+    """,audio_id="1cxR9lUcyYRpdivh9AHXUS0E-Dj7iWb4E",image_id="1kgAnnELo1MPJZLxCNSIhl6E9adpA-loD", pos="contain")
     
 ]
 

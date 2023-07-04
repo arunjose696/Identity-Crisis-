@@ -647,7 +647,7 @@ class ActionAskWakeUp(Action):
         level=tracker.get_slot('level')
         if level==-1:
             level+=1
-            dispatcher.utter_message(text="......")
+            dispatcher.utter_message(text=add_audio_and_image("......",audio_id="1xKmT7QwYQjxJg9Rnymv3QO9eQThG2YaF"))
             return [SlotSet("level",level)]
         else:
             dispatcher.utter_message(text="Wake up to start the game")
