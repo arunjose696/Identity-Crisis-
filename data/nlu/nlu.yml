@@ -119,6 +119,7 @@ nlu:
       - [warewolf mask](current_object)
       - Take the [vase](current_object)
       - [vase](current_object)
+      - Touch [vase]
       - Pick up [vase](current_object)
       - Pick up [paper](current_object)
       - Pick up [rock](current_object)
