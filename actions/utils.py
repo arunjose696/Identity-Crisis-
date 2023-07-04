@@ -21,7 +21,7 @@ def unwrap(finished_objects, tracker, current_object):
     finished_objects.append(current_object)
     
 def add_audio_and_image(text, audio_id=None,image_id=None):
-    image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; })(); </script>"
+    image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; document.body.style.backgroundPosition = 'center'; document.body.style.backgroundRepeat = 'no-repeat'; document.body.style.height = '100vh'; document.body.style.margin = '0'; document.body.style.padding = '0';})(); </script>"
     audio = "<audio autoplay> <source src= \"https://drive.google.com/uc?id={} \" type= \"audio/ogg \"></audio>".format(audio_id)
     if audio_id and image_id:
         return text + image + audio

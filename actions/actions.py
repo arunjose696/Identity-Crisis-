@@ -500,7 +500,7 @@ class ValidateAnswerForm(FormValidationAction):
             user_answer = str(user_answer)
             if correct_answer.strip().lower() == user_answer.strip().lower():
                 print("inside if user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
-                dispatcher.utter_message(text="Yes, you were the survivor afterall and now that you revealed the name yourself there is no way you can escape.I always intended for you to stay here with me, let's live together forever HAHAHAHAHAHA")
+                dispatcher.utter_message(text="Yes, you were the survivor afterall and now that you revealed the name yourself .I am letting you free this time.")
                 return {"answer":user_answer} 
             else:
                 print("inside else user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))

@@ -37,7 +37,7 @@ fakekey_utterences=[
     <link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet">
     <p style="color:brown;font-family: 'Nosifier', cursive; font-size:17px;">Narration:   The clown is right beside you, he makes a severe blow with a shovel, the girl's head is chopped off brutally and blood sprays on your face.</p>
     <p style="color:green;font-family: 'Nosifer', cursive; font-size:17px;">Little girl:   AAAAAAAHHHHHHHHH, I b...b......b...believed you were my savior.</p>
-    <p style="color:brown;font-family: 'Nosifier', cursive; font-size:17px;">Narration:   Little girl is dead now, before the clown chops off your head also, you can quickly give one more try for the lock to save at least yourself. Do a last guess.</p>
+    <p style="color:brown;font-family: 'Nosifier', cursive; font-size:17px;">Narration:   Little girl is dead now, before the clown chops off your head also, you can quickly give one more try for the lock to save at least yourself. There were no clues leading to any number till now, all you can do is just a last random guess.</p>
     """,audio_id="1WlnVNbiX4yYnGHFb7ndT5lBGBtrrPwXT",image_id="1BOv4W_7KdZ64MdruMMJelMd3p3c9dEDZ")
 ]
 intro_messages=[
