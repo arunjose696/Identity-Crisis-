@@ -101,6 +101,7 @@ nlu:
       - skeletal system
       - dig it
       - skeletons
+      - dig
 
   - synonym: cabinet
     examples: |
