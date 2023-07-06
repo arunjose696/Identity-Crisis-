@@ -21,13 +21,11 @@ def unwrap(finished_objects, tracker, current_object):
     finished_objects.append(current_object)
     
 def add_audio_and_image(text, audio_id=None,image_id=None, pos="center"):
-    print(pos)
     if image_id:
         if pos=="center":
-            image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+f"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; document.body.style.backgroundPosition = '"+pos+"'; document.body.style.backgroundRepeat = 'no-repeat'; document.body.style.height = '100vh'; document.body.style.margin = '0'; document.body.style.padding = '0';})(); </script>"
+            image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+f"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; document.body.style.backgroundSize = '100\% 100\%'; document.body.style.backgroundPosition = '"+pos+"'; document.body.style.backgroundRepeat = 'no-repeat'; document.body.style.height = '100vh'; document.body.style.margin = '0'; document.body.style.padding = '0';})(); </script>"
         else:
-            print("here")
-            image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; })(); </script>"
+            image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl;document.body.style.backgroundSize = '100\% 100\%'; })(); </script>"
             
     if audio_id:
         audio = "<audio autoplay> <source src= \"https://drive.google.com/uc?id={} \" type= \"audio/ogg \"></audio>".format(audio_id)
@@ -52,7 +50,7 @@ def type_write(texts):
       code_segments.append(f"<p id=\'abc{i}\'></p>")
     code_segments.append("<script>")
     for i in range(1, num_instances + 1):
-        code_segment = f''' const text{i} = \"{texts[i-1]}\"; const speed{i} = 25; let index{i} = 0; const abc{i} = document.getElementById(\"abc{i}\"); function type{i}() {{ if (index{i} < text{i}.length) {{ abc{i}.innerHTML += text{i}.charAt(index{i}); index{i}++; setTimeout(type{i}, speed{i}); }} else {{ setTimeout(() =>type{i+1}(), 2000); }} }} '''
+        code_segment = f''' const text{i} = \"{texts[i-1]}\"; const speed{i} = 25; let index{i} = 0; const abc{i} = document.getElementById(\"abc{i}\"); function type{i}() {{ if (index{i} < text{i}.length) {{ abc{i}.innerHTML += text{i}.charAt(index{i}); index{i}++; setTimeout(type{i}, speed{i}); }} else {{ setTimeout(() =>type{i+1}(), 1000); }} }} '''
     
         code_segments.append(code_segment)
     
