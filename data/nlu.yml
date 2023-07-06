@@ -28,9 +28,7 @@ nlu:
     - [9](number_answer)
     - [4](number_answer)
     - [459](number_answer)
-- intent: riddle_answer
-  examples: |
-    - [Dead sea](answer)
+
 - intent: test
   examples: |
     - Asdfghjkl

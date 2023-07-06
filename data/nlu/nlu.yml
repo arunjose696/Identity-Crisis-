@@ -169,8 +169,6 @@ nlu:
       - Take [skeleton](current_object)
       - [skeleton](current_object)
       - touch [skeleton](current_object)
-      - Dig it [skeleton](current_object)
-      - Dig [skeleton](current_object)
       - Pickup the [skeleton](current_object)
       - Pick up [water](current_object)
       - [water](current_object)
@@ -218,7 +216,6 @@ nlu:
       - Look in the bag
       - Look bag
       - Inside bag
-      - Bag
       - Whats inside bag
       - Check Bag
 

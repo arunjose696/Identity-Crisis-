@@ -528,7 +528,7 @@ class ValidateAnswerForm(FormValidationAction):
                 else:
                     # dispatcher.utter_message(text="You have solved all clues in this room")
                     level = level+1
-                    dispatcher.utter_message(text="""<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"><h3>Faboulous !!! You almost escaped from me, but I can't leave you that easy !!</h3> <p style="color:green; font-family: 'Nosifier', cursive;font-size:17px"> A door appears infront of you. When you to try to approach the door A big VASE appears infront of you. Let's see how you get past it</p>""")
+                    dispatcher.utter_message(text="""<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"><h3>Faboulous !!! You almost escaped from me, but I can't leave you that easy !!</h3> <p style="color:green; font-family: 'Nosifier', cursive;font-size:17px"> A door appears infront of you. When you to try to approach the door A big VASE appears infront of you. Let's see how you get past it , (try to pick up the VASE)</p>""")
                     return {"answer":current_object_details['answer'],"finished_objects":[],"level":level} 
             else:
                 help_remaining = tracker.get_slot("helps_remaining")
