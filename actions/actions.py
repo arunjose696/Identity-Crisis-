@@ -244,7 +244,7 @@ class RoomOneAnswerInteract(Action):
                             dispatcher.utter_message(text=display_rem_item_text)
                             return [SlotSet("finished_objects", list(set(finished_objects))), SlotSet("current_object", None)]
                         else:
-                            dispatcher.utter_message(text="""<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"> <p style="color:green;font-family: 'Nosifier', cursive; font-size:17px;>Great, you got the digits. I love arranging everything in “order”, same can go with the digits. \nArrange it in the order of small to big.</p>""")
+                            dispatcher.utter_message(text="""<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"> <p style="color:green;font-family: 'Nosifier', cursive; font-size:30px;">Great, you got the digits. I love arranging everything in “order”, same can go with the digits. \nArrange it in the order of small to big.</p>""")
                             return [SlotSet("first_room_clues_done", True),FollowupAction("key_form"), SlotSet("current_object", None)]
                         # return [ConversationPaused()]
                     else:
@@ -336,11 +336,13 @@ class RoomTwoInteract(Action):
                         name = tracker.get_slot('name')
                         jumbled_name = get_jumbled_name(name)
                         dispatcher.utter_message(text=object_data['question'].format(jumbled_name))
+                        events.append(FollowupAction("finalanswer_form")   )
                     else:
                         dispatcher.utter_message(text=object_data['question'])
+                        events.append(FollowupAction("answer_form")   )
                     print("-----------") 
                     events.append(SlotSet("current_object", current_object)) 
-                    events.append(FollowupAction("answer_form")   )
+                    
                     events.append(SlotSet("clue_level", 0))
                 elif object_data['type'] == "mechanical":
                     dispatcher.utter_message(text=object_data['completed'])
@@ -526,13 +528,49 @@ class ValidateAnswerForm(FormValidationAction):
                 else:
                     # dispatcher.utter_message(text="You have solved all clues in this room")
                     level = level+1
-                    dispatcher.utter_message(text="""<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"><h3>Faboulous !!! You almost escaped from me, but I can't leave you that easy !!</h3> <p style="color:green; font-family: 'Nosifier', cursive;font-size:17px"> A door appears infront of you. When you to try to approach the door A big VASE appears infront of you. Let's see how you get past it</p>""")
+                    dispatcher.utter_message(text="""<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"><h3>Faboulous !!! You almost escaped from me, but I can't leave you that easy !!</h3> <p style="color:green; font-family: 'Nosifier', cursive;font-size:17px"> A door appears infront of you. When you to try to approach the door A big VASE appears infront of you. Let's see how you get past it , (try to pick up the VASE)</p>""")
                     return {"answer":current_object_details['answer'],"finished_objects":[],"level":level} 
             else:
                 help_remaining = tracker.get_slot("helps_remaining")
                 dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(help_remaining))
             return {"answer":None} 
-             
+
+
+class ValidateAnswerForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_finalanswer_form"
+
+    def validate_finalanswer(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate `key` value."""
+        print("validate final answer action")
+        print(tracker.latest_message)
+        level = tracker.get_slot('level')
+        form_exit_intents = ["current_object","look_around_room"]
+        user_answer= nlp(tracker.latest_message["text"])
+        all_objects = tracker.get_slot('all_objects')
+        current_object = tracker.get_slot('current_object')
+        finished_objects = tracker.get_slot('finished_objects')
+        current_object_details = all_objects[level][current_object]
+        print("level {} current_object{}".format(level,current_object))
+        if level == 2 and current_object == 'paper':
+            print("user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
+            correct_answer = tracker.get_slot('name')
+            user_answer = str(user_answer)
+            if correct_answer.strip().lower() == user_answer.strip().lower():
+                print("inside if user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
+                dispatcher.utter_message(text="Yes, you were the survivor afterall and now that you revealed the name yourself .I am letting you free this time.")
+                return {"answer":user_answer} 
+            else:
+                print("inside else user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
+                dispatcher.utter_message(text="Try to solve the  jumbled letters")
+                return {"answer":None} 
+              
         
 class ActionAskCarVersion(Action):
     def name(self):
@@ -647,7 +685,7 @@ class ActionAskWakeUp(Action):
         level=tracker.get_slot('level')
         if level==-1:
             level+=1
-            dispatcher.utter_message(text=add_audio_and_image("......",audio_id="1xKmT7QwYQjxJg9Rnymv3QO9eQThG2YaF"))
+            dispatcher.utter_message(text=add_audio_and_image("",audio_id="1xKmT7QwYQjxJg9Rnymv3QO9eQThG2YaF"))
             return [SlotSet("level",level)]
         else:
             dispatcher.utter_message(text="Wake up to start the game")
