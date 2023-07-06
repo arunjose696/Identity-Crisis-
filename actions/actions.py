@@ -244,7 +244,7 @@ class RoomOneAnswerInteract(Action):
                             dispatcher.utter_message(text=display_rem_item_text)
                             return [SlotSet("finished_objects", list(set(finished_objects))), SlotSet("current_object", None)]
                         else:
-                            dispatcher.utter_message(text="""<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"> <p style="color:green;font-family: 'Nosifier', cursive; font-size:17px;>Great, you got the digits. I love arranging everything in “order”, same can go with the digits. \nArrange it in the order of small to big.</p>""")
+                            dispatcher.utter_message(text="""<link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet"> <p style="color:green;font-family: 'Nosifier', cursive; font-size:30px;">Great, you got the digits. I love arranging everything in “order”, same can go with the digits. \nArrange it in the order of small to big.</p>""")
                             return [SlotSet("first_room_clues_done", True),FollowupAction("key_form"), SlotSet("current_object", None)]
                         # return [ConversationPaused()]
                     else:
@@ -685,7 +685,7 @@ class ActionAskWakeUp(Action):
         level=tracker.get_slot('level')
         if level==-1:
             level+=1
-            dispatcher.utter_message(text=add_audio_and_image("......",audio_id="1xKmT7QwYQjxJg9Rnymv3QO9eQThG2YaF"))
+            dispatcher.utter_message(text=add_audio_and_image("",audio_id="1xKmT7QwYQjxJg9Rnymv3QO9eQThG2YaF"))
             return [SlotSet("level",level)]
         else:
             dispatcher.utter_message(text="Wake up to start the game")

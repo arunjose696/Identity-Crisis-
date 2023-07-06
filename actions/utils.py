@@ -22,10 +22,16 @@ def unwrap(finished_objects, tracker, current_object):
     
 def add_audio_and_image(text, audio_id=None,image_id=None, pos="center"):
     if image_id:
-        if pos=="center":
-            image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+f"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; document.body.style.backgroundSize = '100\% 100\%'; document.body.style.backgroundPosition = '"+pos+"'; document.body.style.backgroundRepeat = 'no-repeat'; document.body.style.height = '100vh'; document.body.style.margin = '0'; document.body.style.padding = '0';})(); </script>"
+        if image_id != "18w_boFKDWwOVsc0g12CZBMWhKVQJQc_-":
+            if pos=="center":
+                image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+f"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; document.body.style.backgroundSize = '100\% 100\%'; document.body.style.backgroundPosition = '"+pos+"'; document.body.style.backgroundRepeat = 'no-repeat'; document.body.style.height = '100vh'; document.body.style.margin = '0'; document.body.style.padding = '0';})(); </script>"
+            else:
+                image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl;document.body.style.backgroundSize = '100\% 100\%'; })(); </script>"
         else:
-            image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl;document.body.style.backgroundSize = '100\% 100\%'; })(); </script>"
+            if pos=="center":
+                image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+f"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; document.body.style.backgroundPosition = '"+pos+"'; document.body.style.backgroundRepeat = 'no-repeat'; document.body.style.height = '100vh'; document.body.style.margin = '0'; document.body.style.padding = '0';})(); </script>"
+            else:
+                image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; })(); </script>"
             
     if audio_id:
         audio = "<audio autoplay> <source src= \"https://drive.google.com/uc?id={} \" type= \"audio/ogg \"></audio>".format(audio_id)
