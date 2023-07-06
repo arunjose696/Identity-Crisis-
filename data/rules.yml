@@ -85,6 +85,16 @@ rules:
     - requested_slot: null
   - action: action_reset_answer
 
+- rule: Submit finalanswer form
+  condition:
+  - active_loop: finalanswer_form
+  steps:
+  - action: finalanswer_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_reset_answer
+
 - rule: Submit form
   condition:
   - active_loop: key_form

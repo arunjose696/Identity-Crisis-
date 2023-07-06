@@ -336,11 +336,13 @@ class RoomTwoInteract(Action):
                         name = tracker.get_slot('name')
                         jumbled_name = get_jumbled_name(name)
                         dispatcher.utter_message(text=object_data['question'].format(jumbled_name))
+                        events.append(FollowupAction("finalanswer_form")   )
                     else:
                         dispatcher.utter_message(text=object_data['question'])
+                        events.append(FollowupAction("answer_form")   )
                     print("-----------") 
                     events.append(SlotSet("current_object", current_object)) 
-                    events.append(FollowupAction("answer_form")   )
+                    
                     events.append(SlotSet("clue_level", 0))
                 elif object_data['type'] == "mechanical":
                     dispatcher.utter_message(text=object_data['completed'])
@@ -532,7 +534,43 @@ class ValidateAnswerForm(FormValidationAction):
                 help_remaining = tracker.get_slot("helps_remaining")
                 dispatcher.utter_message(text="The Answer you entered is wrong, You have {} helps pending may be use one or try something else".format(help_remaining))
             return {"answer":None} 
-             
+
+
+class ValidateAnswerForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_finalanswer_form"
+
+    def validate_finalanswer(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate `key` value."""
+        print("validate final answer action")
+        print(tracker.latest_message)
+        level = tracker.get_slot('level')
+        form_exit_intents = ["current_object","look_around_room"]
+        user_answer= nlp(tracker.latest_message["text"])
+        all_objects = tracker.get_slot('all_objects')
+        current_object = tracker.get_slot('current_object')
+        finished_objects = tracker.get_slot('finished_objects')
+        current_object_details = all_objects[level][current_object]
+        print("level {} current_object{}".format(level,current_object))
+        if level == 2 and current_object == 'paper':
+            print("user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
+            correct_answer = tracker.get_slot('name')
+            user_answer = str(user_answer)
+            if correct_answer.strip().lower() == user_answer.strip().lower():
+                print("inside if user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
+                dispatcher.utter_message(text="Yes, you were the survivor afterall and now that you revealed the name yourself .I am letting you free this time.")
+                return {"answer":user_answer} 
+            else:
+                print("inside else user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
+                dispatcher.utter_message(text="Try to solve the  jumbled letters")
+                return {"answer":None} 
+              
         
 class ActionAskCarVersion(Action):
     def name(self):
