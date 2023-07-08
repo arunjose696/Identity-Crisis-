@@ -29,7 +29,7 @@ fakekey_utterences=[
     """
     <link rel=“preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Creepster&family=Eater&family=Nosifer&display=swap" rel="stylesheet">
     <p style="color:brown;font-family: 'Nosifier', cursive; font-size:17px;">The footsteps of the killer are getting closer.</p>
-    <p style="color:green;font-family: 'Nosifer', cursive; font-size:17px;">You can't loose hope with just one try, Please try again, if your luck clicks we both can be escape. The killer is approaching us fast.</p>
+    <p style="color:green;font-family: 'Nosifer', cursive; font-size:17px;">You can't loose hope with just one try, Please try again, if your luck clicks we both can escape. The killer is approaching us fast.</p>
     <p style="color:brown;font-family: 'Nosifier', cursive; font-size:17px;">Try guessing any random 3 digit code again.</p>
     
     """,
@@ -79,6 +79,8 @@ Almost at the last state.
 ]
 no_option_message=[
     "We don't have an option, we need to be saved, please help and save me. \n",
+    "It is funny you still think you have a choice \n",
+    "No is not an option, you should go ahead"
 ]
 
 
