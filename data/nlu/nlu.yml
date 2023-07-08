@@ -96,15 +96,15 @@ nlu:
       - Number is [eight](number_answer)
       - Number is [nine](number_answer)
 
-  - intent: riddle_answer
-    examples: |
-      - The answer is [Dead Sea](riddle_answer)
-      - Is it [Dead Sea](riddle_answer)
-      - [Dead Sea](riddle_answer)
-      - [Blood](riddle_answer)
-      - The answer is [Blood](riddle_answer)
-      - Is it [Blood](riddle_answer)
-      - [Blood](riddle_answer)
+  # - intent: riddle_answer
+  #   examples: |
+  #     - The answer is [Dead Sea](riddle_answer)
+  #     - Is it [Dead Sea](riddle_answer)
+  #     - [Dead Sea](riddle_answer)
+  #     - [Blood](riddle_answer)
+  #     - The answer is [Blood](riddle_answer)
+  #     - Is it [Blood](riddle_answer)
+  #     - [Blood](riddle_answer)
 
   - intent: current_object
     examples: |
