@@ -79,6 +79,8 @@ Almost at the last state.
 ]
 no_option_message=[
     "We don't have an option, we need to be saved, please help and save me. \n",
+    "It is funny you still think you have a choice \n",
+    "No is not an option, you should go ahead"
 ]
 
 
