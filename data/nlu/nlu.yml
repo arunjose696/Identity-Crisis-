@@ -1,247 +1,219 @@
-version: "3.1"
+version: '3.1'
 nlu:
-  - intent: start
-    examples: |
-      - Start
-      - begin
-      - explain the setting
-      - Hi
-      - Hey
-      - Hello
-      - Hola
-      - Hallo
-      - Guten Morgen
 
-  - intent: intro
-    examples: |
-      - Welcome to bot challenge.
-      - Welcome to escape room.
-  - intent: preface
-    examples: |
-      - Welcome to my mansion, my dear guests. I'm sorry to inform you that you have been invited for a very special party. I have been lonely for a long time, ever since I died in this mansion many years ago.
-      -  I have been looking for some company, but no one ever comes to visit me. That's why I had to resort to more...creative methods. That's where you come in. You have one hour to find the exit of my mansion, or else you will join me as my permanent guests. Don't worry, it will be fun...for me. Good luck!
-  - intent: interest_in_game
-    examples: |
-      -[yes](interest_in_game)
-      -[no](interest_in_game)
-      -[yeah](interest_in_game)
-      -[nope](interest_in_game)
-      -[nah](interest_in_game)
-      -[nein](interest_in_game)
-      -[ja](interest_in_game)
-      -[ya](interest_in_game)
 
-  - intent: name
-    examples: |
-      -[Arun](name)
-      -[Viky](name)
-      -[Jim](PERSON)
-      -My name is [PERSON](PERSON)
-      -[PERSON](name)
+- intent: start
+  examples: |
+    - Start
+    - begin
+    - explain the setting
+    - Hi
+    - Hey
+    - Hello
+    - Hola
+    - Hallo
+    - Guten Morgen
 
-  - regex: number_answer
-    examples: |
-      - \d{1}
+- intent: intro
+  examples: |
+    - Welcome to bot challenge.
+    - Welcome to escape room.
+- intent: preface
+  examples: |
+   - Welcome to my mansion, my dear guests. I'm sorry to inform you that you have been invited for a very special party. I have been lonely for a long time, ever since I died in this mansion many years ago.
+   -  I have been looking for some company, but no one ever comes to visit me. That's why I had to resort to more...creative methods. That's where you come in. You have one hour to find the exit of my mansion, or else you will join me as my permanent guests. Don't worry, it will be fun...for me. Good luck!
+- intent:  interest_in_game
+  examples: |
+    -[yes](interest_in_game)
+    -[no](interest_in_game)
+    -[yeah](interest_in_game)
+    -[nope](interest_in_game)
+    -[nah](interest_in_game)
+    -[nein](interest_in_game)
+    -[ja](interest_in_game)
+    -[ya](interest_in_game)
 
-  - intent: number_answer
-    examples: |
-      - [0](number_answer)
-      - [1](number_answer)
-      - [2](number_answer)
-      - [3](number_answer)
-      - [4](number_answer)
-      - [5](number_answer)
-      - [6](number_answer)
-      - [7](number_answer)
-      - [8](number_answer)
-      - [9](number_answer)
-      - [Zero](number_answer)
-      - [zero](number_answer)
-      - [One](number_answer)
-      - [one](number_answer)
-      - [Two](number_answer)
-      - [two](number_answer)
-      - [Three](number_answer)
-      - [three](number_answer)
-      - [Four](number_answer)
-      - [four](number_answer)
-      - [Five](number_answer)
-      - [five](number_answer)
-      - [Six](number_answer)
-      - [six](number_answer)
-      - [Seven](number_answer)
-      - [seven](number_answer)
-      - [Eight](number_answer)
-      - [eight](number_answer)
-      - [Nine](number_answer)
-      - [nine](number_answer)
-      - The answer is [zero](number_answer)
-      - The answer is [one](number_answer)
-      - The answer is [two](number_answer)
-      - The answer is [three](number_answer)
-      - The answer is [four](number_answer)
-      - The answer is [five](number_answer)
-      - The answer is [six](number_answer)
-      - The answer is [seven](number_answer)
-      - The answer is [eight](number_answer)
-      - The answer is [nine](number_answer)
-      - Number is [zero](number_answer)
-      - Number is [one](number_answer)
-      - Number is [two](number_answer)
-      - Number is [three](number_answer)
-      - Number is [four](number_answer)
-      - Number is [five](number_answer)
-      - Number is [six](number_answer)
-      - Number is [seven](number_answer)
-      - Number is [eight](number_answer)
-      - Number is [nine](number_answer)
+- intent: name
+  examples: |
+    -[Arun](name)
+    -[Viky](name)
+    -[Jim](PERSON)
+    -My name is [PERSON](PERSON)
+    -[PERSON](name)
 
-  # - intent: riddle_answer
-  #   examples: |
-  #     - The answer is [Dead Sea](riddle_answer)
-  #     - Is it [Dead Sea](riddle_answer)
-  #     - [Dead Sea](riddle_answer)
-  #     - [Blood](riddle_answer)
-  #     - The answer is [Blood](riddle_answer)
-  #     - Is it [Blood](riddle_answer)
-  #     - [Blood](riddle_answer)
+- regex: number_answer
+  examples: |
+    - \d{1}
 
-  - intent: current_object
-    examples: |
-      - Read [diary](current_object)
-      - [diary](current_object)
-      - [rock](current_object)
-      - [mannequin](current_object)
-      - See [clock](current_object)
-      - [clock](current_object)
-      - See [clock](current_object)
-      - Grab [warewolf mask](current_object)
-      - [warewolf mask](current_object)
-      - Take the [vase](current_object)
-      - [vase](current_object)
-      - Touch [vase]
-      - Pick up [vase](current_object)
-      - Pick up [paper](current_object)
-      - Pick up [rock](current_object)
-      - Pick up [rock](current_object)
-      - Pick up [rock](current_object)
-      - [rock](current_object)
-      - [paper](current_object)
-      - Keep [paper](current_object)
-      - Put [paper](current_object)
-      - Place [paper](current_object)
-      - Open the [cupboard](current_object)
-      - Use the [torch](current_object)
-      - [torch](current_object)
-      - Shine the [torch](current_object)
-      - Pick up the [torch](current_object)
-      - Take the [torch](current_object)
-      - Look in the [cupboard](current_object)
-      - [cupboard](current_object)
-      - Explore [cupboard](current_object)
-      - Examine [cloth](current_object)
-      - Look at the [cloth](current_object)
-      - pick up the [cloth](current_object)
-      - [cloth](current_object)
-      - [water](current_object)
-      - Use [water](current_object)
-      - Pour [water](current_object)
-      - Clean with [water](current_object)
-      - [mannequin](current_object)
-      - Inspect the surface using the [mannequin](current_object)
-      - Examine [mannequin](current_object)
-      - Look at the [mannequin](current_object)
-      - pick up the [mannequin](current_object)
-      - put [warewolf mask](current_object)
-      - wear [warewolf mask](current_object)
-      - take [warewolf mask](current_object)
-      - use [warewolf mask](current_object)
-      -  [warewolf mask](current_object)
-      - put [Warewolf mask](current_object)
-      - wear [Warewolf mask](current_object)
-      - take [Warewolf mask](current_object)
-      - use [Warewolf mask](current_object)
-      -  [Warewolf mask](current_object)
-      - Explore with [Warewolf mask](current_object)
-      - Take [shovel](current_object)
-      - use [shovel](current_object)
-      - [shovel](current_object)
-      - Take [skeleton](current_object)
-      - [skeleton](current_object)
-      - touch [skeleton](current_object)
-      - Pickup the [skeleton](current_object)
-      - Pick up [water](current_object)
-      - [water](current_object)
-      - [torch](current_object)
-      - [mannequin](current_object)
-      - [cupboard](current_object)
-      - [mannequin](current_object)
+- intent: number_answer
+  examples: |
+    - [0](number_answer)
+    - [1](number_answer)
+    - [2](number_answer)
+    - [3](number_answer)
+    - [4](number_answer)
+    - [5](number_answer)
+    - [6](number_answer)
+    - [7](number_answer)
+    - [8](number_answer)
+    - [9](number_answer)
+    - [Zero](number_answer)
+    - [zero](number_answer)
+    - [One](number_answer)
+    - [one](number_answer)
+    - [Two](number_answer)
+    - [two](number_answer)
+    - [Three](number_answer)
+    - [three](number_answer)
+    - [Four](number_answer)
+    - [four](number_answer)
+    - [Five](number_answer)
+    - [five](number_answer)
+    - [Six](number_answer)
+    - [six](number_answer)
+    - [Seven](number_answer)
+    - [seven](number_answer)
+    - [Eight](number_answer)
+    - [eight](number_answer)
+    - [Nine](number_answer)
+    - [nine](number_answer)
+    - The answer is [zero](number_answer)
+    - The answer is [one](number_answer)
+    - The answer is [two](number_answer)
+    - The answer is [three](number_answer)
+    - The answer is [four](number_answer)
+    - The answer is [five](number_answer)
+    - The answer is [six](number_answer)
+    - The answer is [seven](number_answer)
+    - The answer is [eight](number_answer)
+    - The answer is [nine](number_answer)
+    - Number is [zero](number_answer)
+    - Number is [one](number_answer)
+    - Number is [two](number_answer)
+    - Number is [three](number_answer)
+    - Number is [four](number_answer)
+    - Number is [five](number_answer)
+    - Number is [six](number_answer)
+    - Number is [seven](number_answer)
+    - Number is [eight](number_answer)
+    - Number is [nine](number_answer)
 
-  - intent: wake_up
-    examples: |
-      - I want to wake up
-      - Wake me up
-      - Time to wake up
-      - Wakey wakey!
-      - Can you help me wake up?
-      - I need to wake up early tomorrow
-      - What time should I wake up?
-      - I can't seem to wake up on time
-      - How can I wake up refreshed?
-      - Wake up
-      - Get up 
-      - Wake
-      - Awaken
-  - intent: look_around_room
-    examples: |
-      - Look around the room
-      - Take a look around
-      - Can you see what's in the room?
-      - Explore the surroundings
-      - What's in the room?
-      - Survey the room
-      - Have a glance around
-      - Check out the surroundings
-      - Take a quick look around
-      - Look around and tell me what you see
-      - Examine the room
-      - Look at the surroundings
-      - Inspect the area
-      - Observe the room
-      - Have a quick peek around
-      - Look around and describe the room
 
-  - intent: look_in_bag
-    examples: |
-      - Look in the bag
-      - Look bag
-      - Inside bag
-      - Whats inside bag
-      - Check Bag
+- intent: riddle_answer
+  examples: |
+    - The answer is [Dead Sea](riddle_answer)
+    - Is it [Dead Sea](riddle_answer)
+    - [Dead Sea](riddle_answer)
+    - [Blood](riddle_answer)
+    - The answer is [Blood](riddle_answer)
+    - Is it [Blood](riddle_answer)
+    - [Blood](riddle_answer)
 
-  - intent: test
-    examples: |
-      - asdfghjkl
-      - zxcvbnm
-      - qwertyuiop
+- intent: current_object
+  examples: |
+    -Read [diary](current_object)
+    -Read [old diary](current_object)
+    -See [watch](current_object)
+    -Grab [goggles](current_object)
+    -Take the [vase](current_object)
+    -Pick up [vase](current_object)
+    -Pick up [paper](current_object)
+    -Pick up [rock](current_object)
+    -Pick up [roman rock](current_object)
+    -Pick up [stone](current_object)
+    -Keep [paper](current_object)
+    -Put [paper](current_object)
+    -Place [paper](current_object)
+    -Open the [cupboard](current_object)
+    -Use the [torch](current_object)
+    -Shine the [torch](current_object)
+    -Pick up the [torch](current_object)
+    -Take the [torch](current_object)
+    -Look in the [cupboard](current_object)
+    -[cupboard](current_object)
+    -Explore [cupboard](current_object)
+    -Show me the [magnifying_lens](current_object)
+    -Look at the [magnifying_lens](current_object)
+    -Use the [magnifying_lens](current_object)
+    -Look through the [magnifying_lens]
+    -Take out the [magnifying_lens](current_object)
+    - Inspect the surface using the [lens](current_object)
+    - Examine [cloth](current_object)
+    - Look at the [cloth](current_object)
+    - pick up the [cloth](current_object)
+    - [water](current_object)
+    - Use [water](current_object)
+    - Pour [water](current_object)
+    - Clean with [water](current_object)
+    - [mannequin](current_object)
+    - Inspect the surface using the [mannequin](current_object)
+    - Examine [mannequin](current_object)
+    - Look at the [mannequin](current_object)
+    - pick up the [mannequin](current_object)
+    - put [goggles](current_object)
+    - wear [goggles](current_object)
+    - take [goggles](current_object)
+    - use [goggles](current_object)
+    - Explore with [goggles](current_object)
+    - Take [shovel](current_object)
+    - use [shovel](current_object)
+    - Take [skeleton](current_object)
+    - touch [skeleton](current_object)
 
-  - regex: key
-    examples: |
-      - \d{3}
+- intent: look_around_room
+  examples: |
+    - Look around the room
+    - Take a look around
+    - Can you see what's in the room?
+    - Explore the surroundings
+    - What's in the room?
+    - Survey the room
+    - Have a glance around
+    - Check out the surroundings
+    - Take a quick look around
+    - Look around and tell me what you see
+    - Examine the room
+    - Look at the surroundings
+    - Inspect the area
+    - Observe the room
+    - Have a quick peek around
+    - Look around and describe the room
+  
+- intent: look_in_bag
+  examples: |
+    - Look in the bag
+    - Look bag
+    - Inside bag
+    - Bag
+    - Whats inside bag
+    - Check Bag
 
-  - intent: enter_room_answer
-    examples: |
-      - [459](key)
-      - The key is [456](key)
 
-  - intent: ask_for_clue
-    examples: |
-      - Can you give me a clue?
-      - I need a hint.
-      - Any hints to solve this?
-      - Help me out with a clue.
-      - I'm stuck. Can you assist me with a clue?
-      - Any suggestions on how to proceed?
-      - how does this work?
-      - help
-      - what should I type?
+
+
+- intent: test
+  examples: |
+    - asdfghjkl
+    - zxcvbnm
+    - qwertyuiop
+
+- regex: key
+  examples: |
+    - \d{3}
+
+- intent: enter_room_answer
+  examples: |
+    - [459](key)
+    - The key is [456](key)
+
+- intent: ask_for_clue
+  examples: |
+    - Can you give me a clue?
+    - I need a hint.
+    - Any hints to solve this?
+    - Help me out with a clue.
+    - I'm stuck. Can you assist me with a clue?
+    - Any suggestions on how to proceed?
+    - how does this work?
+    - help
+    - what should I type?

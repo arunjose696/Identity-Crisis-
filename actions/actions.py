@@ -756,7 +756,7 @@ class ActionDefaultFallback(Action):
     ) -> List[Dict[Text, Any]]:
         print("fallback")
         print(tracker.latest_message)
-        dispatcher.utter_message(text="my_custom_fallback_template")
+        dispatcher.utter_message(text=f"An unexpected error, We are sorry this occured. Could you reload the window and play the game again, this time it would be great if you dont type in <h2>{tracker.latest_message['text']}</h2> we will keep a note of this and fix this soon so the issue does not occur anymore")
 
         # Revert user message which led to fallback.
         return []
