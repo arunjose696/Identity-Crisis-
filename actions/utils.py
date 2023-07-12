@@ -21,28 +21,29 @@ def unwrap(finished_objects, tracker, current_object):
     finished_objects.append(current_object)
     
 def add_audio_and_image(text, audio_id=None,image_id=None, pos="center"):
-    if image_id:
-        if image_id != "18w_boFKDWwOVsc0g12CZBMWhKVQJQc_-":
-            if pos=="center":
-                image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+f"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; document.body.style.backgroundSize = '100\% 100\%'; document.body.style.backgroundPosition = '"+pos+"'; document.body.style.backgroundRepeat = 'no-repeat'; document.body.style.height = '100vh'; document.body.style.margin = '0'; document.body.style.padding = '0';})(); </script>"
-            else:
-                image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl;document.body.style.backgroundSize = '100\% 100\%'; })(); </script>"
-        else:
-            if pos=="center":
-                image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+f"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; document.body.style.backgroundPosition = '"+pos+"'; document.body.style.backgroundRepeat = 'no-repeat'; document.body.style.height = '100vh'; document.body.style.margin = '0'; document.body.style.padding = '0';})(); </script>"
-            else:
-                image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; })(); </script>"
+    return text
+    # if image_id:
+    #     if image_id != "18w_boFKDWwOVsc0g12CZBMWhKVQJQc_-":
+    #         if pos=="center":
+    #             image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+f"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; document.body.style.backgroundSize = '100\% 100\%'; document.body.style.backgroundPosition = '"+pos+"'; document.body.style.backgroundRepeat = 'no-repeat'; document.body.style.height = '100vh'; document.body.style.margin = '0'; document.body.style.padding = '0';})(); </script>"
+    #         else:
+    #             image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl;document.body.style.backgroundSize = '100\% 100\%'; })(); </script>"
+    #     else:
+    #         if pos=="center":
+    #             image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+f"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; document.body.style.backgroundPosition = '"+pos+"'; document.body.style.backgroundRepeat = 'no-repeat'; document.body.style.height = '100vh'; document.body.style.margin = '0'; document.body.style.padding = '0';})(); </script>"
+    #         else:
+    #             image = "<script> (function() { var imageUrl = 'https://drive.google.com/uc?id="+ image_id+"'; imageUrl = 'url(' + imageUrl.replace(/[\\']/g, '\\$&') + ')'; document.body.style.backgroundImage = imageUrl; })(); </script>"
             
-    if audio_id:
-        audio = "<audio autoplay> <source src= \"https://drive.google.com/uc?id={} \" type= \"audio/ogg \"></audio>".format(audio_id)
-    if audio_id and image_id:
-        return text + image + audio
-    elif image_id:
-        return text + image
-    elif audio_id:
-        return text+audio
-    else:
-        return
+    # if audio_id:
+    #     audio = "<audio autoplay> <source src= \"https://drive.google.com/uc?id={} \" type= \"audio/ogg \"></audio>".format(audio_id)
+    # if audio_id and image_id:
+    #     return text + image + audio
+    # elif image_id:
+    #     return text + image
+    # elif audio_id:
+    #     return text+audio
+    # else:
+    #     return
 def type_write(text, id):
     output = """ <p id="{id}"></p> <script> const text = "{text}"; const speed = 100; let index = 0; const {id} = document.getElementById("{id}"); function type() {{ if (index < text.length) {{ {id}.innerHTML += text.charAt(index); index++; setTimeout(type, speed); }} }} type(); </script> """.format(id=id,text=text)
     
