@@ -8,22 +8,22 @@ fakekey_utterences=[
     <p style="color:green; font-family: 'Nosifer', cursive; font-size:15px">Little girl :   The clown is approaching, he will kill us both if you stay still, there is a door with 3 DIGIT LOCK in front of you, try entering any random 3 digit number and please help me.</p>
 
     <p style="color:brown; font-family: 'Nosifier', cursive;font-size:17px">Narration :  You can try your LUCK and enter a random 3 digit number to unlock the door to escape, try fast, as the scary clown with a shovel is approaching you and the little girl.</p>
-    <head>
-        <link rel="preload" href="https://drive.google.com/uc?id=1BOv4W_7KdZ64MdruMMJelMd3p3c9dEDZ" as="image">
-        <link rel="preload" href="https://drive.google.com/uc?id=18w_boFKDWwOVsc0g12CZBMWhKVQJQc_-" as="image">
-        <link rel="preload" href="https://drive.google.com/uc?id=11R8WIAChMu1PKQ9HnyhLcMq94DijDL0S" as="image">
-        <link rel="preload" href="https://drive.google.com/uc?id=1kgAnnELo1MPJZLxCNSIhl6E9adpA-loD" as="image">
-        <link rel="preload" href="https://drive.google.com/uc?id=1hVztJmnl7miC1hFldqbamn2ADEhLcR6g" as="image">
-        <link rel="preload" href="https://drive.google.com/uc?id=1pSH2OuwcxDQZjh0w6G-6FElYa3LEMz2b" as="image">
-        <link rel="preload" href="https://drive.google.com/uc?id=1YWdCXvTLI3J38tgYx3LijQpPLlVnhfOc" as="image">
-        <link rel="preload" href="https://drive.google.com/uc?id=1Rxzp4Ocd3Nqb2ghL-e3ENMBTuVctKJcP" as="image">
-        <link rel="preload" href="https://drive.google.com/uc?id=1A9uQlCaSm3ea69JT8R_YSGUZGp0ZDaid" as="image">
-        <link rel="preload" href="https://drive.google.com/uc?id=12fjvp72GU8xnhgphZWEgm777lOOjqmmY" as="image">
-        <link rel="preload" href="https://drive.google.com/uc?id=1KY5VFhgcYVUnUD4-42836V8LS4gjz5Sb" as="image">
-        <link rel="preload" href="https://drive.google.com/uc?id=1RwHNeXmt18zQfRiBZ4Z4k3irn5U8ggcq" as="image">
-        <link rel="preload" href="https://drive.google.com/uc?id=1JNcjA8jo_DyJT7RKv0x7nQqrNYcb3d1C" as="image">
-        <link rel="preload" href="https://drive.google.com/uc?id=1EbuYZvOoaXKTccRiCRq4QCiB267eeOk-" as="image">
-        </head>
+    # <head>
+    #     <link rel="preload" href="https://drive.google.com/uc?id=1BOv4W_7KdZ64MdruMMJelMd3p3c9dEDZ" as="image">
+    #     <link rel="preload" href="https://drive.google.com/uc?id=18w_boFKDWwOVsc0g12CZBMWhKVQJQc_-" as="image">
+    #     <link rel="preload" href="https://drive.google.com/uc?id=11R8WIAChMu1PKQ9HnyhLcMq94DijDL0S" as="image">
+    #     <link rel="preload" href="https://drive.google.com/uc?id=1kgAnnELo1MPJZLxCNSIhl6E9adpA-loD" as="image">
+    #     <link rel="preload" href="https://drive.google.com/uc?id=1hVztJmnl7miC1hFldqbamn2ADEhLcR6g" as="image">
+    #     <link rel="preload" href="https://drive.google.com/uc?id=1pSH2OuwcxDQZjh0w6G-6FElYa3LEMz2b" as="image">
+    #     <link rel="preload" href="https://drive.google.com/uc?id=1YWdCXvTLI3J38tgYx3LijQpPLlVnhfOc" as="image">
+    #     <link rel="preload" href="https://drive.google.com/uc?id=1Rxzp4Ocd3Nqb2ghL-e3ENMBTuVctKJcP" as="image">
+    #     <link rel="preload" href="https://drive.google.com/uc?id=1A9uQlCaSm3ea69JT8R_YSGUZGp0ZDaid" as="image">
+    #     <link rel="preload" href="https://drive.google.com/uc?id=12fjvp72GU8xnhgphZWEgm777lOOjqmmY" as="image">
+    #     <link rel="preload" href="https://drive.google.com/uc?id=1KY5VFhgcYVUnUD4-42836V8LS4gjz5Sb" as="image">
+    #     <link rel="preload" href="https://drive.google.com/uc?id=1RwHNeXmt18zQfRiBZ4Z4k3irn5U8ggcq" as="image">
+    #     <link rel="preload" href="https://drive.google.com/uc?id=1JNcjA8jo_DyJT7RKv0x7nQqrNYcb3d1C" as="image">
+    #     <link rel="preload" href="https://drive.google.com/uc?id=1EbuYZvOoaXKTccRiCRq4QCiB267eeOk-" as="image">
+    #     </head>
     """,image_id="18w_boFKDWwOVsc0g12CZBMWhKVQJQc_-"),
     
     """
