@@ -565,7 +565,7 @@ class ValidateAnswerForm(FormValidationAction):
             if correct_answer.strip().lower() == user_answer.strip().lower():
                 print("inside if user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
                 dispatcher.utter_message(text="<h2>Congratulations!!!! You've managed to escape the confining room</h2> but beware, for an eerie presence lingers ever so close behind you. Like a haunting shadow, it stalks your every move, patiently waiting for the perfect opportunity to become your lifelong companion, whether in friendship or something much darker.")
-                return {"answer":user_answer} 
+                return [ConversationPaused()]
             else:
                 print("inside else user_answer {} correct_answer{}".format(user_answer,tracker.get_slot('name')))
                 dispatcher.utter_message(text="Try to solve the  jumbled letters")
